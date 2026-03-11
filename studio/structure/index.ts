@@ -1,5 +1,5 @@
 import type { StructureBuilder, StructureResolverContext } from 'sanity/structure'
-import { CogIcon, HomeIcon, ArchiveIcon, UsersIcon, ImageIcon } from '@sanity/icons'
+import { CogIcon, HomeIcon, ArchiveIcon, UsersIcon, ImageIcon, BookIcon } from '@sanity/icons'
 
 /**
  * Custom desk structure for Remade In Studio.
@@ -36,6 +36,17 @@ export const structure = (
             .schemaType('homePage')
             .documentId('homePage')
             .title('Home Page'),
+        ),
+
+      // ── Singleton: Blueprint Page ──────────────────────────────────────────
+      S.listItem()
+        .title('Blueprint Page')
+        .icon(BookIcon)
+        .child(
+          S.document()
+            .schemaType('blueprintPage')
+            .documentId('blueprintPage')
+            .title('Blueprint Page'),
         ),
 
       S.divider(),
@@ -82,6 +93,6 @@ export const structure = (
       ...S.documentTypeListItems().filter(
         (item) =>
           item.getId() &&
-          !['siteSettings', 'homePage', 'researchDoc', 'communityVoice', 'galleryImage'].includes(item.getId()!),
+          !['siteSettings', 'homePage', 'blueprintPage', 'researchDoc', 'communityVoice', 'galleryImage'].includes(item.getId()!),
       ),
     ])

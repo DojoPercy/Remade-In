@@ -24,7 +24,7 @@ export default defineConfig({
     // Enforce that singleton documents can only have one instance
     templates: (prev) =>
       prev.filter(
-        ({ schemaType }) => !['siteSettings', 'homePage'].includes(schemaType),
+        ({ schemaType }) => !['siteSettings', 'homePage', 'blueprintPage'].includes(schemaType),
       ),
   },
 })

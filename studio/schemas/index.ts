@@ -1,6 +1,7 @@
 // Documents
 import { siteSettings } from './documents/siteSettings'
 import { homePage } from './documents/homePage'
+import { blueprintPage } from './documents/blueprintPage'
 import { researchDoc } from './documents/researchDoc'
 import { communityVoice } from './documents/communityVoice'
 import { galleryImage } from './documents/galleryImage'
@@ -23,6 +24,7 @@ export const schemaTypes = [
   // Documents
   siteSettings,
   homePage,
+  blueprintPage,
   researchDoc,
   communityVoice,
   galleryImage,

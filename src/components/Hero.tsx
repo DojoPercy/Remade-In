@@ -125,7 +125,7 @@ export default function Hero({ data }: { data?: HomePage | null }) {
         {/* ── CTAs ── */}
         <motion.div {...fadeUp(0.68)} className="flex flex-col sm:flex-row gap-3 mb-8">
           <motion.a
-            href="#why"
+            href="/blueprint"
             whileHover={{ scale: 1.02, boxShadow: `0 8px 30px ${colors.orange}55` }}
             whileTap={{ scale: 0.97 }}
             className="inline-flex items-center justify-center px-8 py-4 rounded-sm text-sm font-bold tracking-wide"

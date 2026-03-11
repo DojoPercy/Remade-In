@@ -91,6 +91,26 @@ export const homePageQuery = groq`
   }
 `
 
+// ── Blueprint Page (singleton) ────────────────────────────────────────────────
+
+export const blueprintPageQuery = groq`
+  *[_type == "blueprintPage"][0] {
+    heroHeadline,
+    heroSubtitle,
+    primaryCtaLabel,
+    secondaryCtaLabel,
+    coverImage { ${imageFragment} },
+    downloads[] {
+      label,
+      description,
+      file { asset->{ url } },
+      externalHref,
+      fileType,
+      pages
+    }
+  }
+`
+
 // ── Gallery ────────────────────────────────────────────────────────────────────
 
 /** Active gallery images ordered by slot order */

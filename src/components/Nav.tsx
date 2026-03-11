@@ -6,11 +6,11 @@ import { motion } from 'framer-motion'
 import { colors, fonts } from '@/lib/tokens'
 
 const NAV_LINKS = [
-  { label: 'About', href: '#about' },
-  { label: 'Why Remanufacturing', href: '#why' },
-  { label: 'Impact', href: '#impact' },
-  { label: 'Research & Stories', href: '#research' },
-  { label: 'Partnerships', href: '#partnerships' },
+  { label: 'The Blueprint', href: '/blueprint' },
+  { label: 'Impact', href: '/#impact' },
+  { label: 'Research', href: '/#research' },
+  { label: 'Community', href: '/#community' },
+  { label: 'Partner With Us', href: '/partner' },
 ]
 
 export default function Nav({ links }: { links?: { label: string; href: string }[] }) {

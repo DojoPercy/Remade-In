@@ -107,6 +107,28 @@ export interface HomePage {
   donationStats?: DonationStat[]
 }
 
+// ── Blueprint Page ─────────────────────────────────────────────────────────────
+
+export interface BlueprintDownload {
+  label: string
+  description?: string
+  /** Sanity-hosted file — use asset.url for the download link */
+  file?: { asset: { url: string } }
+  /** Fallback external URL (Google Drive, Dropbox, etc.) */
+  externalHref?: string
+  fileType: 'PDF' | 'ZIP' | 'PPTX' | 'XLSX'
+  pages?: number
+}
+
+export interface BlueprintPage {
+  heroHeadline?: string
+  heroSubtitle?: string
+  primaryCtaLabel?: string
+  secondaryCtaLabel?: string
+  coverImage?: SanityImage
+  downloads?: BlueprintDownload[]
+}
+
 // ── Gallery Image ──────────────────────────────────────────────────────────────
 
 export interface GalleryImage {
