@@ -1,26 +1,54 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #F9E8D0;
+  --foreground: #1A1A14;
 }
 
 @theme inline {
+  /* Brand Colors */
+  --color-orange: #E8330A;
+  --color-tomato: #F7841A;
+  --color-amber-brand: #FFD012;
+  --color-bright-gold: #FF6B45;
+  --color-papaya: #00B4D8;
+  --color-sky-blue: #F9E8D0;
+  --color-warm-paper: #1A1A14;
+
+  /* Semantic */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Fonts */
+  --font-syne: var(--font-syne), sans-serif;
+  --font-bricolage: var(--font-bricolage), sans-serif;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-bricolage);
 }
+
+/* ── Blob morph animations ── */
+@keyframes blobA {
+  0%,100% { border-radius: 62% 38% 55% 45% / 50% 62% 38% 50%; }
+  33%      { border-radius: 48% 52% 42% 58% / 58% 44% 56% 42%; }
+  66%      { border-radius: 54% 46% 60% 40% / 42% 58% 44% 56%; }
+}
+@keyframes blobB {
+  0%,100% { border-radius: 38% 62% 48% 52% / 56% 44% 56% 44%; transform: translate(0,0) scale(1); }
+  40%      { border-radius: 62% 38% 55% 45% / 50% 62% 38% 50%; transform: translate(-16px,10px) scale(1.04); }
+  75%      { border-radius: 44% 56% 38% 62% / 62% 38% 56% 44%; transform: translate(8px,-14px) scale(.98); }
+}
+
+/* ── Marquee ticker ── */
+@keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+/* ── Pulsing dot ── */
+@keyframes pulseDot { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .3; transform: scale(.6); } }
+
+.blob-a { animation: blobA 14s ease-in-out infinite; }
+.blob-b { animation: blobB 19s ease-in-out infinite 3s; }
+.ticker-track { animation: ticker 30s linear infinite; }
+.pulse-dot { animation: pulseDot 1.9s ease-in-out infinite; }

@@ -1,0 +1,1448 @@
+[
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "max",
+                "constraint": 60
+              }
+            ],
+            "level": "warning",
+            "message": "Keep meta title under 60 characters."
+          }
+        ],
+        "description": "Overrides the page title in search results. Max 60 chars.",
+        "name": "metaTitle",
+        "type": "string"
+      },
+      {
+        "rows": 3,
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "max",
+                "constraint": 160
+              }
+            ],
+            "level": "warning",
+            "message": "Keep meta description under 160 characters."
+          }
+        ],
+        "description": "Short summary shown in search results. Max 160 chars.",
+        "name": "metaDescription",
+        "type": "text"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "description": "Recommended: 1200×630px. Falls back to site default.",
+        "name": "ogImage",
+        "type": "image",
+        "title": "OG / Social Share Image"
+      },
+      {
+        "initialValue": false,
+        "description": "Sets noindex, nofollow when enabled.",
+        "name": "noIndex",
+        "type": "boolean",
+        "title": "Hide from Search Engines"
+      }
+    ],
+    "name": "seo",
+    "type": "object",
+    "title": "SEO"
+  },
+  {
+    "options": {
+      "hotspot": true
+    },
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "custom"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Describe the image for screen readers and SEO.",
+        "name": "alt",
+        "type": "string",
+        "title": "Alt Text"
+      },
+      {
+        "description": "Optional caption displayed below the image.",
+        "name": "caption",
+        "type": "string"
+      }
+    ],
+    "name": "imageWithAlt",
+    "type": "image",
+    "title": "Image"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "label",
+        "type": "string"
+      },
+      {
+        "options": {
+          "list": [
+            {
+              "title": "External URL",
+              "value": "external"
+            },
+            {
+              "title": "Internal Page",
+              "value": "internal"
+            },
+            {
+              "title": "Email",
+              "value": "email"
+            }
+          ],
+          "layout": "radio"
+        },
+        "initialValue": "external",
+        "name": "linkType",
+        "type": "string"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "uri",
+                "constraint": {
+                  "options": {
+                    "scheme": [
+                      "/^http$/",
+                      "/^https$/"
+                    ],
+                    "allowRelative": false,
+                    "relativeOnly": false,
+                    "allowCredentials": false
+                  }
+                }
+              },
+              {
+                "flag": "custom"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "hidden": "conditional",
+        "name": "externalUrl",
+        "type": "url",
+        "title": "External URL"
+      },
+      {
+        "to": [
+          {
+            "type": "researchDoc"
+          }
+        ],
+        "hidden": "conditional",
+        "name": "internalLink",
+        "type": "reference",
+        "title": "Internal Page"
+      },
+      {
+        "hidden": "conditional",
+        "name": "email",
+        "type": "string",
+        "title": "Email Address"
+      },
+      {
+        "initialValue": false,
+        "hidden": "conditional",
+        "name": "openInNewTab",
+        "type": "boolean",
+        "title": "Open in New Tab"
+      },
+      {
+        "options": {
+          "list": [
+            {
+              "title": "Primary (Filled)",
+              "value": "primary"
+            },
+            {
+              "title": "Secondary (Outlined)",
+              "value": "secondary"
+            },
+            {
+              "title": "Ghost",
+              "value": "ghost"
+            }
+          ],
+          "layout": "radio"
+        },
+        "initialValue": "primary",
+        "name": "variant",
+        "type": "string",
+        "title": "Button Variant"
+      }
+    ],
+    "name": "cta",
+    "type": "object",
+    "title": "Call to Action"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "siteName",
+        "type": "string"
+      },
+      {
+        "name": "tagline",
+        "type": "string"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "fields": [
+          {
+            "validation": [
+              {
+                "rules": [
+                  {
+                    "flag": "presence",
+                    "constraint": "required"
+                  }
+                ],
+                "level": "error"
+              }
+            ],
+            "name": "alt",
+            "type": "string",
+            "title": "Alt Text"
+          }
+        ],
+        "name": "logo",
+        "type": "image"
+      },
+      {
+        "description": "Fallback SEO values used when a page does not define its own.",
+        "name": "defaultSeo",
+        "type": "seo",
+        "title": "Default SEO"
+      },
+      {
+        "of": [
+          {
+            "fields": [
+              {
+                "validation": [
+                  {
+                    "rules": [
+                      {
+                        "flag": "presence",
+                        "constraint": "required"
+                      }
+                    ],
+                    "level": "error"
+                  }
+                ],
+                "name": "label",
+                "type": "string"
+              },
+              {
+                "validation": [
+                  {
+                    "rules": [
+                      {
+                        "flag": "presence",
+                        "constraint": "required"
+                      }
+                    ],
+                    "level": "error"
+                  }
+                ],
+                "name": "href",
+                "type": "string",
+                "title": "URL / Anchor"
+              }
+            ],
+            "type": "object",
+            "name": "navItem"
+          }
+        ],
+        "name": "mainNav",
+        "type": "array",
+        "title": "Main Navigation"
+      },
+      {
+        "of": [
+          {
+            "fields": [
+              {
+                "options": {
+                  "list": [
+                    "Instagram",
+                    "LinkedIn",
+                    "Twitter / X",
+                    "GitHub",
+                    "Behance",
+                    "Dribbble",
+                    "YouTube"
+                  ]
+                },
+                "validation": [
+                  {
+                    "rules": [
+                      {
+                        "flag": "valid",
+                        "constraint": [
+                          "Instagram",
+                          "LinkedIn",
+                          "Twitter / X",
+                          "GitHub",
+                          "Behance",
+                          "Dribbble",
+                          "YouTube"
+                        ]
+                      },
+                      {
+                        "flag": "presence",
+                        "constraint": "required"
+                      }
+                    ],
+                    "level": "error"
+                  }
+                ],
+                "name": "platform",
+                "type": "string"
+              },
+              {
+                "validation": [
+                  {
+                    "rules": [
+                      {
+                        "flag": "uri",
+                        "constraint": {
+                          "options": {
+                            "scheme": [
+                              "/^http$/",
+                              "/^https$/"
+                            ],
+                            "allowRelative": false,
+                            "relativeOnly": false,
+                            "allowCredentials": false
+                          }
+                        }
+                      },
+                      {
+                        "flag": "presence",
+                        "constraint": "required"
+                      }
+                    ],
+                    "level": "error"
+                  }
+                ],
+                "name": "url",
+                "type": "url",
+                "title": "URL"
+              }
+            ],
+            "type": "object",
+            "name": "socialLink"
+          }
+        ],
+        "name": "socialLinks",
+        "type": "array"
+      },
+      {
+        "name": "contactEmail",
+        "type": "string"
+      },
+      {
+        "description": "Optional copy shown in the site footer.",
+        "name": "footerText",
+        "type": "string"
+      }
+    ],
+    "name": "siteSettings",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "initialValue": "Building our Circular Fashion",
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Main headline before the accented word.",
+        "name": "heroHeadline",
+        "type": "string",
+        "title": "Headline"
+      },
+      {
+        "initialValue": "Future",
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "The word rendered in orange italic (e.g. \"Future\").",
+        "name": "heroAccent",
+        "type": "string",
+        "title": "Headline Accent Word"
+      },
+      {
+        "initialValue": "— one Community at a Time",
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "The second line of the headline (e.g. \"— one Community at a Time\").",
+        "name": "heroTagline",
+        "type": "string",
+        "title": "Headline Tagline"
+      },
+      {
+        "rows": 3,
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "heroSubheadline",
+        "type": "text",
+        "title": "Subheadline"
+      },
+      {
+        "initialValue": "See Why Remanufacturing",
+        "name": "heroPrimaryCta",
+        "type": "string",
+        "title": "Primary CTA Label"
+      },
+      {
+        "initialValue": "Our Impact",
+        "name": "heroSecondaryCta",
+        "type": "string",
+        "title": "Secondary CTA Label"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "heroBackground",
+        "type": "imageWithAlt",
+        "title": "Background Image"
+      },
+      {
+        "initialValue": "1,000,000",
+        "description": "Large stat displayed in the blob badge (e.g. \"1,000,000\").",
+        "name": "heroBadgeNumber",
+        "type": "string",
+        "title": "Badge — Number"
+      },
+      {
+        "initialValue": "Garments",
+        "name": "heroBadgeLabel",
+        "type": "string",
+        "title": "Badge — Label"
+      },
+      {
+        "initialValue": "Remanufactured in 5 years",
+        "name": "heroBadgeSubtext",
+        "type": "string",
+        "title": "Badge — Subtext"
+      },
+      {
+        "initialValue": "Starting in the Netherlands",
+        "name": "heroBadgeLocation",
+        "type": "string",
+        "title": "Badge — Location Line"
+      },
+      {
+        "initialValue": [
+          "1,000,000 garments goal",
+          "Based in the Netherlands",
+          "Circular fashion pioneers",
+          "Justice-led model"
+        ],
+        "description": "Short labels shown as a dot-separated row below the CTAs.",
+        "of": [
+          {
+            "type": "string"
+          }
+        ],
+        "name": "heroSocialProof",
+        "type": "array",
+        "title": "Social Proof Tags"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              },
+              {
+                "flag": "min",
+                "constraint": 1
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Scrolling marquee text — items repeat automatically.",
+        "of": [
+          {
+            "type": "string"
+          }
+        ],
+        "name": "tickerItems",
+        "type": "array"
+      },
+      {
+        "initialValue": "The Problem.",
+        "name": "glueHeadlineProblem",
+        "type": "string",
+        "title": "Headline — Line 1 (Problem)"
+      },
+      {
+        "initialValue": "The Solution.",
+        "name": "glueHeadlineSolution",
+        "type": "string",
+        "title": "Headline — Line 2 (Solution)"
+      },
+      {
+        "initialValue": "The Invitation.",
+        "name": "glueHeadlineAccent",
+        "type": "string",
+        "title": "Headline — Line 3 Accent (orange italic)"
+      },
+      {
+        "rows": 5,
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "glueBody",
+        "type": "text",
+        "title": "Body Copy"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              },
+              {
+                "flag": "length",
+                "constraint": 3
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "of": [
+          {
+            "fields": [
+              {
+                "validation": [
+                  {
+                    "rules": [
+                      {
+                        "flag": "presence",
+                        "constraint": "required"
+                      }
+                    ],
+                    "level": "error"
+                  }
+                ],
+                "name": "num",
+                "type": "string",
+                "title": "Number"
+              },
+              {
+                "validation": [
+                  {
+                    "rules": [
+                      {
+                        "flag": "presence",
+                        "constraint": "required"
+                      }
+                    ],
+                    "level": "error"
+                  }
+                ],
+                "name": "title",
+                "type": "string"
+              },
+              {
+                "rows": 3,
+                "validation": [
+                  {
+                    "rules": [
+                      {
+                        "flag": "presence",
+                        "constraint": "required"
+                      }
+                    ],
+                    "level": "error"
+                  }
+                ],
+                "name": "desc",
+                "type": "text",
+                "title": "Description"
+              },
+              {
+                "initialValue": "50% center",
+                "description": "CSS object-position value (e.g. \"30% center\").",
+                "name": "imgPosition",
+                "type": "string",
+                "title": "Image Focal Position"
+              }
+            ],
+            "type": "object",
+            "name": "glueColumn"
+          }
+        ],
+        "name": "glueColumns",
+        "type": "array",
+        "title": "Three Columns"
+      },
+      {
+        "initialValue": 2025,
+        "description": "The reporting year shown in the eyebrow (e.g. 2025).",
+        "name": "impactYear",
+        "type": "number"
+      },
+      {
+        "initialValue": [
+          {
+            "_type": "impactHeroStat",
+            "to": 500000,
+            "suffix": "L",
+            "label": "Litres of water saved",
+            "note": "through upcycling & reuse"
+          },
+          {
+            "_type": "impactHeroStat",
+            "to": 6250,
+            "suffix": "kg",
+            "label": "CO₂ emissions avoided",
+            "note": "in 2025 alone"
+          },
+          {
+            "_type": "impactHeroStat",
+            "to": 250,
+            "suffix": "kg",
+            "label": "Textile waste diverted",
+            "note": "from landfill & export"
+          }
+        ],
+        "description": "Three large animated counter stats.",
+        "of": [
+          {
+            "fields": [
+              {
+                "validation": [
+                  {
+                    "rules": [
+                      {
+                        "flag": "presence",
+                        "constraint": "required"
+                      }
+                    ],
+                    "level": "error"
+                  }
+                ],
+                "name": "to",
+                "type": "number",
+                "title": "Counter Target"
+              },
+              {
+                "validation": [
+                  {
+                    "rules": [
+                      {
+                        "flag": "presence",
+                        "constraint": "required"
+                      }
+                    ],
+                    "level": "error"
+                  }
+                ],
+                "name": "suffix",
+                "type": "string",
+                "title": "Unit Suffix (e.g. \"L\", \"kg\")"
+              },
+              {
+                "validation": [
+                  {
+                    "rules": [
+                      {
+                        "flag": "presence",
+                        "constraint": "required"
+                      }
+                    ],
+                    "level": "error"
+                  }
+                ],
+                "name": "label",
+                "type": "string"
+              },
+              {
+                "name": "note",
+                "type": "string"
+              }
+            ],
+            "type": "object",
+            "name": "impactHeroStat"
+          }
+        ],
+        "name": "impactHeroStats",
+        "type": "array",
+        "title": "Hero Stats"
+      },
+      {
+        "initialValue": [
+          {
+            "_type": "impactSecondaryStat",
+            "display": "12",
+            "label": "Events hosted"
+          },
+          {
+            "_type": "impactSecondaryStat",
+            "display": "3,200+",
+            "label": "Participants"
+          },
+          {
+            "_type": "impactSecondaryStat",
+            "display": "250K+",
+            "label": "Social engagements in 2025"
+          },
+          {
+            "_type": "impactSecondaryStat",
+            "display": "€10,280",
+            "label": "Invested into Kantamanto"
+          }
+        ],
+        "description": "Four smaller supporting stats shown in the bottom strip.",
+        "of": [
+          {
+            "fields": [
+              {
+                "validation": [
+                  {
+                    "rules": [
+                      {
+                        "flag": "presence",
+                        "constraint": "required"
+                      }
+                    ],
+                    "level": "error"
+                  }
+                ],
+                "name": "display",
+                "type": "string",
+                "title": "Display Value (e.g. \"3,200+\")"
+              },
+              {
+                "validation": [
+                  {
+                    "rules": [
+                      {
+                        "flag": "presence",
+                        "constraint": "required"
+                      }
+                    ],
+                    "level": "error"
+                  }
+                ],
+                "name": "label",
+                "type": "string"
+              }
+            ],
+            "type": "object",
+            "name": "impactSecondaryStat"
+          }
+        ],
+        "name": "impactSecondaryStats",
+        "type": "array",
+        "title": "Secondary Stats"
+      },
+      {
+        "initialValue": "Support the Mission",
+        "name": "donationEyebrow",
+        "type": "string",
+        "title": "Eyebrow Text"
+      },
+      {
+        "initialValue": "Help us reach 1,000,000 garments.",
+        "name": "donationHeadline",
+        "type": "string",
+        "title": "Headline"
+      },
+      {
+        "rows": 4,
+        "name": "donationBody",
+        "type": "text",
+        "title": "Body Copy"
+      },
+      {
+        "initialValue": "Donate via Donorbox",
+        "name": "donationPrimaryLabel",
+        "type": "string",
+        "title": "Primary CTA Label"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "uri",
+                "constraint": {
+                  "options": {
+                    "scheme": [
+                      "/^http$/",
+                      "/^https$/"
+                    ],
+                    "allowRelative": false,
+                    "relativeOnly": false,
+                    "allowCredentials": false
+                  }
+                }
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "donationPrimaryHref",
+        "type": "url",
+        "title": "Primary CTA URL"
+      },
+      {
+        "initialValue": "Partner With Us",
+        "name": "donationSecondaryLabel",
+        "type": "string",
+        "title": "Secondary CTA Label"
+      },
+      {
+        "initialValue": [
+          {
+            "_type": "donationStat",
+            "value": "€280K",
+            "label": "2026 fundraising target"
+          },
+          {
+            "_type": "donationStat",
+            "value": "3",
+            "label": "Core pilot projects"
+          },
+          {
+            "_type": "donationStat",
+            "value": "5 yrs",
+            "label": "To 1M garments"
+          }
+        ],
+        "of": [
+          {
+            "fields": [
+              {
+                "validation": [
+                  {
+                    "rules": [
+                      {
+                        "flag": "presence",
+                        "constraint": "required"
+                      }
+                    ],
+                    "level": "error"
+                  }
+                ],
+                "name": "value",
+                "type": "string",
+                "title": "Value (e.g. \"€280K\")"
+              },
+              {
+                "validation": [
+                  {
+                    "rules": [
+                      {
+                        "flag": "presence",
+                        "constraint": "required"
+                      }
+                    ],
+                    "level": "error"
+                  }
+                ],
+                "name": "label",
+                "type": "string"
+              }
+            ],
+            "type": "object",
+            "name": "donationStat"
+          }
+        ],
+        "name": "donationStats",
+        "type": "array",
+        "title": "Stats"
+      }
+    ],
+    "name": "homePage",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "title",
+        "type": "string"
+      },
+      {
+        "options": {
+          "source": "title",
+          "maxLength": 96
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "custom"
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "slug",
+        "type": "slug"
+      },
+      {
+        "options": {
+          "list": [
+            {
+              "title": "Report",
+              "value": "Report"
+            },
+            {
+              "title": "White Paper",
+              "value": "White Paper"
+            },
+            {
+              "title": "Policy Brief",
+              "value": "Policy Brief"
+            }
+          ],
+          "layout": "radio"
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "valid",
+                "constraint": [
+                  "Report",
+                  "White Paper",
+                  "Policy Brief"
+                ]
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "docType",
+        "type": "string",
+        "title": "Document Type"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              },
+              {
+                "flag": "min",
+                "constraint": 2020
+              },
+              {
+                "flag": "max",
+                "constraint": 2040
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "year",
+        "type": "number"
+      },
+      {
+        "rows": 3,
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              },
+              {
+                "flag": "max",
+                "constraint": 280
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Shown on the archive card. Keep to 2–3 sentences.",
+        "name": "description",
+        "type": "text",
+        "title": "Short Description"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              },
+              {
+                "flag": "min",
+                "constraint": 0
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "pages",
+        "type": "number",
+        "title": "Page Count"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "uri",
+                "constraint": {
+                  "options": {
+                    "scheme": [
+                      "/^http$/",
+                      "/^https$/"
+                    ],
+                    "allowRelative": false,
+                    "relativeOnly": false,
+                    "allowCredentials": false
+                  }
+                }
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Direct link to the PDF or external page.",
+        "name": "href",
+        "type": "url",
+        "title": "Document URL"
+      },
+      {
+        "options": {
+          "list": [
+            {
+              "title": "Red (Report)",
+              "value": "#FF3800"
+            },
+            {
+              "title": "Pink (Report variant)",
+              "value": "#EB3A69"
+            },
+            {
+              "title": "Green (White Paper)",
+              "value": "#008D68"
+            },
+            {
+              "title": "Blue (Policy Brief)",
+              "value": "#0A3BFF"
+            }
+          ],
+          "layout": "radio"
+        },
+        "description": "Hex colour for the card top half. Defaults are set per type if left blank.",
+        "name": "headerColor",
+        "type": "string",
+        "title": "Card Header Colour"
+      },
+      {
+        "initialValue": 0,
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "min",
+                "constraint": -3
+              },
+              {
+                "flag": "max",
+                "constraint": 3
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Slight rotation applied to the card for visual texture. Keep between -3 and 3.",
+        "name": "rotation",
+        "type": "number",
+        "title": "Card Tilt (degrees)"
+      },
+      {
+        "options": {
+          "dateFormat": "YYYY-MM-DD"
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "publishedAt",
+        "type": "date",
+        "title": "Published Date"
+      },
+      {
+        "initialValue": false,
+        "description": "Featured documents appear first in the archive.",
+        "name": "featured",
+        "type": "boolean"
+      }
+    ],
+    "name": "researchDoc",
+    "type": "document",
+    "title": "Research Document"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "name",
+        "type": "string",
+        "title": "Full Name"
+      },
+      {
+        "options": {
+          "source": "name",
+          "maxLength": 64
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "custom"
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "slug",
+        "type": "slug"
+      },
+      {
+        "rows": 4,
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              },
+              {
+                "flag": "max",
+                "constraint": 400
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "The key quote shown on the homepage carousel. Keep it under 200 characters.",
+        "name": "quote",
+        "type": "text"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "description": "Portrait-style photo. Will be displayed in a blob mask — tighter crops work best.",
+        "name": "photo",
+        "type": "imageWithAlt",
+        "title": "Profile Photo"
+      },
+      {
+        "initialValue": "Kantamanto Market",
+        "description": "Shown on the dark badge (e.g. \"Kantamanto Market\")",
+        "name": "market",
+        "type": "string",
+        "title": "Market / Hub"
+      },
+      {
+        "initialValue": "Accra, Ghana",
+        "description": "Shown on the orange badge (e.g. \"Accra, Ghana\")",
+        "name": "location",
+        "type": "string",
+        "title": "City, Country"
+      },
+      {
+        "initialValue": 99,
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "min",
+                "constraint": 0
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Lower numbers appear first in the carousel.",
+        "name": "order",
+        "type": "number",
+        "title": "Display Order"
+      },
+      {
+        "initialValue": true,
+        "description": "Toggle off to hide from the Community Voice carousel without deleting.",
+        "name": "active",
+        "type": "boolean",
+        "title": "Show on Homepage"
+      }
+    ],
+    "name": "communityVoice",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "options": {
+          "hotspot": true
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "image",
+        "type": "imageWithAlt",
+        "title": "Photo"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Shown on hover (e.g. \"Amsterdam, NL\" or \"Kantamanto, GH\").",
+        "name": "location",
+        "type": "string",
+        "title": "Location Label"
+      },
+      {
+        "options": {
+          "list": [
+            {
+              "title": "a — Large landscape (top-left)",
+              "value": "a"
+            },
+            {
+              "title": "b — Portrait (top-right)",
+              "value": "b"
+            },
+            {
+              "title": "c — Small square (bottom-left)",
+              "value": "c"
+            },
+            {
+              "title": "d — Small square (bottom-centre)",
+              "value": "d"
+            },
+            {
+              "title": "e — Wide landscape (bottom-right)",
+              "value": "e"
+            }
+          ]
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "valid",
+                "constraint": [
+                  "a",
+                  "b",
+                  "c",
+                  "d",
+                  "e"
+                ]
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "description": "Which slot in the 5-image grid: a (large top-left), b (portrait top-right), c (small bottom-left), d (small bottom-centre), e (wide bottom-right).",
+        "name": "gridArea",
+        "type": "string"
+      },
+      {
+        "initialValue": "50% center",
+        "description": "CSS object-position (e.g. \"50% 30%\", \"top\", \"center\"). Controls which part of the image is visible.",
+        "name": "objectPosition",
+        "type": "string",
+        "title": "Focal Position"
+      },
+      {
+        "initialValue": 99,
+        "description": "Lower numbers appear first. Use to reorder within the same grid area.",
+        "name": "order",
+        "type": "number",
+        "title": "Display Order"
+      },
+      {
+        "initialValue": true,
+        "description": "Uncheck to hide this image without deleting it.",
+        "name": "active",
+        "type": "boolean"
+      }
+    ],
+    "name": "galleryImage",
+    "type": "document"
+  }
+]

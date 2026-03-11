@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(test -f \"c:/Users/ojoda/remade-in/pnpm-workspace.yaml\")",
+      "WebSearch"
+    ]
+  }
+}
