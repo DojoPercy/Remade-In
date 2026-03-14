@@ -4,7 +4,6 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence, easeInOut } from 'framer-motion'
 import { colors, fonts } from '@/lib/tokens'
-import SectionDivider from '@/components/ui/SectionDivider'
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -41,28 +40,17 @@ export default function CommunityVoiceCarousel({ voices }: { voices: VoiceItem[]
   return (
     <section
       className="relative overflow-hidden px-8 md:px-20 py-24"
-      style={{ backgroundColor: colors.cream }}
+      style={{ backgroundColor: '#F3BFA2' }}
     >
       {/* ── Decorative blob — top right ── */}
       <div
         className="pointer-events-none absolute -top-20 -right-32 w-[420px] h-[360px] origin-center"
         style={{
-          backgroundColor: `${colors.orange}22`,
+          backgroundColor: '#F9AE90',
           borderRadius: '60% 40% 55% 45% / 45% 55% 40% 60%',
           transform: 'rotate(-31deg)',
         }}
       />
-
-      {/* ── Social Impact label — bottom left ── */}
-      <div className="absolute bottom-10 left-8 md:left-20">
-        <p
-          className="text-xs font-bold uppercase tracking-[0.28em]"
-          style={{ fontFamily: fonts.syne, color: colors.orange }}
-        >
-          Social Impact
-        </p>
-        <div className="mt-1.5 h-0.5 w-14" style={{ backgroundColor: colors.orange }} />
-      </div>
 
       {/* ── Main layout ── */}
       <div className="flex flex-col md:flex-row items-center gap-12 md:gap-20 max-w-6xl mx-auto">
@@ -191,8 +179,6 @@ export default function CommunityVoiceCarousel({ voices }: { voices: VoiceItem[]
         </div>
       </div>
 
-      {/* Ramp into ResearchArchive's white */}
-      <SectionDivider fill={colors.white} direction="left" height={48} />
     </section>
   )
 }

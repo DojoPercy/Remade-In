@@ -148,10 +148,8 @@ export default function DonationBanner({ data }: { data?: HomePage | null }) {
         {stats.map((stat, i) => (
           <div
             key={stat.value}
-            className="flex-1 px-8 md:px-20 py-8 flex flex-col gap-1.5"
-            style={{
-              borderLeft: i > 0 ? '1px solid rgba(255,255,255,0.18)' : undefined,
-            }}
+            className={`flex-1 px-8 md:px-20 py-8 flex flex-col gap-1.5 ${i > 0 ? 'border-t md:border-t-0 md:border-l' : ''}`}
+            style={{ borderColor: 'rgba(255,255,255,0.18)' }}
           >
             <span
               style={{

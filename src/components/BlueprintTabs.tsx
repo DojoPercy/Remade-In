@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence, useInView } from 'framer-motion'
 import { colors, fonts } from '@/lib/tokens'
 
@@ -220,10 +220,34 @@ function TabCta({ label, href }: { label: string; href: string }) {
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
+const AUTO_MS = 6000
+
 export default function BlueprintTabs() {
   const [active, setActive] = useState<TabId>('problem')
+  const [autoPlay, setAutoPlay] = useState(true)
+  const resumeRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const ref = useRef<HTMLElement>(null)
   const inView = useInView(ref, { once: true, margin: '-100px' })
+
+  // Auto-advance through tabs once section is in view
+  useEffect(() => {
+    if (!autoPlay || !inView) return
+    const interval = setInterval(() => {
+      setActive((cur) => {
+        const idx = TABS.findIndex((t) => t.id === cur)
+        return TABS[(idx + 1) % TABS.length].id
+      })
+    }, AUTO_MS)
+    return () => clearInterval(interval)
+  }, [autoPlay, inView])
+
+  function handleTabClick(id: TabId) {
+    setActive(id)
+    setAutoPlay(false)
+    if (resumeRef.current) clearTimeout(resumeRef.current)
+    // Resume auto-play after 12s of inactivity
+    resumeRef.current = setTimeout(() => setAutoPlay(true), 12000)
+  }
 
   const tab = TABS.find((t) => t.id === active)!
 
@@ -248,7 +272,7 @@ export default function BlueprintTabs() {
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={inView ? { opacity: 1, y: 0, transition: { duration: 0.5, delay: 0.08 } } : {}}
-        className="flex flex-wrap gap-2 mb-16"
+        className="flex flex-wrap gap-2 mb-4"
         role="tablist"
         aria-label="Blueprint sections"
       >
@@ -259,7 +283,7 @@ export default function BlueprintTabs() {
               key={t.id}
               role="tab"
               aria-selected={isActive}
-              onClick={() => setActive(t.id)}
+              onClick={() => handleTabClick(t.id)}
               className="px-4 py-2 rounded-full text-sm font-bold uppercase tracking-[0.06em] transition-all duration-200"
               style={{
                 fontFamily: fonts.syne,
@@ -273,6 +297,20 @@ export default function BlueprintTabs() {
           )
         })}
       </motion.div>
+
+      {/* Auto-play progress bar */}
+      <div className="relative h-px mb-12" style={{ backgroundColor: 'rgba(249,232,208,0.08)' }}>
+        {autoPlay && (
+          <motion.div
+            key={active}
+            className="absolute top-0 left-0 h-full"
+            style={{ backgroundColor: colors.orange }}
+            initial={{ width: '0%' }}
+            animate={{ width: '100%' }}
+            transition={{ duration: AUTO_MS / 1000, ease: 'linear' }}
+          />
+        )}
+      </div>
 
       {/* Tab content */}
       <AnimatePresence mode="wait">

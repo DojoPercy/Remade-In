@@ -76,28 +76,15 @@ export default function WeAreTheGlue({ data }: { data?: HomePage | null }) {
       </div>
 
       {/* Three cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 justify-items-center">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {columns.map((col) => (
           <div
             key={col.num}
-            className="relative w-96 rounded-[10px] border flex-shrink-0"
-            style={{
-              height: 483,
-              backgroundColor: '#ffffff',
-              borderColor: 'rgba(168,162,158,0.2)',
-            }}
+            className="w-full rounded-[10px] border flex flex-col overflow-hidden"
+            style={{ backgroundColor: '#ffffff', borderColor: 'rgba(168,162,158,0.2)' }}
           >
             {/* Image */}
-            <div
-              className="absolute overflow-hidden rounded-lg border"
-              style={{
-                top: 19,
-                left: 20,
-                width: 356,
-                height: 176,
-                borderColor: 'rgba(168,162,158,0.2)',
-              }}
-            >
+            <div className="relative w-full overflow-hidden rounded-t-[10px] border-b" style={{ height: 176, borderColor: 'rgba(168,162,158,0.2)' }}>
               <Image
                 src={col.image}
                 alt={col.title}
@@ -107,66 +94,40 @@ export default function WeAreTheGlue({ data }: { data?: HomePage | null }) {
               />
             </div>
 
-            {/* Large decorative number */}
-            <p
-              className="absolute font-extrabold capitalize leading-[91.52px]"
-              style={{
-                top: 181,
-                left: 15,
-                fontFamily: fonts.syne,
-                fontSize: 60,
-                color: '#fee2e2',
-                width: 112,
-              }}
-            >
-              {col.num}
-            </p>
+            {/* Content */}
+            <div className="flex flex-col flex-1 px-5 pb-6 pt-2">
+              {/* Large decorative number */}
+              <p
+                className="font-extrabold leading-none mb-1"
+                style={{ fontFamily: fonts.syne, fontSize: 56, color: '#fee2e2' }}
+              >
+                {col.num}
+              </p>
 
-            {/* Category label */}
-            <p
-              className="absolute font-medium uppercase leading-5"
-              style={{
-                top: 273,
-                left: 22,
-                width: 128,
-                fontFamily: fonts.bricolage,
-                fontSize: 10,
-                color: '#b45309',
-                letterSpacing: '2.47px',
-              }}
-            >
-              {col.category}
-            </p>
+              {/* Category label */}
+              <p
+                className="font-medium uppercase mb-2"
+                style={{ fontFamily: fonts.bricolage, fontSize: 10, color: '#b45309', letterSpacing: '2.47px' }}
+              >
+                {col.category}
+              </p>
 
-            {/* Title */}
-            <h3
-              className="absolute font-extrabold capitalize leading-7"
-              style={{
-                top: 303,
-                left: 21,
-                width: 344,
-                fontFamily: fonts.bricolage,
-                fontSize: 20,
-                color: '#000000',
-              }}
-            >
-              {col.title}
-            </h3>
+              {/* Title */}
+              <h3
+                className="font-extrabold leading-snug mb-3"
+                style={{ fontFamily: fonts.bricolage, fontSize: 18, color: '#000000' }}
+              >
+                {col.title}
+              </h3>
 
-            {/* Description */}
-            <p
-              className="absolute font-extrabold capitalize leading-5"
-              style={{
-                top: 407,
-                left: 22,
-                width: 344,
-                fontFamily: fonts.bricolage,
-                fontSize: 12,
-                color: '#737373',
-              }}
-            >
-              {col.desc}
-            </p>
+              {/* Description */}
+              <p
+                className="leading-relaxed"
+                style={{ fontFamily: fonts.bricolage, fontSize: 13, color: '#737373', lineHeight: 1.65 }}
+              >
+                {col.desc}
+              </p>
+            </div>
           </div>
         ))}
       </div>

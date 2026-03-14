@@ -114,11 +114,8 @@ export default function ImpactTeaser({ data }: { data?: HomePage | null }) {
           {heroStats.map((stat, i) => (
             <div
               key={stat.label}
-              className="py-10 pr-10 flex flex-col gap-3"
-              style={{
-                borderLeft: i > 0 ? `1px solid ${colors.white}14` : undefined,
-                paddingLeft: i > 0 ? 40 : 0,
-              }}
+              className={`py-10 flex flex-col gap-3 ${i > 0 ? 'border-t md:border-t-0 md:border-l' : ''} md:pr-10 ${i > 0 ? 'md:pl-10' : ''}`}
+              style={{ borderColor: `${colors.white}14` }}
             >
               {/* Number */}
               <div
@@ -177,11 +174,8 @@ export default function ImpactTeaser({ data }: { data?: HomePage | null }) {
           {secondaryStats.map((stat, i) => (
             <div
               key={stat.label}
-              className="py-8 pr-8 flex flex-col gap-1.5"
-              style={{
-                borderLeft: i > 0 ? `1px solid ${colors.white}14` : undefined,
-                paddingLeft: i > 0 ? 32 : 0,
-              }}
+              className={`py-8 flex flex-col gap-1.5 ${i > 0 ? 'border-t sm:border-t-0 sm:border-l' : ''} sm:pr-8 ${i > 0 ? 'sm:pl-8' : ''}`}
+              style={{ borderColor: `${colors.white}14` }}
             >
               <span
                 style={{

@@ -73,7 +73,7 @@ export default function SplitText({
           style={{ display: 'inline-block', overflow: 'hidden', verticalAlign: 'bottom' }}
         >
           <motion.span
-            style={{ display: 'inline-block' }}
+            style={{ display: 'inline-block', marginRight:'5px' }}
             variants={wordVariants}
           >
             {word}

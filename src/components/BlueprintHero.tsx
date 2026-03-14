@@ -52,7 +52,7 @@ export default function BlueprintHero({ data }: { data?: BlueprintPage | null })
       {/* ── Orange top line ── */}
       <div className="absolute top-0 left-0 w-full h-1 z-10" style={{ backgroundColor: colors.orange }} />
 
-      <div className="relative z-10 grid md:grid-cols-[1fr_420px] lg:grid-cols-[1fr_500px] min-h-[90vh]">
+      <div className="relative z-10 grid md:grid-cols-[1fr_420px] lg:grid-cols-[1fr_500px] md:min-h-[90vh]">
 
         {/* ── Left: Text ── */}
         <div className="flex flex-col justify-center px-8 md:px-20 pt-28 pb-16 md:pb-0">

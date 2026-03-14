@@ -83,7 +83,7 @@ export default function Hero({ data }: { data?: HomePage | null }) {
           style={{
             fontFamily: fonts.bricolage,
             color: colors.white,
-            fontSize: 80,
+            fontSize: 'clamp(32px, 7vw, 80px)',
             lineHeight: 0.96,
             letterSpacing: '-0.025em',
           }}
@@ -96,7 +96,7 @@ export default function Hero({ data }: { data?: HomePage | null }) {
           />
           {/* Accent word — slides in after the line above */}
           {' '}
-          <em style={{ color: colors.orange, display: 'inline-block', overflow: 'hidden', verticalAlign: 'bottom' }}>
+          <em style={{ color: colors.orange, display: 'inline-block', verticalAlign: 'bottom' }}>
             <SplitText
               text={accent}
               onMount
@@ -178,7 +178,7 @@ export default function Hero({ data }: { data?: HomePage | null }) {
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ delay: 1, type: 'spring', stiffness: 160, damping: 20 }}
-        className="absolute top-20 right-10 md:right-16 flex flex-col items-center justify-center z-10 select-none blob-a"
+        className="absolute top-20 right-10 md:right-16 hidden sm:flex flex-col items-center justify-center z-10 select-none blob-a"
         style={{
           width: 290,
           height: 290,

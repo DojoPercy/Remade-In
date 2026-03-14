@@ -164,7 +164,8 @@ export interface ResearchDoc {
   year: number
   description: string
   pages: number
-  href?: string
+  file?: { asset: { url: string } }
+  externalHref?: string
   headerColor?: string
   rotation?: number
   publishedAt: string
