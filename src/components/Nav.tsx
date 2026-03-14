@@ -15,14 +15,7 @@ const NAV_LINKS = [
 
 export default function Nav({ links }: { links?: { label: string; href: string }[] }) {
   const navLinks = links?.length ? links : NAV_LINKS
-  const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > window.innerHeight * 0.1)
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
 
   // Lock body scroll when menu is open
   useEffect(() => {
@@ -35,11 +28,8 @@ export default function Nav({ links }: { links?: { label: string; href: string }
       className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 md:px-20 border-b"
       style={{
         height: 66,
-        backdropFilter: scrolled ? 'blur(24px)' : 'none',
-        WebkitBackdropFilter: scrolled ? 'blur(24px)' : 'none',
-        backgroundColor: scrolled ? 'transparent' : 'transparent',
-        borderColor: scrolled ? 'rgba(255,255,255,0.07)' : 'transparent',
-        transition: 'background-color 0.5s ease, backdrop-filter 0.5s ease, border-color 0.5s ease',
+        backgroundColor: colors.charcoal,
+        borderColor: 'rgba(255,255,255,0.07)',
       }}
     >
       <a href="/" className="flex-shrink-0">
