@@ -127,11 +127,11 @@ function ResearchCard({ doc, className }: { doc: CardDoc; className?: string }) 
             <span
               style={{
                 fontFamily: fonts.syne,
-                fontSize: 11,
+                fontSize: 12,
                 fontWeight: 700,
                 color: 'rgba(26,26,20,0.35)',
                 textTransform: 'uppercase',
-                letterSpacing: '0.14em',
+                letterSpacing: '0.12em',
               }}
             >
               {doc.pages} pages
@@ -144,8 +144,7 @@ function ResearchCard({ doc, className }: { doc: CardDoc; className?: string }) 
                   fontFamily: fonts.syne,
                   fontSize: 12,
                   color: colors.orange,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.1em',
+                  letterSpacing: '0.08em',
                 }}
               >
                 Read <span aria-hidden="true">→</span>
@@ -214,11 +213,11 @@ function MoreCard({ count, rotation, className }: { count: number; rotation: num
             <span
               style={{
                 fontFamily: fonts.syne,
-                fontSize: 11,
+                fontSize: 12,
                 fontWeight: 700,
                 color: 'rgba(255,255,255,0.25)',
                 textTransform: 'uppercase',
-                letterSpacing: '0.14em',
+                letterSpacing: '0.12em',
               }}
             >
               In archive
@@ -229,8 +228,7 @@ function MoreCard({ count, rotation, className }: { count: number; rotation: num
                 fontFamily: fonts.syne,
                 fontSize: 12,
                 color: colors.orange,
-                textTransform: 'uppercase',
-                letterSpacing: '0.1em',
+                letterSpacing: '0.08em',
               }}
             >
               Browse all →
@@ -325,9 +323,9 @@ export default function ResearchArchiveClient({
           className="font-bold mr-1"
           style={{
             fontFamily: fonts.syne,
-            fontSize: 11,
+            fontSize: 12,
             color: 'rgba(26,26,20,0.35)',
-            letterSpacing: '0.2em',
+            letterSpacing: '0.1em',
             textTransform: 'uppercase',
           }}
         >
@@ -345,8 +343,7 @@ export default function ResearchArchiveClient({
               style={{
                 fontFamily: fonts.syne,
                 fontSize: 12,
-                textTransform: 'uppercase',
-                letterSpacing: '0.12em',
+                letterSpacing: '0.1em',
                 lineHeight: 1.4,
                 borderRadius: 20,
                 padding: '8px 18px',
@@ -416,7 +413,7 @@ export default function ResearchArchiveClient({
             fontWeight: 700,
             color: 'rgba(26,26,20,0.15)',
             textTransform: 'uppercase',
-            letterSpacing: '0.2em',
+            letterSpacing: '0.12em',
             transform: 'rotate(3deg)',
           }}
         >

@@ -113,8 +113,8 @@ export default async function Gallery() {
       <div className="flex items-end justify-between mb-8">
         <div>
           <p
-            className="text-xs font-bold uppercase tracking-[0.28em] mb-3"
-            style={{ color: `${colors.cream}44`, fontFamily: fonts.syne }}
+            className="text-xs font-bold uppercase tracking-[0.12em] mb-3"
+            style={{ color: `${colors.cream}44`, fontFamily: fonts.syne, fontSize: 12 }}
           >
             In The Field
           </p>

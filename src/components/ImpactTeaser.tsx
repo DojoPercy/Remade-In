@@ -69,8 +69,8 @@ export default function ImpactTeaser({ data }: { data?: HomePage | null }) {
           <div>
             <motion.p
               {...anim(0)}
-              className="text-xs font-bold uppercase tracking-[0.3em] mb-4"
-              style={{ fontFamily: fonts.syne, color: colors.orange }}
+              className="text-xs font-bold uppercase tracking-[0.12em] mb-4"
+              style={{ fontFamily: fonts.syne, color: colors.orange, fontSize: 12 }}
             >
               {year} Impact
             </motion.p>
@@ -144,7 +144,7 @@ export default function ImpactTeaser({ data }: { data?: HomePage | null }) {
                   fontSize: 13,
                   color: colors.cream,
                   textTransform: 'uppercase',
-                  letterSpacing: '0.1em',
+                  letterSpacing: '0.12em',
                 }}
               >
                 {stat.label}
@@ -196,7 +196,7 @@ export default function ImpactTeaser({ data }: { data?: HomePage | null }) {
                   fontWeight: 700,
                   color: `${colors.cream}55`,
                   textTransform: 'uppercase',
-                  letterSpacing: '0.13em',
+                  letterSpacing: '0.12em',
                 }}
               >
                 {stat.label}

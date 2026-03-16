@@ -43,8 +43,8 @@ export default function WeAreTheGlue({ data }: { data?: HomePage | null }) {
     >
       {/* Eyebrow */}
       <p
-        className="text-xs font-bold uppercase tracking-[0.28em] mb-10"
-        style={{ color: `${colors.charcoal}55`, fontFamily: fonts.syne }}
+        className="text-xs font-bold uppercase tracking-[0.12em] mb-10"
+        style={{ color: `${colors.charcoal}55`, fontFamily: fonts.syne, fontSize: 12 }}
       >
         We Are The Glue
       </p>
@@ -107,7 +107,7 @@ export default function WeAreTheGlue({ data }: { data?: HomePage | null }) {
               {/* Category label */}
               <p
                 className="font-medium uppercase mb-2"
-                style={{ fontFamily: fonts.bricolage, fontSize: 10, color: '#b45309', letterSpacing: '2.47px' }}
+                style={{ fontFamily: fonts.bricolage, fontSize: 12, color: '#b45309', letterSpacing: '0.12em' }}
               >
                 {col.category}
               </p>

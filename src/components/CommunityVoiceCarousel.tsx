@@ -109,8 +109,8 @@ export default function CommunityVoiceCarousel({ voices }: { voices: VoiceItem[]
         <div className="flex-1 min-w-0">
 
           <p
-            className="text-sm font-bold uppercase tracking-[0.28em] mb-3"
-            style={{ fontFamily: fonts.syne, color: colors.orange }}
+            className="text-sm font-bold uppercase tracking-[0.12em] mb-3"
+            style={{ fontFamily: fonts.syne, color: colors.orange, fontSize: 12 }}
           >
             Community Voice
           </p>

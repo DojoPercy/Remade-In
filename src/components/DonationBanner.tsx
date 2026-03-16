@@ -115,7 +115,7 @@ export default function DonationBanner({ data }: { data?: HomePage | null }) {
               href={primaryHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center px-7 py-3.5 rounded-[5px] text-sm font-bold uppercase tracking-[0.07em] transition-opacity duration-200 hover:opacity-90"
+              className="inline-flex items-center px-7 py-3.5 rounded-[5px] text-sm font-bold tracking-[0.04em] transition-opacity duration-200 hover:opacity-90"
               style={{
                 fontFamily: fonts.syne,
                 backgroundColor: colors.charcoal,
@@ -126,7 +126,7 @@ export default function DonationBanner({ data }: { data?: HomePage | null }) {
             </a>
             <a
               href="#partner"
-              className="inline-flex items-center px-7 py-3.5 rounded-[5px] text-sm font-bold uppercase tracking-[0.07em] border-2 transition-all duration-200 hover:bg-white/10"
+              className="inline-flex items-center px-7 py-3.5 rounded-[5px] text-sm font-bold tracking-[0.04em] border-2 transition-all duration-200 hover:bg-white/10"
               style={{
                 fontFamily: fonts.syne,
                 borderColor: 'rgba(255,255,255,0.6)',
