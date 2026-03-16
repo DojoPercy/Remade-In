@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence, easeInOut } from 'framer-motion'
 import { colors, fonts } from '@/lib/tokens'
@@ -35,12 +35,23 @@ const imgVariant = {
 
 export default function CommunityVoiceCarousel({ voices }: { voices: VoiceItem[] }) {
   const [active, setActive] = useState(0)
+  const [paused, setPaused] = useState(false)
   const voice = voices[active]
+
+  useEffect(() => {
+    if (paused || voices.length < 2) return
+    const id = window.setInterval(() => {
+      setActive((prev) => (prev + 1) % voices.length)
+    }, 9000)
+    return () => window.clearInterval(id)
+  }, [paused, voices.length])
 
   return (
     <section
       className="relative overflow-hidden px-8 md:px-20 py-28 md:py-24"
       style={{ backgroundColor: '#F3BFA2' }}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
     >
       {/* ── Decorative blob — top right ── */}
       <div
@@ -53,7 +64,7 @@ export default function CommunityVoiceCarousel({ voices }: { voices: VoiceItem[]
       />
 
       {/* ── Main layout ── */}
-      <div className="flex flex-col md:flex-row items-center gap-12 md:gap-20 max-w-6xl mx-auto">
+      <div className="flex flex-col md:flex-row items-start gap-12 md:gap-20 max-w-6xl mx-auto">
 
         {/* ── Left — blob image ── */}
         <div className="relative flex-shrink-0 w-[340px] md:w-[420px] h-[380px] md:h-[480px]">
@@ -106,7 +117,7 @@ export default function CommunityVoiceCarousel({ voices }: { voices: VoiceItem[]
         </div>
 
         {/* ── Right — quote content ── */}
-        <div className="flex-1 min-w-0">
+        <div className="flex-1 min-w-0 md:pt-4">
 
           <p
             className="text-sm font-bold uppercase tracking-[0.12em] mb-3"
