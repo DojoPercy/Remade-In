@@ -5,6 +5,7 @@ import { blueprintPage } from './documents/blueprintPage'
 import { researchDoc } from './documents/researchDoc'
 import { communityVoice } from './documents/communityVoice'
 import { galleryImage } from './documents/galleryImage'
+import { partner } from './documents/partner'
 
 // Objects
 import { seo } from './objects/seo'
@@ -28,4 +29,5 @@ export const schemaTypes = [
   researchDoc,
   communityVoice,
   galleryImage,
+  partner,
 ]

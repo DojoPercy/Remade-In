@@ -1,16 +1,24 @@
+import Image from 'next/image'
+import { client } from '@/lib/sanity/client'
+import { partnersQuery } from '@/lib/sanity/queries'
+import { imageUrl } from '@/lib/sanity/image'
+import type { Partner } from '@/lib/sanity/types'
 import { colors, fonts } from '@/lib/tokens'
 
-const PARTNERS = [
-  { name: 'The Social Hub', role: 'Program host + community convening' },
-  { name: 'Het Goed', role: 'Circular supply chain partner' },
-  { name: 'RTT', role: 'Remanufacturing pilot + training support' },
-  { name: 'DCW', role: 'Local workforce development partner' },
-  { name: 'MidZuid', role: 'Skills pathway + youth engagement' },
-  { name: 'Avans', role: 'Research collaboration + evaluation' },
-  { name: 'Shared Bag', role: 'Logistics + reverse supply chain' },
-]
+export default async function PartnerNetwork() {
+  let partners: Partner[] = []
 
-export default function PartnerNetwork() {
+  try {
+    partners = await client.fetch<Partner[]>(
+      partnersQuery,
+      {},
+      { next: { revalidate: 60 } },
+    )
+  } catch {
+    // CMS unavailable — render empty state silently
+  }
+
+  const hasPartners = partners.length > 0
   return (
     <section
       id="partner"
@@ -51,40 +59,97 @@ export default function PartnerNetwork() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {PARTNERS.map((partner) => (
+          {hasPartners ? (
+            partners.map((partner) => {
+              const logoSvg = partner.logoSvg?.asset?.url
+              const logoImg = partner.logoImage
+                ? imageUrl(partner.logoImage, 320, 160)
+                : null
+              const logoAlt = partner.logoImage?.alt ?? partner.name
+
+              const content = (
+                <div
+                  className="rounded-2xl border p-5 h-full"
+                  style={{
+                    borderColor: 'rgba(255,255,255,0.08)',
+                    backgroundColor: 'rgba(255,255,255,0.02)',
+                  }}
+                >
+                  <div
+                    className="h-12 rounded-xl flex items-center justify-center mb-4"
+                    style={{
+                      backgroundColor: 'rgba(255,255,255,0.06)',
+                    }}
+                  >
+                    {logoSvg ? (
+                      // SVG file from Sanity
+                      <img
+                        src={logoSvg}
+                        alt={partner.name}
+                        className="h-8 w-auto object-contain"
+                      />
+                    ) : logoImg ? (
+                      <Image
+                        src={logoImg}
+                        alt={logoAlt}
+                        width={160}
+                        height={64}
+                        className="h-8 w-auto object-contain"
+                      />
+                    ) : (
+                      <span
+                        style={{
+                          fontFamily: fonts.syne,
+                          fontSize: 13,
+                          letterSpacing: '0.08em',
+                          textTransform: 'uppercase',
+                          color: colors.cream,
+                        }}
+                      >
+                        {partner.name}
+                      </span>
+                    )}
+                  </div>
+                  <p
+                    className="text-sm"
+                    style={{
+                      fontFamily: fonts.bricolage,
+                      color: `${colors.cream}aa`,
+                      lineHeight: 1.6,
+                    }}
+                  >
+                    {partner.role}
+                  </p>
+                </div>
+              )
+
+              return partner.website ? (
+                <a
+                  key={partner._id}
+                  href={partner.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block hover:opacity-95 transition-opacity"
+                >
+                  {content}
+                </a>
+              ) : (
+                <div key={partner._id}>{content}</div>
+              )
+            })
+          ) : (
             <div
-              key={partner.name}
-              className="rounded-2xl border p-5"
+              className="rounded-2xl border p-6 text-sm"
               style={{
                 borderColor: 'rgba(255,255,255,0.08)',
                 backgroundColor: 'rgba(255,255,255,0.02)',
+                color: `${colors.cream}aa`,
+                fontFamily: fonts.bricolage,
               }}
             >
-              <div
-                className="h-12 rounded-xl flex items-center justify-center mb-4"
-                style={{
-                  backgroundColor: 'rgba(255,255,255,0.06)',
-                  color: colors.cream,
-                  fontFamily: fonts.syne,
-                  fontSize: 13,
-                  letterSpacing: '0.08em',
-                  textTransform: 'uppercase',
-                }}
-              >
-                {partner.name}
-              </div>
-              <p
-                className="text-sm"
-                style={{
-                  fontFamily: fonts.bricolage,
-                  color: `${colors.cream}aa`,
-                  lineHeight: 1.6,
-                }}
-              >
-                {partner.role}
-              </p>
+              No partners published yet. Add partners in Sanity to display them here.
             </div>
-          ))}
+          )}
 
           <div
             className="rounded-2xl border p-5 flex flex-col justify-between"

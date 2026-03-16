@@ -183,3 +183,17 @@ export const communityVoicesQuery = groq`
     location
   }
 `
+
+// ── Partners ──────────────────────────────────────────────────────────────────
+
+/** All active partners ordered by display order */
+export const partnersQuery = groq`
+  *[_type == "partner" && active == true] | order(order asc, name asc) {
+    _id,
+    name,
+    role,
+    website,
+    logoImage { ${imageFragment} },
+    logoSvg { asset->{ url } }
+  }
+`

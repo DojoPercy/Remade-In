@@ -87,12 +87,22 @@ export const structure = (
             ]),
         ),
 
+      // ── Partners ───────────────────────────────────────────────────────────
+      S.listItem()
+        .title('Partners')
+        .icon(UsersIcon)
+        .child(
+          S.documentTypeList('partner')
+            .title('Partners')
+            .defaultOrdering([{ field: 'order', direction: 'asc' }]),
+        ),
+
       S.divider(),
 
       // Fallback: any remaining types not handled above
       ...S.documentTypeListItems().filter(
         (item) =>
           item.getId() &&
-          !['siteSettings', 'homePage', 'blueprintPage', 'researchDoc', 'communityVoice', 'galleryImage'].includes(item.getId()!),
+          !['siteSettings', 'homePage', 'blueprintPage', 'researchDoc', 'communityVoice', 'galleryImage', 'partner'].includes(item.getId()!),
       ),
     ])

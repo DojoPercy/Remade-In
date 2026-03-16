@@ -152,6 +152,19 @@ export interface CommunityVoice {
   location: string
 }
 
+// ── Partners ─────────────────────────────────────────────────────────────────
+
+export interface Partner {
+  _id: string
+  name: string
+  role: string
+  website?: string
+  logoImage?: SanityImage
+  logoSvg?: { asset: { url: string } }
+  order?: number
+  active?: boolean
+}
+
 // ── Research Archive ──────────────────────────────────────────────────────────
 
 export type ResearchDocType = 'Report' | 'White Paper' | 'Policy Brief'
