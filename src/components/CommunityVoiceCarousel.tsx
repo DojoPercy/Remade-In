@@ -55,7 +55,7 @@ export default function CommunityVoiceCarousel({ voices }: { voices: VoiceItem[]
     >
       {/* ── Decorative blob — top right ── */}
       <div
-        className="pointer-events-none absolute -top-20 -right-32 w-[420px] h-[360px] origin-center"
+        className="pointer-events-none absolute -top-20 -right-32 w-[420px] h-[360px] origin-center z-0"
         style={{
           backgroundColor: '#F9AE90',
           borderRadius: '60% 40% 55% 45% / 45% 55% 40% 60%',
@@ -64,10 +64,10 @@ export default function CommunityVoiceCarousel({ voices }: { voices: VoiceItem[]
       />
 
       {/* ── Main layout ── */}
-      <div className="flex flex-col md:flex-row items-start gap-12 md:gap-20 max-w-6xl mx-auto">
+      <div className="relative z-10 flex flex-col md:flex-row items-center md:items-start gap-12 md:gap-20">
 
         {/* ── Left — blob image ── */}
-        <div className="relative flex-shrink-0 w-[340px] md:w-[420px] h-[380px] md:h-[480px]">
+        <div className="relative flex-shrink-0 w-full max-w-[340px] md:w-[420px] h-[340px] md:h-[480px]">
 
           <AnimatePresence mode="wait">
             <motion.div

@@ -12,6 +12,7 @@ import Gallery from '@/components/Gallery'
 import CommunityVoice from '@/components/CommunityVoice'
 import ResearchArchive from '@/components/ResearchArchive'
 import DonationBanner from '@/components/DonationBanner'
+import Footer from '@/components/Footer'
 
 export default async function Home() {
   // Fetch shared homepage + site settings in parallel with ISR caching
@@ -44,6 +45,7 @@ export default async function Home() {
       <CommunityVoice />
       <ResearchArchive />
       <DonationBanner data={homeData} />
+      <Footer />
     </>
   )
 }

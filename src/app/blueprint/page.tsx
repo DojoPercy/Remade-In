@@ -9,6 +9,7 @@ import BlueprintHero from '@/components/BlueprintHero'
 import BlueprintTabs from '@/components/BlueprintTabs'
 import BlueprintDownloads from '@/components/BlueprintDownloads'
 import DonationBanner from '@/components/DonationBanner'
+import Footer from '@/components/Footer'
 
 export const metadata = {
   title: 'The Blueprint — Remade In',
@@ -66,7 +67,7 @@ export default async function Blueprint() {
         className="px-8 md:px-20 py-24"
         style={{ backgroundColor: colors.white }}
       >
-        <div className="max-w-6xl mx-auto">
+        <div>
           <p
             className="mb-10 text-xs font-bold uppercase tracking-[0.3em]"
             style={{ fontFamily: fonts.syne, color: colors.orange }}
@@ -152,6 +153,7 @@ export default async function Blueprint() {
       <BlueprintDownloads data={data} />
 
       <DonationBanner />
+      <Footer />
     </>
   )
 }

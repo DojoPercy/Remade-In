@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useId } from 'react'
+import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { colors, fonts } from '@/lib/tokens'
 
@@ -23,9 +23,19 @@ export interface CardDoc {
   rotation: number
 }
 
-// ── Helpers ────────────────────────────────────────────────────────────────────
+// ── Config ─────────────────────────────────────────────────────────────────────
 
 const FILTERS: FilterCategory[] = ['All', 'Reports', 'White Papers', 'Policy Briefs']
+
+// Book heights vary like a real shelf
+const BOOK_HEIGHTS = [268, 238, 284, 250, 262, 278, 226, 256, 244]
+
+// Library classification sticker labels
+const TYPE_STICKER: Record<DocType, string> = {
+  'Report':       'RPT',
+  'White Paper':  'W·P',
+  'Policy Brief': 'P·B',
+}
 
 function matchesFilter(doc: CardDoc, filter: FilterCategory): boolean {
   if (filter === 'All') return true
@@ -34,209 +44,293 @@ function matchesFilter(doc: CardDoc, filter: FilterCategory): boolean {
   return doc.type === 'Policy Brief'
 }
 
-// ── ResearchCard ───────────────────────────────────────────────────────────────
+// ── Book card ──────────────────────────────────────────────────────────────────
 
-function ResearchCard({ doc, className }: { doc: CardDoc; className?: string }) {
+function BookCard({
+  doc,
+  index,
+  height,
+  className = '',
+}: {
+  doc: CardDoc
+  index: number
+  height: number
+  className?: string
+}) {
   const isAvailable = doc.href !== '#'
 
   return (
     <motion.div
-      layout
-      className={className}
-      initial={{ opacity: 0, y: 20, rotate: doc.rotation }}
-      animate={{ opacity: 1, y: 0, rotate: doc.rotation }}
-      exit={{ opacity: 0, scale: 0.96, rotate: doc.rotation }}
-      whileHover={{ rotate: 0, transition: { duration: 0.2 } }}
-      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+      key={doc.id}
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3, delay: index * 0.035, ease: [0.22, 1, 0.36, 1] }}
+      // Spotlight: when shelf is hovered, this card dims unless directly hovered
+      className={`group-hover/shelf:opacity-40 hover:!opacity-100 hover:-translate-y-3 transition-[opacity,transform] duration-300 ${className}`}
     >
       <a
         href={isAvailable ? doc.href : undefined}
         target={isAvailable ? '_blank' : undefined}
         rel="noopener noreferrer"
-        aria-disabled={!isAvailable}
-        className="group flex flex-col rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
+        className="relative flex flex-col justify-between overflow-hidden rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400"
         style={{
-          background: colors.cardSurface,
-          minHeight: 280,
+          width: 148,
+          height,
+          background: doc.headerColor,
           cursor: isAvailable ? 'pointer' : 'default',
           textDecoration: 'none',
+          padding: '14px 14px 12px',
         }}
       >
-        {/* Coloured header */}
+        {/* Patchwork corner accent — diagonal square */}
         <div
-          className="relative px-6 pt-6 pb-5 flex-shrink-0 overflow-hidden"
-          style={{ background: doc.headerColor, minHeight: '48%' }}
-        >
-          {/* Corner diamond — slightly lighter overlay for depth */}
-          <div
-            aria-hidden="true"
-            className="absolute -top-6 -right-6"
-            style={{
-              width: 110,
-              height: 110,
-              background: doc.cornerColor,
-              transform: 'rotate(-30deg)',
-              opacity: 0.55,
-            }}
-          />
+          aria-hidden
+          style={{
+            position: 'absolute',
+            top: -28,
+            right: -28,
+            width: 80,
+            height: 80,
+            background: doc.cornerColor,
+            transform: 'rotate(30deg)',
+            opacity: 0.35,
+          }}
+        />
 
-          {/* Type + year eyebrow */}
-          <p
-            className="relative z-10 text-xs font-bold uppercase tracking-[0.18em] mb-3"
+        {/* Second patchwork patch — bottom left */}
+        <div
+          aria-hidden
+          style={{
+            position: 'absolute',
+            bottom: -20,
+            left: -16,
+            width: 56,
+            height: 56,
+            background: 'rgba(0,0,0,0.12)',
+            transform: 'rotate(15deg)',
+            borderRadius: 4,
+          }}
+        />
+
+        {/* Year */}
+        <span
+          className="relative z-10"
+          style={{
+            fontFamily: fonts.syne,
+            fontSize: 10,
+            fontWeight: 700,
+            letterSpacing: '0.18em',
+            color: 'rgba(255,255,255,0.45)',
+          }}
+        >
+          {doc.year}
+        </span>
+
+        {/* Title */}
+        <h3
+          className="relative z-10 flex-1 flex items-end py-3"
+          style={{
+            fontFamily: fonts.bricolage,
+            fontSize: 15,
+            fontWeight: 800,
+            color: colors.white,
+            lineHeight: 1.3,
+            letterSpacing: '-0.01em',
+          }}
+        >
+          {doc.title}
+        </h3>
+
+        {/* Bottom: pages + classification sticker */}
+        <div className="relative z-10 flex items-end justify-between">
+          <span
             style={{
               fontFamily: fonts.syne,
-              color: 'rgba(255,255,255,0.6)',
-              lineHeight: 1.4,
+              fontSize: 9,
+              fontWeight: 700,
+              color: 'rgba(255,255,255,0.4)',
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
             }}
           >
-            {doc.type} — {doc.year}
-          </p>
+            {doc.pages}p
+          </span>
 
-          {/* Title */}
-          <h3
-            className="relative z-10 font-bold leading-snug"
-            style={{
-              fontFamily: fonts.bricolage,
-              fontSize: 'clamp(16px, 1.4vw, 19px)',
-              color: colors.white,
-              lineHeight: 1.35,
-            }}
-          >
-            {doc.title}
-          </h3>
-        </div>
-
-        {/* Paper body */}
-        <div className="flex flex-col flex-1 px-6 pt-4 pb-4">
-          <p
-            className="flex-1 leading-relaxed"
-            style={{
-              fontFamily: fonts.bricolage,
-              fontSize: 14,
-              lineHeight: 1.65,
-              color: 'rgba(26,26,20,0.65)',
-            }}
-          >
-            {doc.desc}
-          </p>
-
+          {/* Library classification sticker */}
           <div
-            className="flex items-center justify-between mt-5 pt-4"
-            style={{ borderTop: '1px solid rgba(26,26,20,0.08)' }}
+            style={{
+              width: 34,
+              height: 34,
+              borderRadius: '50%',
+              background: 'rgba(255,255,255,0.18)',
+              border: '1.5px solid rgba(255,255,255,0.3)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+            }}
           >
             <span
               style={{
                 fontFamily: fonts.syne,
-                fontSize: 12,
-                fontWeight: 700,
-                color: 'rgba(26,26,20,0.35)',
+                fontSize: 7,
+                fontWeight: 900,
+                color: 'rgba(255,255,255,0.9)',
+                textAlign: 'center',
+                lineHeight: 1.2,
                 textTransform: 'uppercase',
-                letterSpacing: '0.12em',
+                letterSpacing: '0.04em',
               }}
             >
-              {doc.pages} pages
+              {TYPE_STICKER[doc.type]}
             </span>
-
-            {isAvailable && (
-              <span
-                className="flex items-center gap-1.5 font-bold transition-opacity duration-200 group-hover:opacity-70"
-                style={{
-                  fontFamily: fonts.syne,
-                  fontSize: 12,
-                  color: colors.orange,
-                  letterSpacing: '0.08em',
-                }}
-              >
-                Read <span aria-hidden="true">→</span>
-              </span>
-            )}
           </div>
         </div>
+
+        {/* Availability indicator */}
+        {!isAvailable && (
+          <div
+            className="absolute bottom-0 left-0 right-0 flex items-center justify-center py-1.5"
+            style={{ background: 'rgba(0,0,0,0.28)' }}
+          >
+            <span style={{ fontFamily: fonts.syne, fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,0.5)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
+              Coming soon
+            </span>
+          </div>
+        )}
       </a>
     </motion.div>
   )
 }
 
-// ── MoreCard ───────────────────────────────────────────────────────────────────
+// ── "More" book ────────────────────────────────────────────────────────────────
 
-function MoreCard({ count, rotation, className }: { count: number; rotation: number; className?: string }) {
+function MoreBook({ count, className = '' }: { count: number; className?: string }) {
   return (
     <motion.div
-      layout
-      className={className}
-      initial={{ opacity: 0, y: 20, rotate: rotation }}
-      animate={{ opacity: 1, y: 0, rotate: rotation }}
-      exit={{ opacity: 0, scale: 0.96, rotate: rotation }}
-      whileHover={{ rotate: 0, transition: { duration: 0.2 } }}
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0 }}
       transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+      className={`group-hover/shelf:opacity-40 hover:!opacity-100 hover:-translate-y-3 transition-[opacity,transform] duration-300 ${className}`}
     >
       <div
-        className="group flex flex-col rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
-        style={{ background: colors.charcoal, minHeight: 280 }}
+        className="relative flex flex-col justify-between overflow-hidden rounded-sm"
+        style={{
+          width: 148,
+          height: 256,
+          background: colors.charcoal,
+          border: `2px dashed rgba(255,255,255,0.12)`,
+          padding: '14px 14px 12px',
+          cursor: 'pointer',
+        }}
       >
-        {/* Top bar */}
-        <div className="flex-shrink-0" style={{ background: 'rgba(255,255,255,0.06)', height: '48%' }}>
-          <div className="flex items-end h-full px-7 pb-4">
-            <span
-              style={{
-                fontFamily: fonts.bricolage,
-                fontSize: 'clamp(48px, 5vw, 64px)',
-                fontWeight: 900,
-                color: 'rgba(255,255,255,0.08)',
-                lineHeight: 1,
-                letterSpacing: '-0.04em',
-              }}
-            >
-              +{count}
-            </span>
-          </div>
-        </div>
+        {/* Big count */}
+        <span
+          className="absolute bottom-10 left-4 font-black leading-none"
+          style={{
+            fontFamily: fonts.bricolage,
+            fontSize: 64,
+            color: 'rgba(255,255,255,0.06)',
+            letterSpacing: '-0.05em',
+          }}
+        >
+          +{count}
+        </span>
 
-        {/* Body */}
-        <div className="flex flex-col flex-1 px-6 pt-4 pb-4">
-          <p
-            className="flex-1 leading-relaxed"
+        <span
+          style={{ fontFamily: fonts.syne, fontSize: 10, fontWeight: 700, letterSpacing: '0.18em', color: 'rgba(255,255,255,0.25)' }}
+        >
+          Archive
+        </span>
+
+        <p
+          style={{ fontFamily: fonts.bricolage, fontSize: 12, lineHeight: 1.6, color: 'rgba(255,255,255,0.28)' }}
+        >
+          More reports, briefs &amp; field notes
+        </p>
+
+        <div className="flex items-center justify-between">
+          <span style={{ fontFamily: fonts.syne, fontSize: 9, fontWeight: 700, color: 'rgba(255,255,255,0.2)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+            Browse →
+          </span>
+          <div
             style={{
-              fontFamily: fonts.bricolage,
-              fontSize: 14,
-              lineHeight: 1.65,
-              color: 'rgba(255,255,255,0.35)',
+              width: 34,
+              height: 34,
+              borderRadius: '50%',
+              background: `${colors.orange}22`,
+              border: `1.5px solid ${colors.orange}44`,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}
           >
-            More reports, briefs, field notes, and community data — updated quarterly.
-          </p>
-
-          <div
-            className="flex items-center justify-between mt-5 pt-4"
-            style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}
-          >
-            <span
-              style={{
-                fontFamily: fonts.syne,
-                fontSize: 12,
-                fontWeight: 700,
-                color: 'rgba(255,255,255,0.25)',
-                textTransform: 'uppercase',
-                letterSpacing: '0.12em',
-              }}
-            >
-              In archive
-            </span>
-            <span
-              className="font-bold transition-opacity duration-200 group-hover:opacity-70"
-              style={{
-                fontFamily: fonts.syne,
-                fontSize: 12,
-                color: colors.orange,
-                letterSpacing: '0.08em',
-              }}
-            >
-              Browse all →
+            <span style={{ fontFamily: fonts.syne, fontSize: 7, fontWeight: 900, color: colors.orange, textAlign: 'center', lineHeight: 1.2, letterSpacing: '0.04em' }}>
+              ALL
             </span>
           </div>
         </div>
       </div>
     </motion.div>
+  )
+}
+
+// ── Wooden shelf ───────────────────────────────────────────────────────────────
+
+function WoodenShelf() {
+  return (
+    <div style={{ position: 'relative', marginTop: 1 }}>
+      {/* Shelf surface */}
+      <div style={{
+        height: 14,
+        background: 'linear-gradient(to bottom, #C8924A 0%, #9B6B22 60%, #7A5018 100%)',
+        boxShadow: '0 6px 20px rgba(90, 50, 10, 0.35)',
+        borderRadius: '0 0 2px 2px',
+      }} />
+      {/* Shelf shadow */}
+      <div style={{
+        height: 8,
+        background: 'linear-gradient(to bottom, rgba(90,50,10,0.18), transparent)',
+      }} />
+    </div>
+  )
+}
+
+// ── Sticker badge (header decoration) ─────────────────────────────────────────
+
+function StickerBadge() {
+  return (
+    <div
+      style={{
+        width: 62,
+        height: 62,
+        borderRadius: '50%',
+        background: colors.orange,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        transform: 'rotate(-14deg)',
+        flexShrink: 0,
+        boxShadow: `0 4px 14px ${colors.orange}55`,
+      }}
+    >
+      <span
+        style={{
+          fontFamily: fonts.syne,
+          fontSize: 8,
+          fontWeight: 900,
+          color: colors.white,
+          textAlign: 'center',
+          lineHeight: 1.25,
+          textTransform: 'uppercase',
+          letterSpacing: '0.04em',
+        }}
+      >
+        Know-<br />ledge<br />Base
+      </span>
+    </div>
   )
 }
 
@@ -249,27 +343,7 @@ function EmptyState({ filter }: { filter: FilterCategory }) {
       animate={{ opacity: 1 }}
       className="w-full flex flex-col items-center justify-center py-20 text-center"
     >
-      <p
-        style={{
-          fontFamily: fonts.bricolage,
-          fontSize: 'clamp(36px, 4vw, 52px)',
-          fontWeight: 900,
-          color: 'rgba(26,26,20,0.06)',
-          lineHeight: 1,
-          letterSpacing: '-0.03em',
-          marginBottom: 16,
-        }}
-      >
-        —
-      </p>
-      <p
-        style={{
-          fontFamily: fonts.bricolage,
-          fontSize: 15,
-          color: 'rgba(26,26,20,0.4)',
-          lineHeight: 1.6,
-        }}
-      >
+      <p style={{ fontFamily: fonts.bricolage, fontSize: 15, color: 'rgba(26,26,20,0.4)', lineHeight: 1.6 }}>
         No {filter === 'All' ? 'documents' : filter.toLowerCase()} in the archive yet.
       </p>
     </motion.div>
@@ -286,7 +360,6 @@ export default function ResearchArchiveClient({
   totalCount: number
 }) {
   const [active, setActive] = useState<FilterCategory>('All')
-  const labelId = useId()
 
   const filtered = docs.filter((doc) => matchesFilter(doc, active))
   const showMoreCard = active === 'All'
@@ -295,39 +368,41 @@ export default function ResearchArchiveClient({
   return (
     <section
       id="research"
-      className="px-8 md:px-20 pt-24 pb-28 md:pt-20 md:pb-24"
-      style={{ background: colors.white }}
+      className="px-8 md:px-20 pt-20 pb-24"
+      style={{
+        // Warm library paper + subtle woven diagonal pattern
+        background: `
+          repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(160,110,50,0.03) 20px, rgba(160,110,50,0.03) 21px),
+          #FAF4ED
+        `,
+      }}
     >
-      {/* ── Heading ── */}
-      <h2
-        className="font-extrabold mb-10"
-        style={{
-          fontFamily: fonts.bricolage,
-          fontSize: 'clamp(40px, 5vw, 64px)',
-          lineHeight: 1.1,
-          letterSpacing: '-0.025em',
-        }}
-      >
-        <span style={{ color: '#000000' }}>Research </span>
-        <span style={{ color: colors.orange }}>Archive.</span>
-      </h2>
+      {/* ── Section header ── */}
+      <div className="flex items-start gap-5 mb-10">
+        <StickerBadge />
+        <div>
+          <h2
+            className="font-extrabold leading-none"
+            style={{
+              fontFamily: fonts.bricolage,
+              fontSize: 'clamp(36px, 5vw, 64px)',
+              letterSpacing: '-0.025em',
+              color: colors.charcoal,
+            }}
+          >
+            Research{' '}
+            <em style={{ color: colors.orange, fontStyle: 'italic' }}>Archive.</em>
+          </h2>
+        </div>
+      </div>
 
       {/* ── Filter pills ── */}
       <div
-        role="group"
-        aria-labelledby={labelId}
-        className="flex flex-wrap items-center gap-3 mb-14"
+        className="flex items-center gap-2 mb-10 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pb-1"
       >
         <span
-          id={labelId}
-          className="font-bold mr-1"
-          style={{
-            fontFamily: fonts.syne,
-            fontSize: 12,
-            color: 'rgba(26,26,20,0.35)',
-            letterSpacing: '0.1em',
-            textTransform: 'uppercase',
-          }}
+          className="shrink-0 font-bold mr-2"
+          style={{ fontFamily: fonts.syne, fontSize: 10, color: 'rgba(26,26,20,0.3)', letterSpacing: '0.14em', textTransform: 'uppercase' }}
         >
           Filter
         </span>
@@ -339,18 +414,17 @@ export default function ResearchArchiveClient({
               key={filter}
               onClick={() => setActive(filter)}
               aria-pressed={isActive}
-              className="font-bold transition-all duration-200"
+              className="shrink-0 font-bold transition-all duration-200"
               style={{
                 fontFamily: fonts.syne,
-                fontSize: 12,
+                fontSize: 11,
                 letterSpacing: '0.1em',
-                lineHeight: 1.4,
                 borderRadius: 20,
-                padding: '8px 18px',
+                padding: '7px 16px',
                 cursor: 'pointer',
                 ...(isActive
-                  ? { background: colors.charcoal, color: colors.white, border: '2px solid transparent' }
-                  : { background: 'transparent', color: 'rgba(26,26,20,0.45)', border: '2px solid rgba(26,26,20,0.15)' }),
+                  ? { background: colors.orange, color: colors.white, border: '2px solid transparent' }
+                  : { background: 'transparent', color: 'rgba(26,26,20,0.45)', border: '2px solid rgba(26,26,20,0.1)' }),
               }}
             >
               {filter}
@@ -359,29 +433,51 @@ export default function ResearchArchiveClient({
         })}
       </div>
 
-      {/* ── Card grid / slider ── */}
-      {/* Mobile: horizontal snap scroll, 2 cards visible + peek of 3rd */}
-      {/* Desktop (lg+): 4-column grid */}
-      <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-3 -mx-8 px-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:grid lg:grid-cols-4 lg:overflow-visible lg:snap-none lg:gap-8 lg:mx-0 lg:px-0 lg:pb-0">
-        <AnimatePresence mode="popLayout">
+      {/* ── Desktop bookshelf ── */}
+      <div className="hidden md:block">
+        {filtered.length === 0 ? (
+          <EmptyState filter={active} />
+        ) : (
+          <>
+            {/* The shelf — named group for spotlight hover */}
+            <div className="group/shelf flex flex-wrap items-end gap-3">
+              <AnimatePresence mode="sync" initial={false}>
+                {filtered.map((doc, i) => (
+                  <BookCard
+                    key={doc.id}
+                    doc={doc}
+                    index={i}
+                    height={BOOK_HEIGHTS[i % BOOK_HEIGHTS.length]}
+                  />
+                ))}
+                {showMoreCard && moreCount > 0 && (
+                  <MoreBook key="more" count={moreCount} />
+                )}
+              </AnimatePresence>
+            </div>
+            <WoodenShelf />
+          </>
+        )}
+      </div>
+
+      {/* ── Mobile: horizontal book scroll ── */}
+      <div className="flex md:hidden overflow-x-auto snap-x snap-mandatory gap-3 pb-4 -mx-8 px-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <AnimatePresence mode="sync" initial={false}>
           {filtered.length === 0 ? (
             <EmptyState key="empty" filter={active} />
           ) : (
             <>
-              {filtered.map((doc) => (
-                <ResearchCard
+              {filtered.map((doc, i) => (
+                <BookCard
                   key={doc.id}
                   doc={doc}
-                  className="snap-start flex-none w-[42vw] min-w-[150px] lg:w-auto lg:min-w-0"
+                  index={i}
+                  height={240}
+                  className="snap-start flex-none"
                 />
               ))}
               {showMoreCard && moreCount > 0 && (
-                <MoreCard
-                  key="more"
-                  count={moreCount}
-                  rotation={2}
-                  className="snap-start flex-none w-[42vw] min-w-[150px] lg:w-auto lg:min-w-0"
-                />
+                <MoreBook key="more" count={moreCount} className="snap-start flex-none" />
               )}
             </>
           )}
@@ -390,34 +486,16 @@ export default function ResearchArchiveClient({
 
       {/* ── Footer ── */}
       <div
-        className="mt-14 pt-5 flex items-center justify-between"
-        style={{ borderTop: '1px solid rgba(26,26,20,0.08)' }}
+        className="mt-10 pt-5 flex flex-col sm:flex-row sm:items-center justify-between gap-2"
+        style={{ borderTop: '1px solid rgba(160,110,50,0.12)' }}
       >
-        <p
-          style={{
-            fontFamily: fonts.bricolage,
-            fontSize: 13,
-            color: 'rgba(26,26,20,0.4)',
-            lineHeight: 1.5,
-          }}
-        >
+        <p style={{ fontFamily: fonts.bricolage, fontSize: 13, color: 'rgba(26,26,20,0.38)', lineHeight: 1.5 }}>
           Showing{' '}
-          <span style={{ color: colors.charcoal, fontWeight: 700 }}>{filtered.length}</span>
-          {' '}of {totalCount} documents — updated quarterly
+          <strong style={{ color: colors.charcoal }}>{filtered.length}</strong>
+          {' '}of {totalCount} documents
         </p>
-
-        <p
-          style={{
-            fontFamily: fonts.bricolage,
-            fontSize: 11,
-            fontWeight: 700,
-            color: 'rgba(26,26,20,0.15)',
-            textTransform: 'uppercase',
-            letterSpacing: '0.12em',
-            transform: 'rotate(3deg)',
-          }}
-        >
-          archive
+        <p style={{ fontFamily: fonts.syne, fontSize: 10, fontWeight: 700, color: 'rgba(26,26,20,0.18)', textTransform: 'uppercase', letterSpacing: '0.15em' }}>
+          Updated quarterly
         </p>
       </div>
     </section>
