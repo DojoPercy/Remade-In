@@ -112,7 +112,7 @@ export default function PartnerNetwork() {
                 letterSpacing: '0.08em',
               }}
             >
-              Partner with us ->
+              Partner with us {'>'}
             </a>
           </div>
         </div>

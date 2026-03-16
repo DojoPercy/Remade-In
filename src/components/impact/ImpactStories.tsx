@@ -55,7 +55,7 @@ export default function ImpactStories() {
             className="inline-flex items-center text-sm font-bold"
             style={{ fontFamily: fonts.syne, color: colors.cream, letterSpacing: '0.06em' }}
           >
-            Read All Stories ->
+            Read All Stories {'>'}
           </a>
         </div>
 
