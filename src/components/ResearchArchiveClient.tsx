@@ -297,7 +297,7 @@ export default function ResearchArchiveClient({
   return (
     <section
       id="research"
-      className="px-8 md:px-20 pt-20 pb-24"
+      className="px-8 md:px-20 pt-24 pb-28 md:pt-20 md:pb-24"
       style={{ background: colors.white }}
     >
       {/* ── Heading ── */}

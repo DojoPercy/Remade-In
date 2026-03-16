@@ -66,7 +66,7 @@ export default function DonationBanner({ data }: { data?: HomePage | null }) {
       />
 
       {/* ── Inner content ── */}
-      <div className="relative pt-20 pb-0">
+      <div className="relative pt-24 md:pt-20 pb-0">
 
         {/* Row 1 — eyebrow */}
         <motion.p

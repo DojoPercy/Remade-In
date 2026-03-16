@@ -56,7 +56,7 @@ export default function Hero({ data }: { data?: HomePage | null }) {
         className="absolute inset-0 pointer-events-none mix-blend-overlay"
         style={{
           zIndex: 2,
-          opacity: 0.045,
+          opacity: 0.03,
           backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")`,
           backgroundSize: '220px',
         }}
@@ -65,16 +65,16 @@ export default function Hero({ data }: { data?: HomePage | null }) {
       {/* Layer 3 — Blobs */}
       <div
         className="blob-a absolute pointer-events-none"
-        style={{ zIndex: 1, width: 520, height: 520, top: -120, right: -100, backgroundColor: colors.orange, opacity: 0.07 }}
+        style={{ zIndex: 1, width: 520, height: 520, top: -120, right: -100, backgroundColor: colors.orange, opacity: 0.05 }}
       />
       <div
-        className="blob-b absolute pointer-events-none"
-        style={{ zIndex: 1, width: 300, height: 300, bottom: 80, left: '38%', backgroundColor: colors.amber, opacity: 0.05 }}
+        className="blob-b absolute pointer-events-none hidden sm:block"
+        style={{ zIndex: 1, width: 300, height: 300, bottom: 80, left: '38%', backgroundColor: colors.amber, opacity: 0.035 }}
       />
 
       {/* Layer 4 — Content */}
       <div
-        className="relative flex flex-col justify-start flex-1 px-8 md:px-20 pt-24 pb-20"
+        className="relative flex flex-col justify-start flex-1 px-8 md:px-20 pt-28 pb-24 md:pt-24 md:pb-20"
         style={{ zIndex: 10 }}
       >
         {/* ── Headline with word-by-word reveal ── */}
@@ -83,7 +83,7 @@ export default function Hero({ data }: { data?: HomePage | null }) {
           style={{
             fontFamily: fonts.bricolage,
             color: colors.white,
-            fontSize: 'clamp(32px, 7vw, 80px)',
+            fontSize: 'clamp(28px, 7vw, 76px)',
             lineHeight: 0.96,
             letterSpacing: '-0.025em',
           }}

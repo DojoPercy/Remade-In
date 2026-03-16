@@ -49,7 +49,7 @@ export default function ImpactTeaser({ data }: { data?: HomePage | null }) {
   return (
     <section
       ref={ref}
-      className="relative overflow-hidden px-8 md:px-20 pt-24 pb-32"
+      className="relative overflow-hidden px-8 md:px-20 pt-28 pb-36 md:pt-24 md:pb-32"
       style={{ backgroundColor: colors.charcoal }}
     >
       {/* ── Subtle grid lines ── */}

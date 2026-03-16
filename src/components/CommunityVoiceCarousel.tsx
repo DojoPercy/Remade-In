@@ -39,7 +39,7 @@ export default function CommunityVoiceCarousel({ voices }: { voices: VoiceItem[]
 
   return (
     <section
-      className="relative overflow-hidden px-8 md:px-20 py-24"
+      className="relative overflow-hidden px-8 md:px-20 py-28 md:py-24"
       style={{ backgroundColor: '#F3BFA2' }}
     >
       {/* ── Decorative blob — top right ── */}

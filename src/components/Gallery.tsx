@@ -106,7 +106,7 @@ export default async function Gallery() {
 
   return (
     <section
-      className="relative overflow-hidden px-8 md:px-20 pt-20 pb-24"
+      className="relative overflow-hidden px-8 md:px-20 pt-24 pb-28 md:pt-20 md:pb-24"
       style={{ backgroundColor: colors.charcoal }}
     >
       {/* ── Header ── */}

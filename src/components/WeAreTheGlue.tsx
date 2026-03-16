@@ -38,7 +38,7 @@ export default function WeAreTheGlue({ data }: { data?: HomePage | null }) {
   return (
     <section
       id="about"
-      className="relative overflow-hidden py-20 px-8 md:px-20"
+      className="relative overflow-hidden py-24 md:py-20 px-8 md:px-20"
       style={{ backgroundColor: colors.white, color: colors.charcoal }}
     >
       {/* Eyebrow */}
