@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -la /c/Users/ojoda/OneDrive/Desktop/work/financeabudaabi/src/app/admin/[[...index]]/)",
+      "Bash(npm install)",
+      "Bash(npm run build)"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\ojoda\\remadein-studio\\src\\app",
+      "c:\\Users\\ojoda\\remadein-studio\\src\\schemas\\documents",
+      "c:\\Users\\ojoda\\remadein-studio\\src\\schemas",
+      "c:\\Users\\ojoda\\remadein-studio\\src\\structure",
+      "c:\\Users\\ojoda\\remadein-studio"
+    ]
+  }
+}
