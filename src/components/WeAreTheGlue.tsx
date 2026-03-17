@@ -9,7 +9,7 @@ const COLUMNS = [
   {
     num: '01',
     category: 'The Problem',
-    image: '/images/pro.jpg',
+    image: '/images/pro copy.jpg',
     imgPosition: '30% center',
     title: '92M tonnes of textile waste annually. Recycling 10–15 years away.',
     desc: 'Circularity has scaled extraction, not justice. 1.1 billion people bear the cost.',
