@@ -7,9 +7,9 @@ import { colors, fonts } from '@/lib/tokens'
 
 const NAV_LINKS = [
   { label: 'The Blueprint', href: '/blueprint' },
-  { label: 'Impact', href: '/#impact' },
-  { label: 'Research', href: '/#research' },
-  { label: 'Community', href: '/#community' },
+  { label: 'Impact', href: 'impact' },
+  { label: 'Research', href: '#research' },
+  { label: 'Community', href: '#community' },
   { label: 'Partner With Us', href: '/partner' },
 ]
 
