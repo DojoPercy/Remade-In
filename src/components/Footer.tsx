@@ -191,7 +191,7 @@ export default function Footer() {
           </div>
           <a
             href="mailto:hello@remadein.nl?subject=Newsletter%20Sign-Up"
-            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-sm text-[13px] font-bold tracking-wide transition-opacity duration-200 hover:opacity-90"
+            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-full text-[13px] font-bold tracking-wide transition-opacity duration-200 hover:opacity-90"
             style={{ fontFamily: fonts.syne, backgroundColor: colors.orange, color: colors.cream }}
           >
             Get Updates
@@ -219,7 +219,7 @@ export default function Footer() {
             className="text-[12px]"
             style={{ fontFamily: fonts.syne, color: `${colors.cream}25` }}
           >
-            Amsterdam · Accra · Rotterdam
+            The Netherlands · Ghana
           </p>
         </div>
       </div>

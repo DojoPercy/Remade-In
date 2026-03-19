@@ -3,6 +3,7 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { colors, fonts } from '@/lib/tokens'
+import BlobButton from '@/components/ui/BlobButton'
 import type { HomePage } from '@/lib/sanity/types'
 
 // ── Fallback data ──────────────────────────────────────────────────────────────
@@ -111,30 +112,12 @@ export default function DonationBanner({ data }: { data?: HomePage | null }) {
             {...anim(0.26)}
             className="flex flex-wrap gap-3 flex-shrink-0"
           >
-            <a
-              href={primaryHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center px-7 py-3.5 rounded-[5px] text-sm font-bold tracking-[0.04em] transition-opacity duration-200 hover:opacity-90"
-              style={{
-                fontFamily: fonts.syne,
-                backgroundColor: colors.charcoal,
-                color: colors.white,
-              }}
-            >
+            <BlobButton href={primaryHref} variant="dark" external>
               {primaryLabel}
-            </a>
-            <a
-              href="#partner"
-              className="inline-flex items-center px-7 py-3.5 rounded-[5px] text-sm font-bold tracking-[0.04em] border-2 transition-all duration-200 hover:bg-white/10"
-              style={{
-                fontFamily: fonts.syne,
-                borderColor: 'rgba(255,255,255,0.6)',
-                color: colors.white,
-              }}
-            >
+            </BlobButton>
+            <BlobButton href="#partner" variant="ghost">
               {secondaryLabel}
-            </a>
+            </BlobButton>
           </motion.div>
         </div>
       </div>

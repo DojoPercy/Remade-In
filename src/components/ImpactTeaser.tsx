@@ -49,7 +49,7 @@ export default function ImpactTeaser({ data }: { data?: HomePage | null }) {
   return (
     <section
       ref={ref}
-      className="relative overflow-hidden px-8 md:px-20 pt-28 pb-36 md:pt-24 md:pb-32"
+      className="relative overflow-hidden px-8 md:px-20 pt-20 pb-28 md:pt-28 md:pb-36"
       style={{ backgroundColor: colors.charcoal }}
     >
       {/* ── Subtle grid lines ── */}
@@ -72,7 +72,7 @@ export default function ImpactTeaser({ data }: { data?: HomePage | null }) {
               className="text-xs font-bold uppercase tracking-[0.12em] mb-4"
               style={{ fontFamily: fonts.syne, color: colors.orange, fontSize: 12 }}
             >
-              {year} Impact
+              Our Impact
             </motion.p>
             <motion.h2
               {...anim(0.08)}
@@ -95,9 +95,10 @@ export default function ImpactTeaser({ data }: { data?: HomePage | null }) {
             className="max-w-xs"
             style={{
               fontFamily: fonts.bricolage,
-              fontSize: 14,
+              fontSize: 15,
+              fontWeight: 500,
               lineHeight: 1.7,
-              color: `${colors.cream}99`,
+              color: `${colors.cream}cc`,
             }}
           >
             Every garment rescued, every liter of water saved — tracked, verified,
@@ -207,8 +208,27 @@ export default function ImpactTeaser({ data }: { data?: HomePage | null }) {
 
       </div>
 
-      {/* ── Ramp into DonationBanner orange ── */}
-      <SectionDivider fill={colors.orange} direction="right" height={52} />
+      {/* ── Marquee ticker ── */}
+      <div className="relative mt-16 overflow-hidden" style={{ borderTop: `1px solid ${colors.white}10` }}>
+        <div
+          className="ticker-track flex whitespace-nowrap py-5 gap-0"
+          style={{ fontFamily: 'var(--font-syne)', fontSize: 11, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: `${colors.cream}28` }}
+        >
+          {[...Array(2)].map((_, ri) => (
+            <span key={ri} className="flex items-center gap-0">
+              {['500,000L Water Saved', '6,250kg CO₂ Avoided', '250kg Textile Diverted', '12 Events Hosted', '3,200+ Participants', '€10,280 Invested', 'Justice-Led Model', 'Kantamanto → Netherlands'].map((item) => (
+                <span key={item} className="flex items-center">
+                  <span className="px-8">{item}</span>
+                  <span style={{ color: colors.orange }}>·</span>
+                </span>
+              ))}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Ramp into ResearchArchive ── */}
+      <SectionDivider fill={colors.cream} direction="right" height={52} />
     </section>
   )
 }

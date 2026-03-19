@@ -369,13 +369,7 @@ export default function ResearchArchiveClient({
     <section
       id="research"
       className="px-8 md:px-20 pt-20 pb-24"
-      style={{
-        // Warm library paper + subtle woven diagonal pattern
-        background: `
-          repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(160,110,50,0.03) 20px, rgba(160,110,50,0.03) 21px),
-          #FAF4ED
-        `,
-      }}
+      style={{ backgroundColor: colors.cream }}
     >
       {/* ── Section header ── */}
       <div className="flex items-start gap-5 mb-10">

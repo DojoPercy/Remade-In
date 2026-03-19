@@ -4,7 +4,8 @@
 
 export const colors = {
   // Brand action
-  orange:      '#E8330A',  // primary CTA, accents, underlines — deep orange-red
+  orange:      '#D75711',  // primary CTA, accents — brand orange
+  blue:        '#6776B7',  // secondary accent — brand blue
   amber:       '#FFD012',  // ticker separator — golden yellow
 
   // Neutral surfaces (two dark, two light)

@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence, easeInOut } from 'framer-motion'
 import { colors, fonts } from '@/lib/tokens'
+import SectionDivider from '@/components/ui/SectionDivider'
+
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -49,17 +51,17 @@ export default function CommunityVoiceCarousel({ voices }: { voices: VoiceItem[]
   return (
     <section
       className="relative overflow-hidden px-8 md:px-20 py-28 md:py-24"
-      style={{ backgroundColor: '#F3BFA2' }}
+      style={{ backgroundColor: colors.cream }}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
       {/* ── Decorative blob — top right ── */}
       <div
-        className="pointer-events-none absolute -top-20 -right-32 w-[420px] h-[360px] origin-center z-0"
+        className="pointer-events-none absolute top-0 right-0 w-[480px] h-[420px] origin-center z-0"
         style={{
-          backgroundColor: '#F9AE90',
+          backgroundColor: `${colors.orange}18`,
           borderRadius: '60% 40% 55% 45% / 45% 55% 40% 60%',
-          transform: 'rotate(-31deg)',
+          transform: 'translate(30%, -20%) rotate(-31deg)',
         }}
       />
 
@@ -190,6 +192,7 @@ export default function CommunityVoiceCarousel({ voices }: { voices: VoiceItem[]
         </div>
       </div>
 
+      <SectionDivider fill={colors.charcoal} direction="right" height={52} />
     </section>
   )
 }

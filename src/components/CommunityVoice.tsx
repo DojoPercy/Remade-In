@@ -14,7 +14,7 @@ const FALLBACK_VOICES: VoiceItem[] = [
     slug: 'micheal-asante',
     quote: 'When we open the bale, it is just not enough. Money I had saved up over some number of years began to get exhausted.',
     photoSrc: '/Upcyclers/KSCxBenBreuer-6.jpg',
-    market: 'Kantamanto Market',
+    market: 'Ghana',
     location: 'Accra, Ghana',
   },
   {
@@ -23,7 +23,7 @@ const FALLBACK_VOICES: VoiceItem[] = [
     slug: 'abena-owusu',
     quote: 'Remanufacturing gave me a skill, a voice, and a way to provide for my family without destroying the planet in the process.',
     photoSrc: '/Upcyclers/KSCxBenBreuer-32.jpg',
-    market: 'Kantamanto Market',
+    market: 'Ghana',
     location: 'Accra, Ghana',
   },
   {
@@ -32,7 +32,7 @@ const FALLBACK_VOICES: VoiceItem[] = [
     slug: 'kwame-darko',
     quote: 'Every garment that passes through my hands is someone\'s discarded dream — and my opportunity to give it a second life.',
     photoSrc: '/Upcyclers/KSCxBenBreuer-64.jpg',
-    market: 'Kantamanto Market',
+    market: 'Ghana',
     location: 'Accra, Ghana',
   },
   {
@@ -41,7 +41,7 @@ const FALLBACK_VOICES: VoiceItem[] = [
     slug: 'fatima-al-hassan',
     quote: 'The system was never designed for people like us to win. Remanufacturing changes that — one garment, one community at a time.',
     photoSrc: '/Upcyclers/KSCxBenBreuer-78.jpg',
-    market: 'Kantamanto Market',
+    market: 'Ghana',
     location: 'Accra, Ghana',
   },
 ]

@@ -3,7 +3,10 @@
     "allow": [
       "Bash(ls -la /c/Users/ojoda/OneDrive/Desktop/work/financeabudaabi/src/app/admin/[[...index]]/)",
       "Bash(npm install)",
-      "Bash(npm run build)"
+      "Bash(npm run build)",
+      "Bash(pnpm tsc --noEmit)",
+      "Bash(pnpm add lenis)",
+      "Bash(pnpm add lenis -w)"
     ],
     "additionalDirectories": [
       "C:\\Users\\ojoda\\remadein-studio\\src\\app",
