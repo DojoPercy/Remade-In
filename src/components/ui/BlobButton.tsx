@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
-import { motion, useSpring } from 'framer-motion'
+import { motion, useSpring, easeInOut } from 'framer-motion'
 import { colors, fonts } from '@/lib/tokens'
 
 // ── Types ──────────────────────────────────────────────────────────────────────
@@ -116,7 +116,7 @@ export default function BlobButton({
     transition: {
       duration: 6,
       repeat: Infinity,
-      ease: 'easeInOut',
+      ease: easeInOut,
       times: [0, 0.25, 0.5, 0.75, 1],
     },
     whileTap: { scale: 0.95 },

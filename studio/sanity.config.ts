@@ -1,6 +1,5 @@
 import { defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
-import { visionTool } from '@sanity/vision'
 import { schemaTypes } from './schemas'
 import { structure } from './structure'
 
@@ -9,14 +8,13 @@ const dataset = process.env.SANITY_STUDIO_DATASET!
 
 export default defineConfig({
   name: 'remade-in',
-  title: 'Remade In Studio',
+  title: 'Remade In – Content Editor',
 
   projectId,
   dataset,
 
   plugins: [
     structureTool({ structure }),
-    visionTool({ defaultApiVersion: '2024-01-01' }),
   ],
 
   schema: {

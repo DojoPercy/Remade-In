@@ -2,66 +2,126 @@ import { defineField, defineType } from 'sanity'
 import { CogIcon } from '@sanity/icons'
 
 /**
- * Singleton document — only one instance exists (documentId: 'siteSettings').
- * Controls global settings: branding, SEO defaults, navigation, social links.
+ * GLOBAL SITE SETTINGS
+ * 
+ * Edit the things that appear on EVERY page:
+ * - Logo and branding
+ * - Navigation menu
+ * - Social media links
+ * - Contact information
+ * - Default SEO settings
  */
 export const siteSettings = defineType({
   name: 'siteSettings',
   title: 'Site Settings',
   type: 'document',
   icon: CogIcon,
+
+  groups: [
+    { name: 'branding', title: 'Branding' },
+    { name: 'navigation', title: 'Navigation Menu' },
+    { name: 'social', title: 'Social & Contact' },
+    { name: 'seo', title: 'Search Optimization' },
+  ],
+
   fields: [
+    // ══════════════════════════════════════════════════════════════════════════
+    // 🎨 BRANDING — Logo and company identity
+    // ══════════════════════════════════════════════════════════════════════════
+
     defineField({
       name: 'siteName',
-      title: 'Site Name',
+      title: 'Organization Name',
       type: 'string',
-      validation: (Rule) => Rule.required(),
+      group: 'branding',
+      description: 'Your company or organization name. This appears in browser tab titles.',
+      placeholder: 'e.g., Remade In',
+      validation: (Rule) => Rule.required().error('Your organization name is required'),
     }),
+
     defineField({
       name: 'tagline',
-      title: 'Tagline',
+      title: 'Tagline (Optional)',
       type: 'string',
+      group: 'branding',
+      description: 'A short phrase that describes what you do. Often shown next to your logo.',
+      placeholder: 'e.g., Building Circular Fashion',
     }),
+
     defineField({
       name: 'logo',
-      title: 'Logo',
+      title: 'Logo Image',
       type: 'image',
+      group: 'branding',
+      description: 'Upload your logo. This appears in the header and footer of every page.',
       options: { hotspot: true },
       fields: [
         defineField({
           name: 'alt',
-          title: 'Alt Text',
+          title: 'Alt Text (for accessibility)',
           type: 'string',
-          validation: (Rule) => Rule.required(),
+          description: 'Describe the logo. Example: "Remade In logo"',
+          validation: (Rule) => Rule.required().error('Alt text is required for accessibility'),
         }),
       ],
     }),
-    defineField({
-      name: 'defaultSeo',
-      title: 'Default SEO',
-      type: 'seo',
-      description: 'Fallback SEO values used when a page does not define its own.',
-    }),
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // 📍 NAVIGATION MENU — Links at the top of every page
+    // ══════════════════════════════════════════════════════════════════════════
+
     defineField({
       name: 'mainNav',
-      title: 'Main Navigation',
+      title: 'Main Navigation Links',
       type: 'array',
+      group: 'navigation',
+      description: 'These links appear in the header navigation menu at the top of every page. Reorder them by dragging.',
       of: [
         {
           type: 'object',
           name: 'navItem',
           fields: [
-            defineField({ name: 'label', type: 'string', title: 'Label', validation: (Rule) => Rule.required() }),
-            defineField({ name: 'href', type: 'string', title: 'URL / Anchor', validation: (Rule) => Rule.required() }),
+            defineField({
+              name: 'label',
+              type: 'string',
+              title: 'Link Text',
+              description: 'What the link says. Example: "Our Impact" or "Contact"',
+              placeholder: 'e.g., About Us',
+              validation: (Rule) => Rule.required().error('Link text is required'),
+            }),
+            defineField({
+              name: 'href',
+              type: 'string',
+              title: 'Where Does It Go?',
+              description: 'Full URL (for external sites) or anchor (for pages). Examples: "https://example.com" or "/impact" or "#contact"',
+              placeholder: 'e.g., /about or #section-name',
+              validation: (Rule) => Rule.required().error('Link destination is required'),
+            }),
           ],
           preview: { select: { title: 'label', subtitle: 'href' } },
         },
       ],
     }),
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // 💬 SOCIAL & CONTACT — Where people can reach you
+    // ══════════════════════════════════════════════════════════════════════════
+
+    defineField({
+      name: 'contactEmail',
+      title: 'Public Contact Email',
+      type: 'string',
+      group: 'social',
+      description: 'Email address shown in the footer. People can use this to reach you.',
+      placeholder: 'contact@example.com',
+    }),
+
     defineField({
       name: 'socialLinks',
-      title: 'Social Links',
+      title: 'Social Media Accounts',
       type: 'array',
+      group: 'social',
+      description: 'Links to your social media profiles. These appear as icons in the footer.',
       of: [
         {
           type: 'object',
@@ -70,34 +130,60 @@ export const siteSettings = defineType({
             defineField({
               name: 'platform',
               type: 'string',
-              title: 'Platform',
+              title: 'Which Platform?',
               options: {
-                list: ['Instagram', 'LinkedIn', 'Twitter / X', 'GitHub', 'Behance', 'Dribbble', 'YouTube'],
+                list: [
+                  { title: 'Instagram', value: 'Instagram' },
+                  { title: 'LinkedIn', value: 'LinkedIn' },
+                  { title: 'Twitter / X', value: 'Twitter / X' },
+                  { title: 'YouTube', value: 'YouTube' },
+                  { title: 'GitHub', value: 'GitHub' },
+                  { title: 'Behance', value: 'Behance' },
+                  { title: 'Dribbble', value: 'Dribbble' },
+                ],
               },
-              validation: (Rule) => Rule.required(),
+              validation: (Rule) => Rule.required().error('Select a platform'),
             }),
-            defineField({ name: 'url', type: 'url', title: 'URL', validation: (Rule) => Rule.required() }),
+            defineField({
+              name: 'url',
+              type: 'url',
+              title: 'Profile URL',
+              description: 'Full link to your profile. Example: https://instagram.com/yourhandle',
+              placeholder: 'https://instagram.com/yourhandle',
+              validation: (Rule) => Rule.required().error('Enter a valid URL'),
+            }),
           ],
           preview: { select: { title: 'platform', subtitle: 'url' } },
         },
       ],
     }),
-    defineField({
-      name: 'contactEmail',
-      title: 'Contact Email',
-      type: 'string',
-    }),
+
     defineField({
       name: 'footerText',
-      title: 'Footer Text',
+      title: 'Footer Copyright Message',
       type: 'string',
-      description: 'Optional copy shown in the site footer.',
+      group: 'social',
+      description: 'Short message shown at the very bottom of every page. Often a copyright notice. Example: "© 2025 Remade In. All rights reserved."',
+      placeholder: '© 2025 Your Organization. All rights reserved.',
+    }),
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // 🔍 SEARCH OPTIMIZATION — Helps Google find your site
+    // ══════════════════════════════════════════════════════════════════════════
+
+    defineField({
+      name: 'defaultSeo',
+      title: 'Default SEO Tags',
+      type: 'seo',
+      group: 'seo',
+      description: 'These settings are used as a backup if a page doesn\'t have its own SEO settings. SEO helps Google and search engines understand your site.',
     }),
   ],
+
   preview: {
     select: { title: 'siteName' },
     prepare({ title }) {
-      return { title: title ?? 'Site Settings' }
+      return { title: title ? `${title} Settings` : 'Site Settings' }
     },
   },
 })

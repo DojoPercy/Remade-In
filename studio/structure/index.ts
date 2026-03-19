@@ -1,59 +1,75 @@
 import type { StructureBuilder, StructureResolverContext } from 'sanity/structure'
-import { CogIcon, HomeIcon, ArchiveIcon, UsersIcon, ImageIcon, BookIcon } from '@sanity/icons'
+import {
+  CogIcon,
+  HomeIcon,
+  BookIcon,
+  ArchiveIcon,
+  UsersIcon,
+  ImageIcon,
+  DocumentsIcon,
+} from '@sanity/icons'
 
 /**
- * Custom desk structure for Remade In Studio.
+ * STUDIO STRUCTURE — How the editor is organized
  *
- * Singletons (siteSettings, homePage) are pinned as fixed items
- * so editors can never accidentally create a second copy.
+ * This creates a logical menu that clients find intuitive:
+ * 1. Quick-change items (Home, Settings)
+ * 2. Collections (Research, Voices, Gallery)
+ * 3. Organized by frequency of use
  */
 export const structure = (
   S: StructureBuilder,
   _context: StructureResolverContext,
 ) =>
   S.list()
-    .title('Remade In')
+    .title('Content Manager')
     .items([
-      // ── Singleton: Site Settings ───────────────────────────────────────────
-      S.listItem()
-        .title('Site Settings')
-        .icon(CogIcon)
-        .child(
-          S.document()
-            .schemaType('siteSettings')
-            .documentId('siteSettings')
-            .title('Site Settings'),
-        ),
+      // ════════════════════════════════════════════════════════════════════════
+      // ESSENTIALS — The two things editors change most
+      // ════════════════════════════════════════════════════════════════════════
 
-      S.divider(),
-
-      // ── Singleton: Home Page ───────────────────────────────────────────────
       S.listItem()
         .title('Home Page')
+        .description('Edit the main sections visitors see when they first arrive')
         .icon(HomeIcon)
         .child(
           S.document()
             .schemaType('homePage')
             .documentId('homePage')
-            .title('Home Page'),
+            .title('Manage Home Page'),
         ),
 
-      // ── Singleton: Blueprint Page ──────────────────────────────────────────
+      S.listItem()
+        .title('Website Settings')
+        .description('Logo, navigation menu, social links, contact info')
+        .icon(CogIcon)
+        .child(
+          S.document()
+            .schemaType('siteSettings')
+            .documentId('siteSettings')
+            .title('Edit Global Settings'),
+        ),
+
+      S.divider(),
+
+      // ════════════════════════════════════════════════════════════════════════
+      // CONTENT COLLECTIONS — Items you add/remove/reorder
+      // ════════════════════════════════════════════════════════════════════════
+
       S.listItem()
         .title('Blueprint Page')
+        .description('Manage the Blueprint section with guides and downloads')
         .icon(BookIcon)
         .child(
           S.document()
             .schemaType('blueprintPage')
             .documentId('blueprintPage')
-            .title('Blueprint Page'),
+            .title('Edit Blueprint Page'),
         ),
 
-      S.divider(),
-
-      // ── Research Archive ───────────────────────────────────────────────────
       S.listItem()
         .title('Research Archive')
+        .description('Add or update research documents and studies')
         .icon(ArchiveIcon)
         .child(
           S.documentTypeList('researchDoc')
@@ -61,22 +77,23 @@ export const structure = (
             .defaultOrdering([
               { field: 'featured', direction: 'desc' },
               { field: 'publishedAt', direction: 'desc' },
-            ]),
+            ])
+            .filterBySearchParam('type:research'),
         ),
 
-      // ── Community Voices ───────────────────────────────────────────────────
       S.listItem()
         .title('Community Voices')
+        .description('Stories and testimonials from your community')
         .icon(UsersIcon)
         .child(
           S.documentTypeList('communityVoice')
-            .title('Community Voices')
+            .title('Community Stories')
             .defaultOrdering([{ field: 'order', direction: 'asc' }]),
         ),
 
-      // ── Gallery ───────────────────────────────────────────────────────────
       S.listItem()
         .title('Gallery')
+        .description('Upload and organize photos from events and activities')
         .icon(ImageIcon)
         .child(
           S.documentTypeList('galleryImage')
@@ -87,9 +104,9 @@ export const structure = (
             ]),
         ),
 
-      // ── Partners ───────────────────────────────────────────────────────────
       S.listItem()
         .title('Partners')
+        .description('Organizations and individuals you work with')
         .icon(UsersIcon)
         .child(
           S.documentTypeList('partner')
@@ -99,10 +116,41 @@ export const structure = (
 
       S.divider(),
 
-      // Fallback: any remaining types not handled above
-      ...S.documentTypeListItems().filter(
-        (item) =>
-          item.getId() &&
-          !['siteSettings', 'homePage', 'blueprintPage', 'researchDoc', 'communityVoice', 'galleryImage', 'partner'].includes(item.getId()!),
-      ),
+      // ════════════════════════════════════════════════════════════════════════
+      // OTHER CONTENT — Less frequently edited
+      // ════════════════════════════════════════════════════════════════════════
+
+      S.listItem()
+        .title('All Other Content')
+        .description('Other items in the system')
+        .icon(DocumentsIcon)
+        .child(
+          S.list()
+            .title('Other Content')
+            .items(
+              S.documentTypeListItems()
+                .filter(
+                  (item) =>
+                    item.getId() &&
+                    ![
+                      'siteSettings',
+                      'homePage',
+                      'blueprintPage',
+                      'researchDoc',
+                      'communityVoice',
+                      'galleryImage',
+                      'partner',
+                    ].includes(item.getId()!),
+                )
+                .map((item) =>
+                  item.child
+                    ? item.child(
+                        S.documentTypeList(item.getId()!)
+                          .title(item.getDisplayName() as string)
+                          .defaultOrdering([{ field: '_createdAt', direction: 'desc' }]),
+                      )
+                    : item,
+                ),
+            ),
+        ),
     ])

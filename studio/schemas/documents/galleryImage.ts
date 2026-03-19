@@ -2,64 +2,91 @@ import { defineField, defineType } from 'sanity'
 import { ImageIcon } from '@sanity/icons'
 
 /**
- * Gallery image entries for the "In The Field" homepage section.
- * Each document maps to one cell in the asymmetric 5-image grid.
+ * GALLERY IMAGE
+ * 
+ * Add a photo to the gallery on the homepage.
+ * The gallery displays 5 images in a beautiful asymmetric layout.
  */
 export const galleryImage = defineType({
   name: 'galleryImage',
   title: 'Gallery Image',
   type: 'document',
   icon: ImageIcon,
+
+  groups: [
+    { name: 'content', title: 'Photo & Info', default: true },
+    { name: 'layout', title: 'Position in Grid' },
+    { name: 'settings', title: 'Visibility' },
+  ],
+
   fields: [
+    // ══════════════════════════════════════════════════════════════════════════
+    // PHOTO
+    // ══════════════════════════════════════════════════════════════════════════
+
     defineField({
       name: 'image',
       title: 'Photo',
       type: 'imageWithAlt',
-      validation: (Rule) => Rule.required(),
+      group: 'content',
+      description: 'Upload a high-quality photo from your events or work.',
+      validation: (Rule) => Rule.required().error('Photo is required'),
     }),
+
     defineField({
       name: 'location',
       title: 'Location Label',
       type: 'string',
-      description: 'Shown on hover (e.g. "Amsterdam, NL" or "Kantamanto, GH").',
-      validation: (Rule) => Rule.required(),
+      group: 'content',
+      placeholder: 'e.g., Amsterdam, NL or Kantamanto, GH',
+      description: 'Shown when visitors hover over the photo.',
+      validation: (Rule) => Rule.required().error('Location is required'),
     }),
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // POSITION IN GALLERY
+    // ══════════════════════════════════════════════════════════════════════════
+
     defineField({
       name: 'gridArea',
-      title: 'Grid Area',
+      title: 'Which Slot in the Gallery?',
       type: 'string',
-      description: 'Which slot in the 5-image grid: a (large top-left), b (portrait top-right), c (small bottom-left), d (small bottom-centre), e (wide bottom-right).',
+      group: 'layout',
+      description: 'The gallery has 5 different spaces. Choose where this image goes:',
       options: {
         list: [
-          { title: 'a — Large landscape (top-left)',   value: 'a' },
-          { title: 'b — Portrait (top-right)',          value: 'b' },
-          { title: 'c — Small square (bottom-left)',   value: 'c' },
-          { title: 'd — Small square (bottom-centre)', value: 'd' },
-          { title: 'e — Wide landscape (bottom-right)',value: 'e' },
+          { title: 'a — Large landscape (top-left)',    value: 'a' },
+          { title: 'b — Portrait (top-right)',           value: 'b' },
+          { title: 'c — Small square (bottom-left)',    value: 'c' },
+          { title: 'd — Small square (bottom-centre)',  value: 'd' },
+          { title: 'e — Wide landscape (bottom-right)', value: 'e' },
         ],
       },
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().error('Select a grid position'),
     }),
-    defineField({
-      name: 'objectPosition',
-      title: 'Focal Position',
-      type: 'string',
-      description: 'CSS object-position (e.g. "50% 30%", "top", "center"). Controls which part of the image is visible.',
-      initialValue: '50% center',
-    }),
+
     defineField({
       name: 'order',
-      title: 'Display Order',
+      title: 'Order (if using the same grid slot)',
       type: 'number',
-      description: 'Lower numbers appear first. Use to reorder within the same grid area.',
+      group: 'layout',
       initialValue: 99,
+      placeholder: '1, 2, 3...',
+      description: 'If you have multiple images for the same slot, lower numbers appear first.',
+      validation: (Rule) => Rule.min(0).integer(),
     }),
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // VISIBILITY
+    // ══════════════════════════════════════════════════════════════════════════
+
     defineField({
       name: 'active',
-      title: 'Active',
+      title: 'Show on Website',
       type: 'boolean',
-      description: 'Uncheck to hide this image without deleting it.',
+      group: 'settings',
       initialValue: true,
+      description: 'Toggle OFF to hide this image. It won\'t be deleted, just hidden.',
     }),
   ],
 
@@ -76,15 +103,15 @@ export const galleryImage = defineType({
 
   preview: {
     select: {
-      title:    'location',
+      title: 'location',
       subtitle: 'gridArea',
-      media:    'image',
+      media: 'image',
     },
     prepare(value: Record<string, unknown>) {
       return {
-        title:    (value.title as string) ?? 'Untitled',
-        subtitle: value.subtitle ? `Grid: ${value.subtitle as string}` : '',
-        media:    value.media as never,
+        title: (value.title as string) ?? 'Untitled',
+        subtitle: value.subtitle ? `Slot: ${value.subtitle as string}` : '',
+        media: value.media as never,
       }
     },
   },
