@@ -15,6 +15,16 @@ const nextConfig: NextConfig = {
         hostname: 'cdn.sanity.io',
         pathname: '/files/**',
       },
+      {
+        // YouTube auto-thumbnails for video cards
+        protocol: 'https',
+        hostname: 'img.youtube.com',
+      },
+      {
+        // Vimeo thumbnails
+        protocol: 'https',
+        hostname: 'i.vimeocdn.com',
+      },
     ],
   },
 };
