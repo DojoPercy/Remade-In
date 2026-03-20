@@ -43,7 +43,7 @@ export default function DonationBanner({ data }: { data?: HomePage | null }) {
   return (
     <section
       ref={ref}
-      className="relative overflow-hidden px-8 md:px-20"
+      className="relative overflow-hidden px-8 md:px-20 pb-20 md:pb-24"
       style={{ backgroundColor: colors.orange }}
     >
       {/* ── Watermark circle ── */}

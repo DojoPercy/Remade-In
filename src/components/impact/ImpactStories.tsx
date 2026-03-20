@@ -1,114 +1,263 @@
+'use client'
+
+import { useRef } from 'react'
+import { motion, useInView } from 'framer-motion'
 import Image from 'next/image'
+import { imageUrl } from '@/lib/sanity/image'
 import { colors, fonts } from '@/lib/tokens'
 
-const STORIES = [
+interface Story {
+  title: string
+  image?: {
+    asset?: { url: string }
+    alt?: string
+  }
+  community?: string
+  quote?: string
+  order: number
+}
+
+interface Props {
+  data?: Story[]
+}
+
+const ease: [number, number, number, number] = [0.22, 1, 0.36, 1]
+
+const DEFAULT_STORIES: Story[] = [
   {
-    name: 'Micheal Asante',
-    role: 'Kantamanto Market',
-    quote:
-      'When we open the bale, it is just not enough. Remanufacturing gives me a way to keep working with dignity.',
-    image: '/Upcyclers/KSCxBenBreuer-6.jpg',
+    title: 'Ama: From Seller to Creator',
+    community: 'Kantamanto Market, Accra',
+    quote: 'When we open the bale, it is just not enough. Remanufacturing gives me a way to keep working with dignity.',
+    order: 0,
   },
   {
-    name: 'Abena Owusu',
-    role: 'Community maker',
-    quote:
-      'Remanufacturing gave me a skill, a voice, and a way to provide for my family without destroying the planet.',
-    image: '/Upcyclers/KSCxBenBreuer-32.jpg',
+    title: 'Abena: Breaking the Cycle',
+    community: 'Community Maker, Kumasi',
+    quote: 'Remanufacturing gave me a skill, a voice, and a way to provide for my family without destroying the planet.',
+    order: 1,
   },
   {
-    name: 'Kwame Darko',
-    role: 'Repair lead',
-    quote:
-      "Every garment that passes through my hands is someone's discarded dream -- and my chance to give it a second life.",
-    image: '/Upcyclers/KSCxBenBreuer-64.jpg',
+    title: 'Kwame: Every Stitch Counts',
+    community: 'Repair Lead, Tema',
+    quote: "Every garment that passes through my hands is someone's discarded dream — and my chance to give it a second life.",
+    order: 2,
   },
 ]
 
-export default function ImpactStories() {
+export default function ImpactStories({ data }: Props) {
+  const ref = useRef<HTMLElement>(null)
+  const inView = useInView(ref, { once: true, margin: '-80px' })
+
+  const stories = (data && data.length > 0) ? data : DEFAULT_STORIES
+
   return (
     <section
-      className="px-8 md:px-20 pt-16 pb-28"
+      ref={ref}
+      className="relative overflow-hidden px-8 md:px-20 pt-20 pb-0"
       style={{ backgroundColor: colors.charcoal }}
     >
-      <div className="max-w-6xl mx-auto">
-        <p
-          className="text-xs font-bold uppercase tracking-[0.12em] mb-3"
-          style={{ fontFamily: fonts.syne, color: colors.orange, fontSize: 12 }}
+      {/* Accent */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          backgroundImage: `radial-gradient(ellipse at 5% 60%, ${colors.blue}07 0, transparent 50%)`,
+        }}
+      />
+
+      <div className="relative">
+        {/* Eyebrow */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.55, ease }}
+          className="flex items-center gap-4 mb-8"
         >
-          Community Impact Stories
-        </p>
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10">
-          <h2
-            className="font-extrabold"
+          <div className="w-8 h-px shrink-0" style={{ backgroundColor: colors.orange }} />
+          <span
+            className="font-bold uppercase tracking-[0.22em]"
+            style={{ fontFamily: fonts.syne, fontSize: 10, color: colors.orange }}
+          >
+            Community Impact Stories
+          </span>
+        </motion.div>
+
+        {/* Heading + annotation */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+          <motion.h2
+            initial={{ opacity: 0, y: 24 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.65, ease, delay: 0.08 }}
             style={{
               fontFamily: fonts.bricolage,
-              fontSize: 'clamp(28px, 4vw, 46px)',
-              color: colors.white,
-              letterSpacing: '-0.02em',
+              fontSize: 'clamp(32px, 4vw, 52px)',
+              fontWeight: 900,
+              lineHeight: 1.1,
+              letterSpacing: '-0.028em',
+              color: colors.cream,
+              maxWidth: '18ch',
             }}
           >
-            The people behind the metrics.
-          </h2>
-          <a
-            href="#"
-            className="inline-flex items-center text-sm font-bold"
-            style={{ fontFamily: fonts.syne, color: colors.cream, letterSpacing: '0.06em' }}
+            The people{' '}
+            <em style={{ color: colors.orange, fontStyle: 'normal' }}>behind the metrics.</em>
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={inView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.5, ease, delay: 0.2 }}
+            style={{
+              fontFamily: fonts.bricolage,
+              fontSize: 15,
+              fontWeight: 500,
+              lineHeight: 1.7,
+              color: `${colors.cream}88`,
+              maxWidth: '36ch',
+            }}
           >
-            Read All Stories {'>'}
-          </a>
+            Numbers tell one story. The people who make remanufacturing possible tell another.
+          </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {STORIES.map((story) => (
-            <div
-              key={story.name}
-              className="rounded-2xl border overflow-hidden"
-              style={{
-                borderColor: 'rgba(255,255,255,0.08)',
-                backgroundColor: 'rgba(255,255,255,0.02)',
-              }}
-            >
-              <div className="relative h-56">
-                <Image
-                  src={story.image}
-                  alt={story.name}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="p-5">
-                <p
-                  style={{
-                    fontFamily: fonts.bricolage,
-                    fontSize: 16,
-                    fontWeight: 700,
-                    color: colors.white,
-                  }}
+        {/* Story cards — tabular with full borders */}
+        <div
+          className="grid grid-cols-1 md:grid-cols-3"
+          style={{ borderTop: `1px solid ${colors.white}14`, borderLeft: `1px solid ${colors.white}14` }}
+        >
+          {stories.map((story, idx) => {
+            const imageUrlStr = story.image?.asset?.url
+              ? imageUrl(
+                  { asset: { url: story.image.asset.url }, alt: story.image.alt || story.title },
+                  400,
+                  500,
+                )
+              : null
+
+            return (
+              <motion.div
+                key={`${story.title}-${idx}`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.55, ease, delay: 0.24 + idx * 0.08 }}
+                className="group flex flex-col"
+                style={{
+                  borderRight: `1px solid ${colors.white}14`,
+                  borderBottom: `1px solid ${colors.white}14`,
+                }}
+              >
+                {/* Image or placeholder */}
+                <div
+                  className="relative overflow-hidden"
+                  style={{ height: 280, backgroundColor: `${colors.white}03` }}
                 >
-                  {story.name}
-                </p>
-                <p
-                  className="text-xs uppercase"
-                  style={{
-                    fontFamily: fonts.syne,
-                    letterSpacing: '0.12em',
-                    color: `${colors.cream}88`,
-                  }}
-                >
-                  {story.role}
-                </p>
-                <p
-                  className="mt-4 text-sm"
-                  style={{ fontFamily: fonts.bricolage, color: `${colors.cream}aa`, lineHeight: 1.7 }}
-                >
-                  "{story.quote}"
-                </p>
-              </div>
-            </div>
-          ))}
+                  {imageUrlStr ? (
+                    <Image
+                      src={imageUrlStr}
+                      alt={story.image?.alt || story.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                  ) : (
+                    /* No-image state — clean abstract placeholder with index */
+                    <div
+                      className="absolute inset-0 flex items-end p-6"
+                      style={{
+                        background: `linear-gradient(135deg, ${colors.orange}08 0%, transparent 60%)`,
+                      }}
+                    >
+                      <span
+                        style={{
+                          fontFamily: fonts.bricolage,
+                          fontSize: 96,
+                          fontWeight: 900,
+                          color: `${colors.cream}08`,
+                          lineHeight: 1,
+                          letterSpacing: '-0.05em',
+                        }}
+                      >
+                        {String(idx + 1).padStart(2, '0')}
+                      </span>
+                    </div>
+                  )}
+                  {/* Gradient overlay */}
+                  <div
+                    className="absolute inset-0"
+                    style={{
+                      background: `linear-gradient(to top, ${colors.charcoal}88 0%, transparent 60%)`,
+                    }}
+                  />
+                </div>
+
+                {/* Content */}
+                <div className="flex-1 flex flex-col p-8">
+                  {story.community && (
+                    <p
+                      className="mb-3"
+                      style={{
+                        fontFamily: fonts.syne,
+                        fontSize: 10,
+                        fontWeight: 700,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.16em',
+                        color: colors.orange,
+                      }}
+                    >
+                      {story.community}
+                    </p>
+                  )}
+
+                  <h3
+                    className="mb-5"
+                    style={{
+                      fontFamily: fonts.bricolage,
+                      fontSize: 20,
+                      fontWeight: 800,
+                      color: colors.cream,
+                      lineHeight: 1.2,
+                      letterSpacing: '-0.01em',
+                    }}
+                  >
+                    {story.title}
+                  </h3>
+
+                  {story.quote && (
+                    <div className="flex gap-3 flex-1">
+                      {/* Large quote mark */}
+                      <span
+                        aria-hidden
+                        style={{
+                          fontFamily: fonts.bricolage,
+                          fontSize: 48,
+                          color: colors.orange,
+                          lineHeight: 0.8,
+                          opacity: 0.5,
+                          flexShrink: 0,
+                          marginTop: 2,
+                        }}
+                      >
+                        &ldquo;
+                      </span>
+                      <p
+                        style={{
+                          fontFamily: fonts.bricolage,
+                          fontSize: 14,
+                          color: `${colors.cream}cc`,
+                          lineHeight: 1.7,
+                          fontStyle: 'italic',
+                        }}
+                      >
+                        {story.quote}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            )
+          })}
         </div>
       </div>
+
+      <div className="mt-16" style={{ borderTop: `1px solid ${colors.white}08` }} />
     </section>
   )
 }

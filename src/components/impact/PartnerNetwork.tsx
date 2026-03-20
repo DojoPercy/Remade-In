@@ -1,187 +1,186 @@
+'use client'
+
+import { useRef } from 'react'
+import { motion, useInView } from 'framer-motion'
 import Image from 'next/image'
-import { client } from '@/lib/sanity/client'
-import { partnersQuery } from '@/lib/sanity/queries'
 import { imageUrl } from '@/lib/sanity/image'
-import type { Partner } from '@/lib/sanity/types'
 import { colors, fonts } from '@/lib/tokens'
 
-export default async function PartnerNetwork() {
-  let partners: Partner[] = []
-
-  try {
-    partners = await client.fetch<Partner[]>(
-      partnersQuery,
-      {},
-      { next: { revalidate: 60 } },
-    )
-  } catch {
-    // CMS unavailable — render empty state silently
+interface Partner {
+  _id: string
+  name: string
+  url?: string
+  logo?: {
+    asset?: { url: string }
+    alt?: string
   }
+}
 
-  const hasPartners = partners.length > 0
+interface Props {
+  data?: Partner[]
+  description?: string
+}
+
+const ease: [number, number, number, number] = [0.22, 1, 0.36, 1]
+
+export default function PartnerNetwork({ data, description }: Props) {
+  const ref = useRef<HTMLElement>(null)
+  const inView = useInView(ref, { once: true, margin: '-80px' })
+
+  const partners = data || []
+  if (partners.length === 0) return null
+
+  const anim = (delay: number) => ({
+    initial: { opacity: 0, y: 20 },
+    animate: inView ? { opacity: 1, y: 0, transition: { duration: 0.55, delay, ease } } : {},
+  })
+
   return (
     <section
-      id="partner"
-      className="px-8 md:px-20 pt-16 pb-24"
+      id="partners"
+      ref={ref}
+      className="relative overflow-hidden px-8 md:px-20 pt-20 pb-0"
       style={{ backgroundColor: colors.charcoal }}
     >
-      <div className="max-w-6xl mx-auto">
-        <p
-          className="text-xs font-bold uppercase tracking-[0.12em] mb-3"
-          style={{ fontFamily: fonts.syne, color: colors.orange, fontSize: 12 }}
-        >
-          Partner Network
-        </p>
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10">
-          <h2
-            className="font-extrabold"
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          backgroundImage: `radial-gradient(ellipse at 90% 40%, ${colors.blue}06 0, transparent 50%)`,
+        }}
+      />
+
+      <div className="relative">
+        {/* Eyebrow */}
+        <motion.div {...anim(0)} className="flex items-center gap-4 mb-8">
+          <div className="w-8 h-px shrink-0" style={{ backgroundColor: colors.orange }} />
+          <span
+            className="font-bold uppercase tracking-[0.22em]"
+            style={{ fontFamily: fonts.syne, fontSize: 10, color: colors.orange }}
+          >
+            Strategic Partners
+          </span>
+        </motion.div>
+
+        {/* Heading + description */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
+          <motion.h2
+            {...anim(0.08)}
             style={{
               fontFamily: fonts.bricolage,
-              fontSize: 'clamp(28px, 4vw, 46px)',
-              color: colors.white,
-              letterSpacing: '-0.02em',
-            }}
-          >
-            Collaborators powering the remanufacturing ecosystem.
-          </h2>
-          <a
-            href="#partner"
-            className="inline-flex items-center px-6 py-3 rounded-[6px] text-sm font-bold transition-opacity duration-200 hover:opacity-90"
-            style={{
-              fontFamily: fonts.syne,
-              backgroundColor: colors.orange,
+              fontSize: 'clamp(32px, 4vw, 52px)',
+              fontWeight: 900,
+              lineHeight: 1.1,
+              letterSpacing: '-0.028em',
               color: colors.cream,
-              letterSpacing: '0.06em',
+              maxWidth: '22ch',
             }}
           >
-            Become a Partner
-          </a>
+            Collaborators powering the{' '}
+            <em style={{ color: colors.orange, fontStyle: 'normal' }}>remanufacturing ecosystem.</em>
+          </motion.h2>
+
+          {description && (
+            <motion.p
+              {...anim(0.16)}
+              style={{
+                fontFamily: fonts.bricolage,
+                fontSize: 15,
+                fontWeight: 500,
+                lineHeight: 1.7,
+                color: `${colors.cream}88`,
+                maxWidth: '36ch',
+              }}
+            >
+              {description}
+            </motion.p>
+          )}
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {hasPartners ? (
-            partners.map((partner) => {
-              const logoSvg = partner.logoSvg?.asset?.url
-              const logoImg = partner.logoImage
-                ? imageUrl(partner.logoImage, 320, 160)
-                : null
-              const logoAlt = partner.logoImage?.alt ?? partner.name
+        {/* Partner grid — tabular style */}
+        <div
+          className="grid grid-cols-2"
+          style={{
+            gridTemplateColumns: `repeat(${Math.min(partners.length, 4)}, 1fr)`,
+            borderTop: `1px solid ${colors.white}14`,
+            borderLeft: `1px solid ${colors.white}14`,
+          }}
+        >
+          {partners.map((partner, idx) => {
+            const logoSrc = partner.logo?.asset?.url
+              ? imageUrl({ asset: { url: partner.logo.asset.url }, alt: partner.logo.alt || partner.name }, 400, 200)
+              : null
 
-              const content = (
-                <div
-                  className="rounded-2xl border p-5 h-full"
+            const card = (
+              <motion.div
+                key={partner._id}
+                {...anim(0.2 + idx * 0.06)}
+                className="group flex flex-col items-center justify-center py-12 px-8 text-center"
+                style={{
+                  borderRight: `1px solid ${colors.white}14`,
+                  borderBottom: `1px solid ${colors.white}14`,
+                  minHeight: 180,
+                }}
+              >
+                {/* Slot number */}
+                <span
+                  aria-hidden
+                  className="absolute top-3 right-4 hidden md:block"
                   style={{
-                    borderColor: 'rgba(255,255,255,0.08)',
-                    backgroundColor: 'rgba(255,255,255,0.02)',
+                    fontFamily: fonts.bricolage,
+                    fontSize: 11,
+                    color: `${colors.cream}14`,
+                    letterSpacing: '0.06em',
                   }}
                 >
-                  <div
-                    className="h-12 rounded-xl flex items-center justify-center mb-4"
-                    style={{
-                      backgroundColor: 'rgba(255,255,255,0.06)',
-                    }}
-                  >
-                    {logoSvg ? (
-                      // SVG file from Sanity
-                      <img
-                        src={logoSvg}
-                        alt={partner.name}
-                        className="h-8 w-auto object-contain"
-                      />
-                    ) : logoImg ? (
-                      <Image
-                        src={logoImg}
-                        alt={logoAlt}
-                        width={160}
-                        height={64}
-                        className="h-8 w-auto object-contain"
-                      />
-                    ) : (
-                      <span
-                        style={{
-                          fontFamily: fonts.syne,
-                          fontSize: 13,
-                          letterSpacing: '0.08em',
-                          textTransform: 'uppercase',
-                          color: colors.cream,
-                        }}
-                      >
-                        {partner.name}
-                      </span>
-                    )}
-                  </div>
-                  <p
-                    className="text-sm"
+                  {String(idx + 1).padStart(2, '0')} /
+                </span>
+
+                {logoSrc ? (
+                  <Image
+                    src={logoSrc}
+                    alt={partner.logo?.alt || partner.name}
+                    width={180}
+                    height={72}
+                    className="max-h-14 w-auto object-contain group-hover:opacity-100 transition-opacity duration-300"
+                    style={{ filter: 'brightness(0.8) saturate(0.7)', opacity: 0.85 }}
+                  />
+                ) : (
+                  <span
                     style={{
                       fontFamily: fonts.bricolage,
-                      color: `${colors.cream}aa`,
-                      lineHeight: 1.6,
+                      fontSize: 20,
+                      fontWeight: 800,
+                      color: `${colors.cream}cc`,
+                      lineHeight: 1.2,
                     }}
                   >
-                    {partner.role}
-                  </p>
-                </div>
-              )
+                    {partner.name}
+                  </span>
+                )}
+              </motion.div>
+            )
 
-              return partner.website ? (
-                <a
-                  key={partner._id}
-                  href={partner.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block hover:opacity-95 transition-opacity"
-                >
-                  {content}
-                </a>
-              ) : (
-                <div key={partner._id}>{content}</div>
-              )
-            })
-          ) : (
-            <div
-              className="rounded-2xl border p-6 text-sm"
-              style={{
-                borderColor: 'rgba(255,255,255,0.08)',
-                backgroundColor: 'rgba(255,255,255,0.02)',
-                color: `${colors.cream}aa`,
-                fontFamily: fonts.bricolage,
-              }}
-            >
-              No partners published yet. Add partners in Sanity to display them here.
-            </div>
-          )}
-
-          <div
-            className="rounded-2xl border p-5 flex flex-col justify-between"
-            style={{
-              borderColor: 'rgba(255,255,255,0.08)',
-              backgroundColor: 'rgba(255,255,255,0.05)',
-            }}
-          >
-            <p
-              style={{
-                fontFamily: fonts.bricolage,
-                fontSize: 18,
-                color: colors.white,
-                fontWeight: 700,
-              }}
-            >
-              Add your organization to the map.
-            </p>
-            <a
-              href="#partner"
-              className="mt-6 inline-flex items-center gap-2 text-sm font-bold"
-              style={{
-                fontFamily: fonts.syne,
-                color: colors.orange,
-                letterSpacing: '0.08em',
-              }}
-            >
-              Partner with us {'>'}
-            </a>
-          </div>
+            return partner.url ? (
+              <a
+                key={partner._id}
+                href={partner.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative block"
+              >
+                {card}
+              </a>
+            ) : (
+              <div key={partner._id} className="relative">
+                {card}
+              </div>
+            )
+          })}
         </div>
       </div>
+
+      <div className="mt-16" style={{ borderTop: `1px solid ${colors.white}08` }} />
     </section>
   )
 }

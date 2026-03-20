@@ -1,5 +1,4 @@
 import { defineField, defineType } from 'sanity'
-import { DocumentTextIcon } from '@sanity/icons'
 
 /**
  * RESEARCH DOCUMENT
@@ -11,7 +10,7 @@ export const researchDoc = defineType({
   name: 'researchDoc',
   title: 'Research Document',
   type: 'document',
-  icon: DocumentTextIcon,
+
 
   groups: [
     { name: 'basic', title: 'Document Info', default: true },

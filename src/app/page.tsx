@@ -1,6 +1,7 @@
 import { client } from '@/lib/sanity/client'
-import { homePageQuery, siteSettingsQuery } from '@/lib/sanity/queries'
+import { homePageQuery, siteSettingsQuery, partnersQuery } from '@/lib/sanity/queries'
 import type { HomePage, SiteSettings } from '@/lib/sanity/types'
+import type { Partner } from '@/components/HomePartners'
 import { colors } from '@/lib/tokens'
 
 import Nav from '@/components/Nav'
@@ -12,18 +13,21 @@ import BlueprintTeaser from '@/components/BlueprintTeaser'
 import CommunityVoice from '@/components/CommunityVoice'
 import ImpactTeaser from '@/components/ImpactTeaser'
 import ResearchArchive from '@/components/ResearchArchive'
+import HomePartners from '@/components/HomePartners'
 import DonationBanner from '@/components/DonationBanner'
 import Footer from '@/components/Footer'
 
 export default async function Home() {
   let homeData: HomePage | null = null
   let siteData: SiteSettings | null = null
+  let partnersData: Partner[] = []
 
   try {
     const isr = { next: { revalidate: 60 } }
-    ;[homeData, siteData] = await Promise.all([
+    ;[homeData, siteData, partnersData] = await Promise.all([
       client.fetch<HomePage>(homePageQuery, {}, isr),
       client.fetch<SiteSettings>(siteSettingsQuery, {}, isr),
+      client.fetch<Partner[]>(partnersQuery, {}, isr),
     ])
   } catch {
     // CMS unavailable — all sections fall back to static data
@@ -44,6 +48,7 @@ export default async function Home() {
       <CommunityVoice />
       <ImpactTeaser data={homeData} />
       <ResearchArchive />
+      <HomePartners data={partnersData} />
       <DonationBanner data={homeData} />
       <Footer />
     </>

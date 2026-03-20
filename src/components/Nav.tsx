@@ -9,7 +9,7 @@ const NAV_LINKS = [
   { label: 'The Blueprint', href: '/blueprint' },
   { label: 'Impact', href: '#impact' },
   { label: 'Research', href: '#research' },
-  { label: 'Community', href: '#community' },
+  { label: 'Stories',   href: '/stories'   },
   { label: 'Partner With Us', href: '/partner' },
 ]
 
@@ -31,7 +31,7 @@ export default function Nav({ links }: { links?: { label: string; href: string }
     return () => { document.body.style.overflow = '' }
   }, [menuOpen])
 
-  const bg        = scrolled ? 'rgba(249,232,208,0.97)' : 'transparent'
+  const bg        = scrolled ? 'rgba(247,246,242,0.97)' : 'transparent'
   const border    = scrolled ? 'rgba(26,26,20,0.08)'    : 'transparent'
   const linkColor = scrolled ? `${colors.charcoal}88`   : `${colors.cream}88`
   const linkHover = scrolled ? colors.charcoal           : colors.cream

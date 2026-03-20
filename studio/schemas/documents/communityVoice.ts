@@ -1,11 +1,10 @@
 import { defineField, defineType } from 'sanity'
-import { UsersIcon } from '@sanity/icons'
 
 export const communityVoice = defineType({
   name: 'communityVoice',
   title: 'Community Voice',
   type: 'document',
-  icon: UsersIcon,
+
   groups: [
     { name: 'content', title: 'Story & Quote', default: true },
     { name: 'settings', title: 'Visibility & Order' },

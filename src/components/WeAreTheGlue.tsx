@@ -272,7 +272,7 @@ export default function WeAreTheGlue({ data }: { data?: HomePage | null }) {
         {/* Sticky panel */}
         <div
           className="sticky top-0 flex flex-col justify-center px-20"
-          style={{ height: '100svh', backgroundColor: colors.cream }}
+          style={{ height: '100svh', backgroundColor: colors.white }}
         >
           {sectionHeader}
 
@@ -315,7 +315,7 @@ export default function WeAreTheGlue({ data }: { data?: HomePage | null }) {
       <div
         id="about"
         className="md:hidden px-8 py-20"
-        style={{ backgroundColor: colors.cream }}
+        style={{ backgroundColor: colors.white }}
       >
         {sectionHeader}
 
@@ -338,7 +338,7 @@ export default function WeAreTheGlue({ data }: { data?: HomePage | null }) {
         </div>
       </div>
 
-      <SectionDivider fill={colors.cream} direction="left" height={60} />
+      <SectionDivider fill={colors.charcoal} direction="left" height={60} />
     </>
   )
 }

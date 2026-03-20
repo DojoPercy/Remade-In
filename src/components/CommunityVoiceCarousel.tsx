@@ -50,7 +50,7 @@ export default function CommunityVoiceCarousel({ voices }: { voices: VoiceItem[]
 
   return (
     <section
-      className="relative overflow-hidden px-8 md:px-20 py-28 md:py-24"
+      className="relative overflow-hidden px-8 md:px-20 py-24 md:py-32"
       style={{ backgroundColor: colors.cream }}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}

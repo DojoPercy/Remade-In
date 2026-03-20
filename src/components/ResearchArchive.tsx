@@ -11,6 +11,14 @@ const O = { headerColor: colors.orange,   cornerColor: '#B8440D' }
 const B = { headerColor: colors.blue,     cornerColor: '#4F5E9E' }
 const D = { headerColor: colors.charcoal, cornerColor: '#2E2E26' }
 
+// Derive style from docType (schema has no headerColor/rotation fields)
+const TYPE_STYLE: Record<string, { headerColor: string; cornerColor: string }> = {
+  'Report':       O,
+  'White Paper':  B,
+  'Policy Brief': D,
+}
+const ROTATIONS = [-2, 2, -1, 3, 1, -2, 1, -3, 2]
+
 const FALLBACK_DOCS: CardDoc[] = [
   { id: 'r1',  type: 'Report',       year: 2024, title: 'Community Impact Assessment',   desc: 'Economic outcomes, labour conditions, and community voice from frontline textile workers.',     pages: 20, href: '#', ...O, rotation: -2 },
   { id: 'wp1', type: 'White Paper',  year: 2024, title: 'Textile Remanufacturing',        desc: 'The case for remanufacturing as the primary circularity strategy for post-consumer garments.', pages: 28, href: '#', ...B, rotation:  2 },
@@ -25,20 +33,9 @@ const FALLBACK_TOTAL = 20
 
 // ── Normalise CMS → CardDoc ────────────────────────────────────────────────────
 
-/**
- * Lightens a hex color by mixing it with white at the given ratio (0–1).
- * Used to derive a distinct cornerColor from the headerColor.
- */
-function lighten(hex: string, amount: number): string {
-  const n = parseInt(hex.replace('#', ''), 16)
-  const r = Math.round(((n >> 16) & 0xff) + (255 - ((n >> 16) & 0xff)) * amount)
-  const g = Math.round(((n >> 8) & 0xff) + (255 - ((n >> 8) & 0xff)) * amount)
-  const b = Math.round((n & 0xff) + (255 - (n & 0xff)) * amount)
-  return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`
-}
 
-function normalise(doc: CmsDoc): CardDoc {
-  const header = doc.headerColor ?? colors.orange
+function normalise(doc: CmsDoc, index: number): CardDoc {
+  const style = TYPE_STYLE[doc.docType] ?? O
   return {
     id:          doc._id,
     type:        doc.docType,
@@ -47,9 +44,9 @@ function normalise(doc: CmsDoc): CardDoc {
     desc:        doc.description,
     pages:       doc.pages,
     href:        doc.file?.asset?.url ?? doc.externalHref ?? '#',
-    headerColor: header,
-    cornerColor: lighten(header, 0.25),
-    rotation:    doc.rotation ?? 0,
+    headerColor: style.headerColor,
+    cornerColor: style.cornerColor,
+    rotation:    ROTATIONS[index % ROTATIONS.length],
   }
 }
 
@@ -66,7 +63,7 @@ export default async function ResearchArchive() {
       client.fetch<number>(researchDocCountQuery, {}, isr),
     ])
     if (cmsDocs?.length) {
-      docs = cmsDocs.map(normalise)
+      docs = cmsDocs.map((doc, i) => normalise(doc, i))
       totalCount = cmsCount ?? cmsDocs.length
     }
   } catch {

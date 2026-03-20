@@ -66,6 +66,7 @@ function BookCard({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3, delay: index * 0.035, ease: [0.22, 1, 0.36, 1] }}
+      style={{ rotate: doc.rotation }}
       // Spotlight: when shelf is hovered, this card dims unless directly hovered
       className={`group-hover/shelf:opacity-40 hover:!opacity-100 hover:-translate-y-3 transition-[opacity,transform] duration-300 ${className}`}
     >
@@ -368,8 +369,8 @@ export default function ResearchArchiveClient({
   return (
     <section
       id="research"
-      className="px-8 md:px-20 pt-20 pb-24"
-      style={{ backgroundColor: colors.cream }}
+      className="px-8 md:px-20 pt-24 pb-28 md:pt-32 md:pb-36"
+      style={{ backgroundColor: colors.white }}
     >
       {/* ── Section header ── */}
       <div className="flex items-start gap-5 mb-10">

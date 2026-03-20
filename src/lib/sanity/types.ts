@@ -184,3 +184,120 @@ export interface ResearchDoc {
   publishedAt: string
   featured: boolean
 }
+
+// ── Stories ───────────────────────────────────────────────────────────────────
+
+export interface StoryArticle {
+  _type: 'article'
+  _id: string
+  title: string
+  slug: SanitySlug
+  category: string
+  coverImage?: SanityImage
+  excerpt: string
+  body?: unknown[]
+  author?: string
+  publishedAt: string
+  featured: boolean
+  tags?: string[]
+}
+
+export interface StoryVideo {
+  _type: 'video'
+  _id: string
+  title: string
+  slug: SanitySlug
+  videoUrl: string
+  thumbnail?: SanityImage
+  caption?: string
+  duration?: string
+  publishedAt: string
+  featured: boolean
+  tags?: string[]
+}
+
+export interface StoryNews {
+  _type: 'newsItem'
+  _id: string
+  title: string
+  slug: SanitySlug
+  source: string
+  excerpt?: string
+  externalUrl?: string
+  publishedAt: string
+  featured: boolean
+}
+
+export interface StoryEvent {
+  _type: 'event'
+  _id: string
+  title: string
+  slug: SanitySlug
+  date: string
+  endDate?: string
+  location?: string
+  isOnline: boolean
+  coverImage?: SanityImage
+  description?: string
+  body?: unknown[]
+  registrationUrl?: string
+  publishedAt: string
+  featured: boolean
+  tags?: string[]
+}
+
+export interface StoryCommunityVoice {
+  _type: 'communityVoice'
+  _id: string
+  name: string
+  slug: SanitySlug
+  quote: string
+  photo?: SanityImage
+  market: string
+  location: string
+  publishedAt: string
+}
+
+export type AnyStory = StoryArticle | StoryVideo | StoryNews | StoryEvent | StoryCommunityVoice
+
+export interface StoriesData {
+  articles:        StoryArticle[]
+  videos:          StoryVideo[]
+  news:            StoryNews[]
+  events:          StoryEvent[]
+  communityVoices: StoryCommunityVoice[]
+}
+
+// ── Stories Hub (paginated, unified) ──────────────────────────────────────────
+
+export interface StoryItem {
+  _type:    string
+  _id:      string
+  featured: boolean
+  slug:     string | null
+  date:     string
+  title:    string
+  imageUrl: string | null
+  excerpt:  string | null
+  // article / video / event
+  category?:        string
+  author?:          string
+  videoUrl?:        string
+  duration?:        string
+  // newsItem
+  source?:          string
+  externalUrl?:     string
+  // event
+  location?:        string
+  isOnline?:        boolean
+  registrationUrl?: string
+  // communityVoice
+  name?:    string
+  quote?:   string
+  market?:  string
+}
+
+export interface StoriesHubData {
+  items: StoryItem[]
+  total: number
+}

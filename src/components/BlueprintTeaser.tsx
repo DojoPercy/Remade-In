@@ -79,7 +79,7 @@ export default function BlueprintTeaser() {
         initial={{ opacity: 0, y: 16 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.55, ease, delay: 0 }}
-        className="relative z-10 flex items-center gap-4 px-8 md:px-20 pt-20"
+        className="relative z-10 flex items-center gap-4 px-8 md:px-20 pt-24 md:pt-32"
       >
         {/* Orange rule */}
         <div className="w-8 h-px shrink-0" style={{ backgroundColor: colors.orange }} />
@@ -265,13 +265,13 @@ export default function BlueprintTeaser() {
         initial={{ opacity: 0, y: 16 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.6, ease, delay: 0.54 }}
-        className="relative z-10 px-8 md:px-20 pt-12 pb-0 flex flex-col sm:flex-row gap-4 items-start"
+        className="relative z-20 px-8 md:px-20 pt-12 pb-28 md:pb-36 flex flex-col sm:flex-row gap-4 items-start sm:items-center"
       >
         <BlobButton href="/blueprint" variant="solid">
           Read Full Blueprint <span aria-hidden style={{ fontSize: 16 }}>→</span>
         </BlobButton>
 
-        <BlobButton href="/blueprint#download" variant="ghost">
+        <BlobButton href="/blueprint#downloads" variant="ghost">
           Download Executive Summary <span aria-hidden style={{ fontSize: 11, opacity: 0.55 }}>PDF</span>
         </BlobButton>
       </motion.div>

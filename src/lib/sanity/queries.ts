@@ -191,9 +191,158 @@ export const partnersQuery = groq`
   *[_type == "partner" && active == true] | order(order asc, name asc) {
     _id,
     name,
-    role,
-    website,
-    logoImage { ${imageFragment} },
-    logoSvg { asset->{ url } }
+    url,
+    logo { ${imageFragment} }
   }
 `
+
+// ── Stories ───────────────────────────────────────────────────────────────────
+
+/** All stories across all four types, for the hub page */
+export const storiesQuery = groq`
+  {
+    "articles": *[_type == "article"] | order(featured desc, publishedAt desc) {
+      _type, _id, title, slug, category,
+      coverImage { ${imageFragment} },
+      excerpt, author, publishedAt, featured, tags
+    },
+    "videos": *[_type == "video"] | order(featured desc, publishedAt desc) {
+      _type, _id, title, slug, videoUrl,
+      thumbnail { ${imageFragment} },
+      caption, duration, publishedAt, featured, tags
+    },
+    "news": *[_type == "newsItem"] | order(featured desc, publishedAt desc) {
+      _type, _id, title, slug, source, excerpt, externalUrl, publishedAt, featured
+    },
+    "events": *[_type == "event"] | order(featured desc, date desc) {
+      _type, _id, title, slug, date, endDate, location, isOnline,
+      coverImage { ${imageFragment} },
+      description, registrationUrl, featured, tags,
+      "publishedAt": date
+    },
+    "communityVoices": *[_type == "communityVoice" && active == true] | order(order asc) {
+      _type, _id, name, slug, quote,
+      photo { ${imageFragment} },
+      market, location,
+      "publishedAt": _createdAt
+    }
+  }
+`
+
+/** Single story by slug — checks all types that have detail pages */
+export const storyBySlugQuery = groq`
+  coalesce(
+    *[_type == "article" && slug.current == $slug][0] {
+      _type, _id, title, slug, category,
+      coverImage { ${imageFragment} },
+      excerpt, body, author, publishedAt, featured, tags
+    },
+    *[_type == "video" && slug.current == $slug][0] {
+      _type, _id, title, slug, videoUrl,
+      thumbnail { ${imageFragment} },
+      caption, duration, publishedAt, featured, tags
+    },
+    *[_type == "event" && slug.current == $slug][0] {
+      _type, _id, title, slug, date, endDate, location, isOnline,
+      coverImage { ${imageFragment} },
+      description, body, registrationUrl, featured, tags,
+      "publishedAt": date
+    }
+  )
+`
+
+// ── Stories Hub (paginated, unified) ──────────────────────────────────────────
+
+const STORY_TYPES = `["article","video","newsItem","event","communityVoice"]`
+
+/** Unified hub query — supports type filter, text search, and offset-based pagination */
+export const storiesHubQuery = groq`
+  {
+    "items": *[
+      _type in ${STORY_TYPES}
+      && ($type == "" || $type == "all" || _type == $type)
+      && ($q    == "" || title match ($q + "*") || name match ($q + "*"))
+    ] | order(featured desc, coalesce(publishedAt, date, _createdAt) desc)
+    [$offset...$end] {
+      _type, _id, featured,
+      "slug":     coalesce(slug.current, null),
+      "date":     coalesce(publishedAt, date, _createdAt),
+      "title":    select(_type == "communityVoice" => name, title),
+      "imageUrl": select(
+        _type == "article"        => coverImage.asset->url,
+        _type == "video"          => thumbnail.asset->url,
+        _type == "event"          => coverImage.asset->url,
+        _type == "communityVoice" => photo.asset->url,
+        null
+      ),
+      "excerpt": select(
+        _type == "article"        => excerpt,
+        _type == "newsItem"       => excerpt,
+        _type == "event"          => description,
+        _type == "video"          => caption,
+        _type == "communityVoice" => quote,
+        null
+      ),
+      category, author, videoUrl, duration,
+      source, externalUrl, location, isOnline, registrationUrl,
+      name, quote, market,
+    },
+    "total": count(*[
+      _type in ${STORY_TYPES}
+      && ($type == "" || $type == "all" || _type == $type)
+      && ($q    == "" || title match ($q + "*") || name match ($q + "*"))
+    ])
+  }
+`
+
+// ── Impact Page (singleton) ────────────────────────────────────────────────────
+
+export const impactPageQuery = groq`
+  *[_type == "impactPage"][0] {
+    heroMetrics {
+      currentGarments,
+      targetGarments,
+      lastUpdated
+    },
+    snapshot2025[] | order(order asc) {
+      metric,
+      value,
+      unit,
+      icon,
+      order
+    },
+    timeline[] | order(year asc, quarter asc) {
+      year,
+      quarter,
+      garments,
+      isProjection,
+      notes
+    },
+    featuredPartners[] -> {
+      _id,
+      name,
+      url,
+      logo { ${imageFragment} }
+    },
+    partnerNetworkDescription,
+    calculator {
+      carbonPerGarment,
+      waterPerGarment,
+      costPerGarment,
+      sources[]
+    },
+    communityStories[] | order(order asc) {
+      title,
+      image { ${imageFragment} },
+      community,
+      quote,
+      narrative,
+      order
+    },
+    methodology,
+    limitations,
+    impactReportPdf { asset->{ url } },
+    externalVerification
+  }
+`
+

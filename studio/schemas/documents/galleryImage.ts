@@ -1,5 +1,4 @@
 import { defineField, defineType } from 'sanity'
-import { ImageIcon } from '@sanity/icons'
 
 /**
  * GALLERY IMAGE
@@ -11,7 +10,7 @@ export const galleryImage = defineType({
   name: 'galleryImage',
   title: 'Gallery Image',
   type: 'document',
-  icon: ImageIcon,
+
 
   groups: [
     { name: 'content', title: 'Photo & Info', default: true },

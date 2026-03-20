@@ -10,8 +10,8 @@ export const colors = {
 
   // Neutral surfaces (two dark, two light)
   charcoal:    '#1A1A14',  // dark sections — near-black with green undertone
-  cream:       '#F9E8D0',  // warm light — text on dark bg, CommunityVoice section bg
-  white:       '#fefefe',  // pure light sections — WeAreTheGlue, ResearchArchive
+  cream:       '#F5DDB8',  // warm light — text on dark bg, CommunityVoice section bg
+  white:       '#F7F6F2',  // warm white — main light surface; Gallery, MissionVision, WeAreTheGlue, ResearchArchive
 
   // Component-level
   cardSurface: '#F3EDE2',  // research/archive card paper body — warm off-white

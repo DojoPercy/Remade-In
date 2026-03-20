@@ -228,7 +228,7 @@ export default function ImpactTeaser({ data }: { data?: HomePage | null }) {
       </div>
 
       {/* ── Ramp into ResearchArchive ── */}
-      <SectionDivider fill={colors.cream} direction="right" height={52} />
+      <SectionDivider fill={colors.white} direction="right" height={52} />
     </section>
   )
 }

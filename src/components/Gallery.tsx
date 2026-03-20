@@ -58,7 +58,7 @@ export default async function Gallery() {
   return (
     <section
       className="relative pt-28 pb-0"
-      style={{ backgroundColor: colors.cream }}
+      style={{ backgroundColor: colors.white }}
     >
       {/* ── Header ── */}
       <div className="px-8 md:px-20 mb-16">
@@ -86,7 +86,7 @@ export default async function Gallery() {
       {/* ── Scroll-animated strip ── */}
       <GalleryStrip cells={cells} />
 
-      <SectionDivider fill={colors.cream} direction="right" height={52} />
+      <SectionDivider fill={colors.white} direction="right" height={52} />
     </section>
   )
 }

@@ -6,14 +6,16 @@
       "Bash(npm run build)",
       "Bash(pnpm tsc --noEmit)",
       "Bash(pnpm add lenis)",
-      "Bash(pnpm add lenis -w)"
+      "Bash(pnpm add lenis -w)",
+      "Bash(grep -v \"//\")"
     ],
     "additionalDirectories": [
       "C:\\Users\\ojoda\\remadein-studio\\src\\app",
       "c:\\Users\\ojoda\\remadein-studio\\src\\schemas\\documents",
       "c:\\Users\\ojoda\\remadein-studio\\src\\schemas",
       "c:\\Users\\ojoda\\remadein-studio\\src\\structure",
-      "c:\\Users\\ojoda\\remadein-studio"
+      "c:\\Users\\ojoda\\remadein-studio",
+      "c:\\Users\\ojoda\\remade-in\\src\\app\\stories"
     ]
   }
 }
