@@ -265,7 +265,7 @@ export default function BlueprintTeaser() {
         initial={{ opacity: 0, y: 16 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.6, ease, delay: 0.54 }}
-        className="relative z-20 px-8 md:px-20 pt-12 pb-28 md:pb-36 flex flex-col sm:flex-row gap-4 items-start sm:items-center"
+        className="relative z-10 px-8 md:px-20 pt-12 pb-20 md:pb-28 flex flex-col sm:flex-row gap-4 items-start sm:items-center"
       >
         <BlobButton href="/blueprint" variant="solid">
           Read Full Blueprint <span aria-hidden style={{ fontSize: 16 }}>→</span>

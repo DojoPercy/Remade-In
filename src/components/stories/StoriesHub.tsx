@@ -336,7 +336,7 @@ export default function StoriesHub({
   const [extraItems,    setExtraItems]    = useState<StoryItem[]>([])
   const [isLoadingMore, setIsLoadingMore] = useState(false)
   const [searchVal,     setSearchVal]     = useState(q)
-  const searchRef  = useRef<ReturnType<typeof setTimeout>>()
+  const searchRef  = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const [, startT] = useTransition()
 
   useEffect(() => { setExtraItems([]) }, [type, q])

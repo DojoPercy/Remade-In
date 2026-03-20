@@ -24,7 +24,7 @@ export default function SectionDivider({
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute bottom-0 left-0 right-0"
+      className="pointer-events-none absolute bottom-0 left-0 right-0 z-0"
       style={{ height }}
     >
       <svg
