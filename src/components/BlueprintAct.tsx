@@ -162,8 +162,8 @@ export default function BlueprintAct() {
       <motion.p
         {...anim(0.35)}
         className="mt-10 pt-8"
-        style={{ borderTop: '1px solid rgba(249,232,208,0.08)' }}
         style={{
+          borderTop: '1px solid rgba(249,232,208,0.08)',
           fontFamily: fonts.bricolage,
           fontSize: 14,
           lineHeight: 1.7,
