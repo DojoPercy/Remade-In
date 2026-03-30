@@ -7,9 +7,8 @@ import BlobButton from '@/components/ui/BlobButton'
 
 const NAV_LINKS = [
   { label: 'The Blueprint', href: '/blueprint' },
-  { label: 'Impact', href: '#impact' },
-  { label: 'Research', href: '#research' },
-  { label: 'Stories',   href: '/stories'   },
+  { label: 'About Us',      href: '#about'     },
+  { label: 'Stories',       href: '/stories'   },
   { label: 'Partner With Us', href: '/partner' },
 ]
 
@@ -83,7 +82,7 @@ export default function Nav({ links }: { links?: { label: string; href: string }
         </nav>
 
         <div className="flex items-center gap-3">
-          <BlobButton href="#donate" variant="solid" size="sm">
+          <BlobButton href="https://buy.stripe.com/aFaaEX6j82rady26My48000" variant="solid" size="sm">
             Donate
           </BlobButton>
 

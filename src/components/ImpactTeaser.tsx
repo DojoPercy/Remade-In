@@ -90,20 +90,7 @@ export default function ImpactTeaser({ data }: { data?: HomePage | null }) {
             </motion.h2>
           </div>
 
-          <motion.p
-            {...anim(0.16)}
-            className="max-w-xs"
-            style={{
-              fontFamily: fonts.bricolage,
-              fontSize: 15,
-              fontWeight: 500,
-              lineHeight: 1.7,
-              color: `${colors.cream}cc`,
-            }}
-          >
-            Every garment rescued, every liter of water saved — tracked, verified,
-            and reported back to the community that made it possible.
-          </motion.p>
+        
         </div>
 
         {/* ── Hero stats — 3 columns ── */}
@@ -208,7 +195,7 @@ export default function ImpactTeaser({ data }: { data?: HomePage | null }) {
 
       </div>
 
-      {/* ── Marquee ticker ── */}
+      {/* ── Marquee ticker ──
       <div className="relative mt-16 overflow-hidden" style={{ borderTop: `1px solid ${colors.white}10` }}>
         <div
           className="ticker-track flex whitespace-nowrap py-5 gap-0"
@@ -225,7 +212,7 @@ export default function ImpactTeaser({ data }: { data?: HomePage | null }) {
             </span>
           ))}
         </div>
-      </div>
+      </div> */}
 
       {/* ── Ramp into ResearchArchive ── */}
       <SectionDivider fill={colors.white} direction="right" height={52} />

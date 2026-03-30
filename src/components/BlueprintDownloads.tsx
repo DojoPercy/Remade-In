@@ -8,13 +8,13 @@ import type { BlueprintPage, BlueprintDownload } from '@/lib/sanity/types'
 const FALLBACK_DOWNLOADS: BlueprintDownload[] = [
   {
     label: 'Full White Paper',
-    description: 'Complete 13-page research document with methodology, findings, and roadmap.',
+    description: 'Complete research document with methodology, findings, and roadmap.',
     fileType: 'PDF',
     pages: 13,
   },
   {
     label: 'Executive Summary',
-    description: 'Key findings and recommendations distilled into 2 pages for quick sharing.',
+    description: 'Key findings and recommendations distilled for quick sharing.',
     fileType: 'PDF',
     pages: 2,
   },
@@ -22,7 +22,6 @@ const FALLBACK_DOWNLOADS: BlueprintDownload[] = [
     label: 'Policy Brief',
     description: 'EPR reform recommendations and trade policy analysis for policymakers.',
     fileType: 'PDF',
-    pages: 4,
   },
 ]
 
@@ -51,16 +50,16 @@ export default function BlueprintDownloads({ data }: { data?: BlueprintPage | nu
           className="mb-14"
         >
           <p
-            className="mb-3 text-xs font-bold uppercase tracking-[0.3em]"
+            className="mb-3 text-[11px] font-bold uppercase tracking-[0.28em]"
             style={{ fontFamily: fonts.syne, color: colors.orange }}
           >
-            Download Centre
+            Research & Resources
           </p>
           <h2
             style={{
               fontFamily: fonts.bricolage,
               fontSize: 'clamp(32px, 4vw, 56px)',
-              fontWeight: 900,
+              fontWeight: 800,
               lineHeight: 1.08,
               letterSpacing: '-0.02em',
               color: colors.charcoal,
@@ -83,16 +82,25 @@ export default function BlueprintDownloads({ data }: { data?: BlueprintPage | nu
 
         {/* Download cards */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {downloads.map((doc, i) => (
-            <motion.a
+          {downloads.map((doc, i) => {
+            const href = resolveHref(doc)
+            const ready = href !== '#'
+            const Tag = ready ? motion.a : motion.div
+            const linkProps = ready
+              ? {
+                  href,
+                  download: doc.file?.asset?.url ? true : undefined,
+                  target: !doc.file?.asset?.url ? '_blank' : undefined,
+                  rel: 'noopener noreferrer',
+                }
+              : {}
+            return (
+            <Tag
               key={doc.label}
-              href={resolveHref(doc)}
-              download={doc.file?.asset?.url ? true : undefined}
-              target={!doc.file?.asset?.url && resolveHref(doc) !== '#' ? '_blank' : undefined}
-              rel="noopener noreferrer"
+              {...(linkProps as Record<string, unknown>)}
               initial={{ opacity: 0, y: 24 }}
               animate={inView ? { opacity: 1, y: 0, transition: { duration: 0.45, delay: 0.1 + i * 0.1 } } : {}}
-              className="group relative flex flex-col justify-between rounded-[8px] overflow-hidden transition-transform duration-300 hover:-translate-y-1"
+              className={`group relative flex flex-col justify-between rounded-[8px] overflow-hidden${ready ? ' transition-transform duration-300 hover:-translate-y-1' : ''}`}
               style={{
                 backgroundColor: colors.white,
                 border: '1px solid rgba(26,26,20,0.1)',
@@ -112,14 +120,6 @@ export default function BlueprintDownloads({ data }: { data?: BlueprintPage | nu
                   >
                     {doc.fileType}
                   </span>
-                  {doc.pages && (
-                    <span
-                      className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-[0.12em]"
-                      style={{ fontFamily: fonts.syne, backgroundColor: 'rgba(26,26,20,0.06)', color: 'rgba(26,26,20,0.45)' }}
-                    >
-                      {doc.pages} {doc.pages === 1 ? 'page' : 'pages'}
-                    </span>
-                  )}
                 </div>
 
                 {/* Title */}
@@ -129,7 +129,7 @@ export default function BlueprintDownloads({ data }: { data?: BlueprintPage | nu
                     fontSize: 20,
                     fontWeight: 800,
                     lineHeight: 1.25,
-                    color: colors.charcoal,
+                    color: colors.ink,
                   }}
                 >
                   {doc.label}
@@ -155,28 +155,21 @@ export default function BlueprintDownloads({ data }: { data?: BlueprintPage | nu
                 className="flex items-center justify-between px-6 py-4"
                 style={{ borderTop: '1px solid rgba(26,26,20,0.08)' }}
               >
-                {(() => {
-                  const href = resolveHref(doc)
-                  const ready = href !== '#'
-                  return (
-                    <>
-                      <span
-                        className="text-xs font-bold uppercase tracking-[0.1em] transition-colors duration-200"
-                        style={{ fontFamily: fonts.syne, color: ready ? colors.orange : 'rgba(26,26,20,0.3)' }}
-                      >
-                        {ready ? 'Download →' : 'Coming soon'}
-                      </span>
-                      {ready && (
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill={colors.orange} aria-hidden="true" className="transition-transform duration-200 group-hover:translate-y-0.5">
-                          <path d="M8 12L3 7h3V2h4v5h3L8 12zM2 14h12v-1.5H2V14z" />
-                        </svg>
-                      )}
-                    </>
-                  )
-                })()}
+                <span
+                  className="text-xs font-bold uppercase tracking-[0.1em]"
+                  style={{ fontFamily: fonts.syne, color: ready ? colors.orange : 'rgba(26,26,20,0.3)' }}
+                >
+                  {ready ? 'Download →' : 'Coming soon'}
+                </span>
+                {ready && (
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill={colors.orange} aria-hidden="true" className="transition-transform duration-200 group-hover:translate-y-0.5">
+                    <path d="M8 12L3 7h3V2h4v5h3L8 12zM2 14h12v-1.5H2V14z" />
+                  </svg>
+                )}
               </div>
-            </motion.a>
-          ))}
+            </Tag>
+          )})}
+
         </div>
 
         {/* Citation box */}

@@ -1,25 +1,33 @@
 // ── Primitive tokens ───────────────────────────────────────────────────────────
 // Single source of truth for every color used across the site.
-// Semantic names: charcoal/cream/white describe what they ARE, not a wrong hue.
+// Brand guide 2026.
 
 export const colors = {
-  // Brand action
-  orange:      '#D75711',  // primary CTA, accents — brand orange
-  blue:        '#6776B7',  // secondary accent — brand blue
-  amber:       '#FFD012',  // ticker separator — golden yellow
+  // Primary brand colors
+  blue:      '#6776b6',  // primary — headings, accents, can be used as background
+  orange:    '#d8570f',  // primary — CTAs, highlight words; NOT for backgrounds
+  dark:      '#2b2b22',  // primary — text and dark UI elements
 
-  // Neutral surfaces (two dark, two light)
-  charcoal:    '#1A1A14',  // dark sections — near-black with green undertone
-  cream:       '#F5DDB8',  // warm light — text on dark bg, CommunityVoice section bg
-  white:       '#F7F6F2',  // warm white — main light surface; Gallery, MissionVision, WeAreTheGlue, ResearchArchive
+  // Secondary brand colors (for backgrounds, boxes, shapes)
+  lightBlue: '#d0e2ff',  // soft blue background / card surface
+  green:     '#cbd183',  // secondary — especially for environmental topics
+  peach:     '#f8cab8',  // secondary — warm background / boxes
+  yellow:    '#f9dd79',  // secondary — accent background / boxes
 
-  // Component-level
-  cardSurface: '#F3EDE2',  // research/archive card paper body — warm off-white
+  // Aliases kept for backward compat — map to nearest brand color
+  charcoal:    '#2b2b22',  // → dark
+  ink:         '#2b2b22',  // → dark
+  cream:       '#f8cab8',  // → peach
+  white:       '#ffffff',  // clean white surfaces
+  amber:       '#f9dd79',  // → yellow
+  cardSurface: '#d0e2ff',  // → lightBlue
 } as const
 
 export type ColorKey = keyof typeof colors
 
 export const fonts = {
-  syne:      'var(--font-syne), sans-serif',
-  bricolage: 'var(--font-bricolage), sans-serif',
+  apfel:     'var(--font-apfel), sans-serif',    // body text, subheadings
+  bricolage: 'var(--font-bricolage), sans-serif', // headings, quotes
+  // backward compat alias
+  syne:      'var(--font-apfel), sans-serif',
 } as const

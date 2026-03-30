@@ -47,6 +47,14 @@ export interface SiteSettings {
   footerText?: string
 }
 
+export interface WhatWeDoPillar {
+  num: string
+  title: string
+  body: string
+  icon?: string
+  accentColor?: 'blue' | 'green' | 'peach'
+}
+
 export interface GlueColumn {
   num: string
   title: string
@@ -87,6 +95,8 @@ export interface HomePage {
   heroSocialProof?: string[]
   // Ticker
   tickerItems: string[]
+  // What We Do
+  whatWeDoPillars?: WhatWeDoPillar[]
   // We Are The Glue
   glueHeadlineProblem?: string
   glueHeadlineSolution?: string

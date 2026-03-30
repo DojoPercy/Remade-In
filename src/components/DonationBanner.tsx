@@ -28,7 +28,7 @@ export default function DonationBanner({ data }: { data?: HomePage | null }) {
   const headline      = data?.donationHeadline      ?? 'Help us reach 1,000,000 garments.'
   const body          = data?.donationBody          ?? 'Every contribution funds the Open Bale Digital Tool, Design Systems for Textile Remanufacturing, and the 1M Garment Movement. Join the radical collaboration that turns a fragmented system into a global, community-led blueprint for circularity.'
   const primaryLabel  = data?.donationPrimaryLabel  ?? 'Donate via Donorbox'
-  const primaryHref   = data?.donationPrimaryHref   ?? 'https://donorbox.org'
+  const primaryHref   = data?.donationPrimaryHref   ?? 'https://buy.stripe.com/aFaaEX6j82rady26My48000'
   const secondaryLabel = data?.donationSecondaryLabel ?? 'Partner With Us'
   const stats         = data?.donationStats?.length  ? data.donationStats : FALLBACK_STATS
 

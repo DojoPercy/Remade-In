@@ -12,8 +12,8 @@ import WeAreTheGlue from '@/components/WeAreTheGlue'
 import BlueprintTeaser from '@/components/BlueprintTeaser'
 import CommunityVoice from '@/components/CommunityVoice'
 import ImpactTeaser from '@/components/ImpactTeaser'
-import ResearchArchive from '@/components/ResearchArchive'
 import HomePartners from '@/components/HomePartners'
+import WhatWeDo from '@/components/WhatWeDo'
 import DonationBanner from '@/components/DonationBanner'
 import Footer from '@/components/Footer'
 
@@ -41,13 +41,11 @@ export default async function Home() {
         <Hero data={homeData} />
       </div>
 
+      <WhatWeDo data={homeData} />
       <Gallery />
-      <MissionVision />
       <WeAreTheGlue data={homeData} />
-      <BlueprintTeaser />
       <CommunityVoice />
       <ImpactTeaser data={homeData} />
-      <ResearchArchive />
       <HomePartners data={partnersData} />
       <DonationBanner data={homeData} />
       <Footer />

@@ -7,7 +7,8 @@
       "Bash(pnpm tsc --noEmit)",
       "Bash(pnpm add lenis)",
       "Bash(pnpm add lenis -w)",
-      "Bash(grep -v \"//\")"
+      "Bash(grep -v \"//\")",
+      "Read(//c/Users/ojoda/OneDrive/Desktop/work/**)"
     ],
     "additionalDirectories": [
       "C:\\Users\\ojoda\\remadein-studio\\src\\app",

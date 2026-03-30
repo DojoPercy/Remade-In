@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { colors, fonts } from '@/lib/tokens'
@@ -9,26 +10,16 @@ const ease: [number, number, number, number] = [0.22, 1, 0.36, 1]
 const BLOCKS = [
   {
     num: '01',
-    label: 'Who We Are',
-    text: 'We are a systems-change non-profit organisation operationalising global textile remanufacturing.',
-    bg: colors.orange,
-    textColor: '#ffffff',
-    numColor: 'rgba(255,255,255,0.07)',
-    rotate: -1,
-    delay: 0,
-  },
-  {
-    num: '02',
     label: 'Vision',
     text: 'A justice-led textile economy where remanufacturing is the norm, shifting value and power back to the communities most impacted by textile waste.',
-    bg: colors.blue,
-    textColor: '#ffffff',
-    numColor: 'rgba(255,255,255,0.07)',
+    bg: colors.lightBlue,
+    textColor: colors.charcoal,
+    numColor: `${colors.charcoal}08`,
     rotate: 0.6,
     delay: 0.1,
   },
   {
-    num: '03',
+    num: '02',
     label: 'Mission',
     text: 'Remade In builds the digital & connects the physical infrastructure to make textile remanufacturing accessible, scalable, cost-effective & socially just.',
     bg: colors.charcoal,
@@ -60,8 +51,45 @@ export default function MissionVision() {
         Our Purpose
       </motion.p>
 
-      {/* Cards grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-5 overflow-hidden md:overflow-visible">
+      {/* Grid: image + two cards */}
+      <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr_1fr] gap-5 md:gap-6 items-stretch">
+
+        {/* Image panel */}
+        <motion.div
+          initial={{ opacity: 0, y: 48 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7, delay: 0, ease }}
+          className="relative overflow-hidden rounded-[14px] min-h-[280px] md:min-h-0"
+        >
+          <Image
+            src="/Upcyclers/KSCxBenBreuer-32.jpg"
+            alt="Community remanufacturing at Kantamanto"
+            fill
+            className="object-cover object-center"
+            sizes="(max-width: 768px) 100vw, 33vw"
+          />
+          {/* Subtle gradient overlay at bottom */}
+          <div
+            className="absolute inset-0"
+            style={{ background: 'linear-gradient(to top, rgba(24,48,40,0.55) 0%, transparent 55%)' }}
+          />
+          <div className="absolute bottom-5 left-5 right-5">
+            <p
+              style={{
+                fontFamily: fonts.syne,
+                fontSize: 10,
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                letterSpacing: '0.2em',
+                color: 'rgba(249,232,208,0.7)',
+              }}
+            >
+              Kantamanto Market · Accra, Ghana
+            </p>
+          </div>
+        </motion.div>
+
+        {/* Vision + Mission cards */}
         {BLOCKS.map((block) => (
           <motion.div
             key={block.label}
@@ -98,7 +126,7 @@ export default function MissionVision() {
               className="self-start inline-flex items-center px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-[0.22em] mb-auto"
               style={{
                 fontFamily: fonts.syne,
-                backgroundColor: 'rgba(255,255,255,0.14)',
+                backgroundColor: block.bg === colors.lightBlue ? `${colors.charcoal}12` : 'rgba(255,255,255,0.14)',
                 color: block.textColor,
                 backdropFilter: 'blur(4px)',
               }}

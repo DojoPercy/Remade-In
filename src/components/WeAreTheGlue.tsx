@@ -20,7 +20,7 @@ const COLUMNS = [
     image: '/images/pro copy.jpg', imgPosition: '30% center',
     title: '1.1 billion people bear the environmental and economic costs of textile waste.',
     desc: 'Discarded clothing leads to dumping, burning, landfill overflow. Circularity has scaled extraction, not justice.',
-    bg: '#1A1A14', textColor: '#F9E8D0', dimText: 'rgba(249,232,208,0.45)',
+    bg: '#183028', textColor: '#F9E8D0', dimText: 'rgba(249,232,208,0.45)',
     numColor: 'rgba(249,232,208,0.05)', stickerBg: '#D75711', stickerText: '#ffffff',
   },
   {
@@ -29,7 +29,7 @@ const COLUMNS = [
     title: 'Remanufacture First. Regional hubs + community-centred processing.',
     desc: 'We restore garments at 15–20% of the energy of new production, creating skilled local employment.',
     bg: '#D75711', textColor: '#ffffff', dimText: 'rgba(255,255,255,0.65)',
-    numColor: 'rgba(255,255,255,0.06)', stickerBg: '#1A1A14', stickerText: '#F9E8D0',
+    numColor: 'rgba(255,255,255,0.06)', stickerBg: '#183028', stickerText: '#F9E8D0',
   },
   {
     num: '03', category: 'The Invitation',
@@ -65,7 +65,7 @@ function GlueCard({ col }: { col: typeof COLUMNS[number] }) {
       </span>
 
       {/* Sticker badge */}
-      <div
+      {/* <div
         className="absolute top-4 right-4 z-10 flex items-center justify-center"
         style={{
           width: 52,
@@ -90,7 +90,7 @@ function GlueCard({ col }: { col: typeof COLUMNS[number] }) {
         >
           {col.num}
         </span>
-      </div>
+      </div> */}
 
       {/* Photo */}
       <div className="relative w-full overflow-hidden" style={{ height: 200 }}>
@@ -134,16 +134,7 @@ function GlueCard({ col }: { col: typeof COLUMNS[number] }) {
           {col.title}
         </h3>
 
-        <p
-          style={{
-            fontFamily: fonts.bricolage,
-            fontSize: 13,
-            color: col.dimText,
-            lineHeight: 1.7,
-          }}
-        >
-          {col.desc}
-        </p>
+       
       </div>
     </div>
   )
@@ -193,20 +184,8 @@ export default function WeAreTheGlue({ data }: { data?: HomePage | null }) {
 
   const sectionHeader = (
     <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 md:gap-20">
-      {/* Left: label + headline */}
+      {/* Left: headline */}
       <div className="flex-1">
-        {/* Label row */}
-        <div className="flex items-center gap-3 mb-5">
-          <span
-            className="font-bold uppercase tracking-[0.28em]"
-            style={{ fontFamily: fonts.syne, fontSize: 11, color: colors.orange }}
-          >
-            We Are The Glue
-          </span>
-          <div className="flex-1 h-px max-w-[48px]" style={{ backgroundColor: colors.orange }} />
-        </div>
-
-        {/* Headline — each line on its own row */}
         <h2
           className="font-extrabold tracking-tight leading-[0.93]"
           style={{
@@ -215,48 +194,12 @@ export default function WeAreTheGlue({ data }: { data?: HomePage | null }) {
             color: colors.charcoal,
           }}
         >
-          The Problem.<br />
-          The Solution.<br />
-          <em style={{ color: colors.orange, fontStyle: 'italic' }}>The Invitation.</em>
+          We Are<br />
+          <em style={{ color: colors.orange, fontStyle: 'italic' }}>The Glue.</em>
         </h2>
       </div>
 
       {/* Right: description + pull stat */}
-      <div className="md:max-w-[340px] shrink-0">
-        <p
-          style={{
-            fontFamily: fonts.bricolage,
-            fontSize: 14,
-            color: `${colors.charcoal}80`,
-            lineHeight: 1.85,
-            fontWeight: 500,
-          }}
-        >
-          The fashion industry generates 92 million tonnes of waste annually.
-          Remanufacturing restores garments, creates dignified work, and closes
-          the loop between the Global North and South.
-        </p>
-        <div className="mt-5 pt-5" style={{ borderTop: `1px solid ${colors.charcoal}14` }}>
-          <span
-            style={{
-              fontFamily: fonts.bricolage,
-              fontSize: 'clamp(28px, 3vw, 38px)',
-              fontWeight: 900,
-              color: colors.charcoal,
-              letterSpacing: '-0.03em',
-              lineHeight: 1,
-            }}
-          >
-            92M
-          </span>
-          <span
-            className="block mt-1"
-            style={{ fontFamily: fonts.syne, fontSize: 10, fontWeight: 700, color: `${colors.charcoal}55`, letterSpacing: '0.14em', textTransform: 'uppercase' }}
-          >
-            Tonnes of textile waste per year
-          </span>
-        </div>
-      </div>
     </div>
   )
 

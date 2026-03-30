@@ -55,6 +55,14 @@ export const homePageQuery = groq`
 
     tickerItems,
 
+    whatWeDoPillars[] {
+      num,
+      title,
+      body,
+      icon,
+      accentColor
+    },
+
     glueHeadlineProblem,
     glueHeadlineSolution,
     glueHeadlineAccent,

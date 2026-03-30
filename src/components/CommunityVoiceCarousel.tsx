@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { motion, AnimatePresence, easeInOut } from 'framer-motion'
 import { colors, fonts } from '@/lib/tokens'
 import SectionDivider from '@/components/ui/SectionDivider'
+import BlobButton from './ui/BlobButton'
 
 
 // ── Types ──────────────────────────────────────────────────────────────────────
@@ -93,7 +94,7 @@ export default function CommunityVoiceCarousel({ voices }: { voices: VoiceItem[]
 
           {/* Badge — market (bottom-left, tilted -6deg) */}
           <div
-            className="absolute bottom-10 -left-4 flex items-center px-4 py-2.5 rounded-[5px] shadow-lg z-10"
+            className="absolute bottom-10 -left-4 flex items-center px-4 py-2.5 rounded-[50px] shadow-lg z-10"
             style={{ backgroundColor: colors.charcoal, transform: 'rotate(-6deg)' }}
           >
             <span
@@ -106,7 +107,7 @@ export default function CommunityVoiceCarousel({ voices }: { voices: VoiceItem[]
 
           {/* Badge — location (top-right, tilted +6.4deg) */}
           <div
-            className="absolute top-8 -right-6 flex items-center px-4 py-2.5 rounded-[5px] shadow-lg z-10"
+            className="absolute top-8 -right-6 flex items-center px-4 py-2.5 rounded-[50px] shadow-lg z-10"
             style={{ backgroundColor: colors.orange, transform: 'rotate(6.4deg)' }}
           >
             <span
@@ -139,7 +140,7 @@ export default function CommunityVoiceCarousel({ voices }: { voices: VoiceItem[]
                 fontSize: 'clamp(22px, 2.4vw, 30px)',
                 fontWeight: 700,
                 lineHeight: 1.38,
-                color: colors.charcoal,
+                color: colors.ink,
               }}
             >
               <span style={{ color: colors.orange }}>&ldquo; </span>
@@ -153,24 +154,15 @@ export default function CommunityVoiceCarousel({ voices }: { voices: VoiceItem[]
               key={`name-${active}`}
               {...fadeSlide}
               className="font-bold capitalize mb-6"
-              style={{ fontFamily: fonts.syne, fontSize: 16, color: colors.charcoal }}
+              style={{ fontFamily: fonts.syne, fontSize: 16, color: colors.ink }}
             >
               {voice.name}
             </motion.p>
           </AnimatePresence>
-
-          <a
-            href={`#${voice.slug}`}
-            className="inline-flex items-center px-6 py-3 rounded-[5px] text-xs font-bold capitalize transition-opacity duration-200 hover:opacity-80"
-            style={{
-              fontFamily: fonts.bricolage,
-              backgroundColor: colors.charcoal,
-              color: colors.white,
-              letterSpacing: '0.04em',
-            }}
-          >
-            Read {voice.name.split(' ')[0]}&apos;s Story
-          </a>
+ <BlobButton href={`#${voice.slug}`} variant="solid">
+           Read {voice.name.split(' ')[0]}&apos;s Story
+          </BlobButton>
+        
 
           {/* Dot navigation */}
           <div className="flex items-center gap-2.5 mt-10">

@@ -1,8 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import { colors, fonts } from '@/lib/tokens'
 import type { HomePage } from '@/lib/sanity/types'
 import SplitText from '@/components/ui/SplitText'
@@ -23,63 +22,6 @@ const FALLBACK_SOCIAL_PROOF = [
   'Justice-led model',
 ]
 
-// ── Accent word with typewriter correction ────────────────────────────────────
-
-type CorrectionPhase = 'in' | 'strike' | 'exit' | 'done'
-
-function AccentWord({ word, replacement }: { word: string; replacement: string }) {
-  const [phase, setPhase] = useState<CorrectionPhase>('in')
-
-  useEffect(() => {
-    const t1 = setTimeout(() => setPhase('strike'), 3000)
-    const t2 = setTimeout(() => setPhase('exit'),   3700)
-    const t3 = setTimeout(() => setPhase('done'),   4100)
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3) }
-  }, [])
-
-  return (
-    <span style={{ position: 'relative', display: 'inline-block', verticalAlign: 'bottom' }}>
-      <AnimatePresence mode="wait">
-        {phase !== 'done' ? (
-          <motion.em
-            key="original"
-            initial={{ opacity: 0, y: '105%' }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: '-20%', transition: { duration: 0.3 } }}
-            transition={{ duration: 0.65, delay: 0.68, ease: [0.22, 1, 0.36, 1] }}
-            style={{ color: colors.orange, fontStyle: 'italic', display: 'inline-block', position: 'relative' }}
-          >
-            {word}
-            {(phase === 'strike' || phase === 'exit') && (
-              <motion.span
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: 1 }}
-                transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                aria-hidden
-                style={{
-                  position: 'absolute', left: 0, right: 0, top: '50%',
-                  height: 3, backgroundColor: colors.cream,
-                  transformOrigin: 'left center', borderRadius: 2,
-                }}
-              />
-            )}
-          </motion.em>
-        ) : (
-          <motion.em
-            key="replacement"
-            initial={{ opacity: 0, y: '105%' }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-            style={{ color: colors.orange, fontStyle: 'italic', display: 'inline-block' }}
-          >
-            {replacement}
-          </motion.em>
-        )}
-      </AnimatePresence>
-    </span>
-  )
-}
-
 // ── Hero ──────────────────────────────────────────────────────────────────────
 
 export default function Hero({ data }: { data?: HomePage | null }) {
@@ -88,9 +30,7 @@ export default function Hero({ data }: { data?: HomePage | null }) {
 
   const primaryCta  = data?.heroPrimaryCta  ?? 'See the Blueprint'
   const socialProof = data?.heroSocialProof?.length ? data.heroSocialProof : FALLBACK_SOCIAL_PROOF
-  const headline    = data?.heroHeadline    ?? 'Building our Circular Fashion'
-  const accent      = data?.heroAccent      ?? 'Future'
-  const tagline     = data?.heroTagline     ?? '— one Community at a Time'
+  const headline    = data?.heroHeadline    ?? 'Remanufacturing our circular fashion future'
 
   return (
     <section
@@ -124,8 +64,8 @@ export default function Hero({ data }: { data?: HomePage | null }) {
       />
 
       {/* Layer 3 — Blobs */}
-      <div className="blob-a absolute pointer-events-none" style={{ zIndex: 1, width: 520, height: 520, top: -120, right: -100, backgroundColor: colors.orange, opacity: 0.05 }} />
-      <div className="blob-b absolute pointer-events-none hidden sm:block" style={{ zIndex: 1, width: 300, height: 300, bottom: 80, left: '38%', backgroundColor: colors.amber, opacity: 0.035 }} />
+      <div className="blob-a absolute pointer-events-none" style={{ zIndex: 1, width: 700, height: 700, top: -160, right: -120, backgroundColor: colors.orange, opacity: 0.06 }} />
+      <div className="blob-b absolute pointer-events-none hidden sm:block" style={{ zIndex: 1, width: 420, height: 420, bottom: 60, left: '35%', backgroundColor: colors.amber, opacity: 0.04 }} />
 
       {/* ── Impact blob badge — top-right corner ── */}
       <motion.div
@@ -134,30 +74,29 @@ export default function Hero({ data }: { data?: HomePage | null }) {
         transition={{ delay: 1, type: 'spring', stiffness: 160, damping: 20 }}
         className="absolute hidden sm:flex flex-col items-center justify-center select-none blob-a z-10"
         style={{
-          width: 260,
-          height: 260,
-          top: 80,
-          right: 48,
+          width: 340,
+          height: 340,
+          top: '48%',
+          right: '8%',
           backgroundColor: colors.orange,
-          boxShadow: `0 0 55px ${colors.orange}77, 0 0 110px ${colors.orange}30, 0 16px 40px rgba(0,0,0,0.3)`,
+          boxShadow: `0 0 80px ${colors.orange}88, 0 0 160px ${colors.orange}35, 0 24px 60px rgba(0,0,0,0.35)`,
         }}
       >
         <span
           className="text-center font-extrabold leading-none"
-          style={{ fontFamily: fonts.bricolage, fontSize: 42, color: '#ffffff', letterSpacing: '-0.03em' }}
+          style={{ fontFamily: fonts.bricolage, fontSize: 58, color: '#ffffff', letterSpacing: '-0.03em' }}
         >
           <CountUp to={1000000} duration={2.2} />
         </span>
-        <span className="text-center font-bold mt-1.5" style={{ fontFamily: fonts.bricolage, fontSize: 14, color: '#ffffff' }}>
+        <span className="text-center font-bold mt-2" style={{ fontFamily: fonts.bricolage, fontSize: 18, color: '#ffffff' }}>
           Garments
         </span>
-        <span className="text-center font-semibold mt-2 leading-snug" style={{ fontFamily: fonts.bricolage, fontSize: 11, color: 'rgba(255,255,255,0.65)' }}>
+        <span className="text-center font-semibold mt-2 leading-snug" style={{ fontFamily: fonts.bricolage, fontSize: 13, color: 'rgba(255,255,255,0.65)' }}>
           Remanufactured in 5 years
         </span>
-        <div className="mt-4 mx-auto" style={{ width: 32, height: 1, backgroundColor: 'rgba(255,255,255,0.25)' }} />
         <span
           className="text-center font-semibold mt-3 leading-tight"
-          style={{ fontFamily: fonts.bricolage, fontSize: 9, color: 'rgba(255,255,255,0.45)', letterSpacing: '0.08em', textTransform: 'uppercase' }}
+          style={{ fontFamily: fonts.bricolage, fontSize: 11, color: 'rgba(255,255,255,0.45)', letterSpacing: '0.08em', textTransform: 'uppercase' }}
         >
           Starting in the<br />Netherlands
         </span>
@@ -165,24 +104,22 @@ export default function Hero({ data }: { data?: HomePage | null }) {
 
       {/* Layer 4 — Content */}
       <div
-        className="relative flex flex-col justify-start flex-1 px-8 md:px-20 pt-12 pb-16 md:pt-24 md:pb-20"
+        className="relative flex flex-col justify-start flex-1 px-8 md:px-20 pt-6 pb-16 md:pt-14 md:pb-20"
         style={{ zIndex: 10 }}
       >
         {/* ── Headline ── */}
         <h1
-          className="font-extrabold max-w-3xl leading-[1.08] md:leading-[0.97]"
+          className="font-extrabold max-w-3xl leading-[1.05] md:leading-[0.95]"
           style={{
             fontFamily: fonts.bricolage,
             color: colors.white,
-            fontSize: 'clamp(30px, 8.5vw, 88px)',
-            letterSpacing: '-0.025em',
+            fontSize: 'clamp(30px, 8vw, 90px)',
+            letterSpacing: '-0.03em',
           }}
         >
           <SplitText text={headline} onMount delay={0.2} stagger={0.08} />
           {' '}
-          <AccentWord word={accent} replacement="Now" />
-          {' '}
-          <SplitText text={tagline} onMount delay={0.82} stagger={0.07} />
+          <em style={{ color: colors.orange, fontStyle: 'italic' }}>now</em>
         </h1>
 
         {/* Whitespace gap before CTA */}
@@ -195,21 +132,6 @@ export default function Hero({ data }: { data?: HomePage | null }) {
           </BlobButton>
         </motion.div>
 
-        {/* ── Social proof ── */}
-        <motion.div
-          {...fadeUp(0.84)}
-          className="flex flex-wrap items-center gap-4 border-t pt-5 text-[11px]"
-          style={{ borderColor: 'rgba(255,255,255,0.07)', color: `${colors.cream}55`, fontFamily: fonts.bricolage, letterSpacing: '0.04em' }}
-        >
-          {socialProof.map((item: string, i: number) => (
-            <span key={item} className="flex items-center gap-4">
-              {i > 0 && (
-                <span className="rounded-full flex-shrink-0 inline-block" style={{ width: 3, height: 3, backgroundColor: 'rgba(255,255,255,0.18)' }} />
-              )}
-              {item}
-            </span>
-          ))}
-        </motion.div>
       </div>
     </section>
   )

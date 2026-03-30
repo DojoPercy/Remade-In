@@ -91,7 +91,7 @@ export default function BlobButton({
     style: {
       x, y,
       borderRadius:    '9999px',
-      fontFamily:      fonts.syne,
+      fontFamily:      fonts.apfel,
       fontWeight:      700,
       letterSpacing:   '0.04em',
       backgroundColor: v.bg,

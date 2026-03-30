@@ -1,29 +1,26 @@
 import type { Metadata } from "next";
-import { Syne, Bricolage_Grotesque } from "next/font/google";
+import { Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
 import LenisProvider from "@/components/ui/LenisProvider";
 import ScrollProgress from "@/components/ui/ScrollProgress";
 import PageTransition from "@/components/ui/PageTransition";
 
-const syne = Syne({
-  variable: "--font-syne",
-  subsets: ["latin"],
-  weight: ["800"],
-});
+// Apfel loaded via @font-face in globals.css (public/fonts/)
 
 const bricolage = Bricolage_Grotesque({
   variable: "--font-bricolage",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
   title: "Remade In",
   description: "Remade In",
   icons: {
-    icon: '/Remadein_Favicon.jpg',
-    apple: '/Remadein_Favicon.jpg',
+    icon: '/Remadein_Favicon.png',
+    apple: '/Remadein_Favicon.png',
   },
+  
 };
 
 export default function RootLayout({
@@ -33,7 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${syne.variable} ${bricolage.variable} antialiased`}>
+      <body className={`${bricolage.variable} antialiased`}>
         <LenisProvider>
           {/* Orange scroll progress bar */}
           <ScrollProgress />
