@@ -49,8 +49,8 @@ export default function ImpactTeaser({ data }: { data?: HomePage | null }) {
   return (
     <section
       ref={ref}
-      className="relative overflow-hidden px-8 md:px-20 pt-20 pb-28 md:pt-28 md:pb-36"
-      style={{ backgroundColor: colors.charcoal }}
+      className="relative overflow-hidden px-8 md:px-20 pt-14 pb-20 md:pt-28 md:pb-36"
+      style={{ backgroundColor: '#6776b6' }}
     >
       {/* ── Subtle grid lines ── */}
       <div
@@ -82,7 +82,7 @@ export default function ImpactTeaser({ data }: { data?: HomePage | null }) {
                 fontWeight: 900,
                 lineHeight: 1.1,
                 letterSpacing: '-0.02em',
-                color: colors.cream,
+                color: colors.white,
               }}
             >
               Turning waste<br />
@@ -97,13 +97,13 @@ export default function ImpactTeaser({ data }: { data?: HomePage | null }) {
         <motion.div
           {...anim(0.2)}
           className="grid grid-cols-1 md:grid-cols-3 mb-px"
-          style={{ borderTop: `1px solid ${colors.white}14`, borderBottom: `1px solid ${colors.white}14` }}
+          style={{ borderTop: `1px solid ${colors.white}18`, borderBottom: `1px solid ${colors.white}18` }}
         >
           {heroStats.map((stat, i) => (
             <div
               key={stat.label}
               className={`py-10 flex flex-col gap-3 ${i > 0 ? 'border-t md:border-t-0 md:border-l' : ''} md:pr-10 ${i > 0 ? 'md:pl-10' : ''}`}
-              style={{ borderColor: `${colors.white}14` }}
+              style={{ borderColor: `${colors.white}18` }}
             >
               {/* Number */}
               <div
@@ -113,7 +113,7 @@ export default function ImpactTeaser({ data }: { data?: HomePage | null }) {
                   fontWeight: 900,
                   lineHeight: 1,
                   letterSpacing: '-0.03em',
-                  color: colors.cream,
+                  color: colors.white,
                 }}
               >
                 ~<CountUp
@@ -130,7 +130,7 @@ export default function ImpactTeaser({ data }: { data?: HomePage | null }) {
                 style={{
                   fontFamily: fonts.syne,
                   fontSize: 13,
-                  color: colors.cream,
+                  color: colors.white,
                   textTransform: 'uppercase',
                   letterSpacing: '0.12em',
                 }}
@@ -143,7 +143,7 @@ export default function ImpactTeaser({ data }: { data?: HomePage | null }) {
                 style={{
                   fontFamily: fonts.bricolage,
                   fontSize: 13,
-                  color: `${colors.cream}66`,
+                  color: `${colors.white}88`,
                   lineHeight: 1.5,
                 }}
               >
@@ -157,13 +157,13 @@ export default function ImpactTeaser({ data }: { data?: HomePage | null }) {
         <motion.div
           {...anim(0.3)}
           className="grid grid-cols-2 md:grid-cols-4 mt-px"
-          style={{ borderBottom: `1px solid ${colors.white}14` }}
+          style={{ borderBottom: `1px solid ${colors.white}18` }}
         >
           {secondaryStats.map((stat, i) => (
             <div
               key={stat.label}
               className={`py-8 flex flex-col gap-1.5 ${i > 0 ? 'border-t sm:border-t-0 sm:border-l' : ''} sm:pr-8 ${i > 0 ? 'sm:pl-8' : ''}`}
-              style={{ borderColor: `${colors.white}14` }}
+              style={{ borderColor: `${colors.white}18` }}
             >
               <span
                 style={{
@@ -182,7 +182,7 @@ export default function ImpactTeaser({ data }: { data?: HomePage | null }) {
                   fontFamily: fonts.syne,
                   fontSize: 11,
                   fontWeight: 700,
-                  color: `${colors.cream}55`,
+                  color: `${colors.white}66`,
                   textTransform: 'uppercase',
                   letterSpacing: '0.12em',
                 }}

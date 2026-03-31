@@ -34,7 +34,7 @@ export default function Hero({ data }: { data?: HomePage | null }) {
 
   return (
     <section
-      className="relative min-h-[100svh] overflow-hidden flex flex-col"
+      className="relative min-h-[75svh] md:min-h-[100svh] overflow-hidden flex flex-col"
       style={{ backgroundColor: colors.charcoal, paddingTop: 66 }}
     >
       {/* Layer 0 — Photography with parallax */}
@@ -104,16 +104,16 @@ export default function Hero({ data }: { data?: HomePage | null }) {
 
       {/* Layer 4 — Content */}
       <div
-        className="relative flex flex-col justify-start flex-1 px-8 md:px-20 pt-6 pb-16 md:pt-14 md:pb-20"
+        className="relative flex flex-col justify-center md:justify-start flex-1 px-8 md:px-20 pt-4 pb-10 md:pt-14 md:pb-20"
         style={{ zIndex: 10 }}
       >
         {/* ── Headline ── */}
         <h1
-          className="font-extrabold max-w-3xl leading-[1.05] md:leading-[0.95]"
+          className="font-extrabold max-w-3xl leading-[1.05] md:leading-[0.95] mb-8 md:mb-14"
           style={{
             fontFamily: fonts.bricolage,
             color: colors.white,
-            fontSize: 'clamp(30px, 8vw, 90px)',
+            fontSize: 'clamp(42px, 8vw, 90px)',
             letterSpacing: '-0.03em',
           }}
         >
@@ -122,16 +122,31 @@ export default function Hero({ data }: { data?: HomePage | null }) {
           <em style={{ color: colors.orange, fontStyle: 'italic' }}>now</em>
         </h1>
 
-        {/* Whitespace gap before CTA */}
-        <div className="mt-8 md:mt-14" />
-
         {/* ── CTA ── */}
-        <motion.div {...fadeUp(0.68)} className="flex flex-col sm:flex-row gap-3 mb-10">
+        <motion.div {...fadeUp(0.68)} className="flex flex-col sm:flex-row gap-3">
           <BlobButton href="/blueprint" variant="solid">
             {primaryCta}
           </BlobButton>
         </motion.div>
 
+        {/* ── Social proof — visible on mobile ── */}
+        {socialProof.length > 0 && (
+          <motion.div
+            {...fadeUp(0.85)}
+            className="flex flex-wrap gap-x-4 gap-y-1 mt-6"
+          >
+            {socialProof.map((tag, i) => (
+              <span
+                key={tag}
+                className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em]"
+                style={{ fontFamily: fonts.apfel, color: `${colors.white}66` }}
+              >
+                {i > 0 && <span style={{ color: `${colors.white}33` }}>·</span>}
+                {tag}
+              </span>
+            ))}
+          </motion.div>
+        )}
       </div>
     </section>
   )

@@ -67,7 +67,7 @@ export default function DonationBanner({ data }: { data?: HomePage | null }) {
       />
 
       {/* ── Inner content ── */}
-      <div className="relative pt-24 md:pt-20 pb-0">
+      <div className="relative pt-14 md:pt-20 pb-0">
 
         {/* Row 1 — eyebrow */}
         <motion.p
@@ -83,7 +83,7 @@ export default function DonationBanner({ data }: { data?: HomePage | null }) {
           {...anim(0.08)}
           style={{
             fontFamily: fonts.bricolage,
-            fontSize: 'clamp(44px, 6.5vw, 88px)',
+            fontSize: 'clamp(36px, 6.5vw, 88px)',
             fontWeight: 900,
             lineHeight: 1.04,
             letterSpacing: '-0.025em',

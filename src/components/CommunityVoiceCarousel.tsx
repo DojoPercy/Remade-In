@@ -51,7 +51,7 @@ export default function CommunityVoiceCarousel({ voices }: { voices: VoiceItem[]
 
   return (
     <section
-      className="relative overflow-hidden px-8 md:px-20 py-24 md:py-32"
+      className="relative overflow-hidden px-8 md:px-20 py-16 md:py-32"
       style={{ backgroundColor: colors.cream }}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
@@ -70,7 +70,7 @@ export default function CommunityVoiceCarousel({ voices }: { voices: VoiceItem[]
       <div className="relative z-10 flex flex-col md:flex-row items-center md:items-start gap-12 md:gap-20">
 
         {/* ── Left — blob image ── */}
-        <div className="relative flex-shrink-0 w-full max-w-[340px] md:w-[420px] h-[340px] md:h-[480px]">
+        <div className="relative flex-shrink-0 w-full max-w-[300px] mx-auto md:mx-0 md:w-[420px] h-[300px] md:h-[480px]">
 
           <AnimatePresence mode="wait">
             <motion.div
@@ -94,12 +94,12 @@ export default function CommunityVoiceCarousel({ voices }: { voices: VoiceItem[]
 
           {/* Badge — market (bottom-left, tilted -6deg) */}
           <div
-            className="absolute bottom-10 -left-4 flex items-center px-4 py-2.5 rounded-[50px] shadow-lg z-10"
+            className="absolute bottom-8 left-0 md:-left-4 flex items-center px-3 py-2 md:px-4 md:py-2.5 rounded-[50px] shadow-lg z-10"
             style={{ backgroundColor: colors.charcoal, transform: 'rotate(-6deg)' }}
           >
             <span
-              className="text-sm font-bold capitalize whitespace-nowrap"
-              style={{ fontFamily: fonts.syne, color: colors.white }}
+              className="font-bold capitalize whitespace-nowrap text-xs md:text-sm"
+              style={{ fontFamily: fonts.apfel, color: colors.white }}
             >
               {voice.market}
             </span>
@@ -107,12 +107,12 @@ export default function CommunityVoiceCarousel({ voices }: { voices: VoiceItem[]
 
           {/* Badge — location (top-right, tilted +6.4deg) */}
           <div
-            className="absolute top-8 -right-6 flex items-center px-4 py-2.5 rounded-[50px] shadow-lg z-10"
+            className="absolute top-6 right-0 md:-right-6 flex items-center px-3 py-2 md:px-4 md:py-2.5 rounded-[50px] shadow-lg z-10"
             style={{ backgroundColor: colors.orange, transform: 'rotate(6.4deg)' }}
           >
             <span
-              className="text-sm font-bold capitalize whitespace-nowrap"
-              style={{ fontFamily: fonts.syne, color: colors.white }}
+              className="font-bold capitalize whitespace-nowrap text-xs md:text-sm"
+              style={{ fontFamily: fonts.apfel, color: colors.white }}
             >
               {voice.location}
             </span>
@@ -184,7 +184,7 @@ export default function CommunityVoiceCarousel({ voices }: { voices: VoiceItem[]
         </div>
       </div>
 
-      <SectionDivider fill={colors.charcoal} direction="right" height={52} />
+      <SectionDivider fill='#6776b6' direction="right" height={52} />
     </section>
   )
 }

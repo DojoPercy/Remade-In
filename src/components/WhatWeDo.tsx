@@ -75,15 +75,15 @@ export default function WhatWeDo({ data }: { data?: HomePage | null }) {
     <section
       ref={ref}
       className="px-8 md:px-20 py-14 md:py-32"
-      style={{ backgroundColor: colors.white }}
+      style={{ backgroundColor: '#d0e2ff' }}
     >
       {/* Eyebrow */}
       <motion.p
         initial={{ opacity: 0, y: 16 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.5, ease }}
-        className="text-[11px] font-bold uppercase tracking-[0.28em] mb-14"
-        style={{ color: colors.orange, fontFamily: fonts.apfel }}
+        className="text-[15px] font-bold uppercase tracking-[0.28em] mb-14"
+        style={{ color: '#6776b6', fontFamily: fonts.apfel }}
       >
         What We Do
       </motion.p>
@@ -108,26 +108,18 @@ export default function WhatWeDo({ data }: { data?: HomePage | null }) {
                 style={{
                   width: 48,
                   height: 48,
-                  backgroundColor: `${accent}22`,
+                  backgroundColor: 'rgba(255,255,255,0.55)',
                 }}
               >
                 <Icon size={22} color={accent} strokeWidth={1.8} />
               </div>
-
-              {/* Number */}
-              <span
-                className="font-bold mb-4"
-                style={{ fontFamily: fonts.apfel, fontSize: 11, color: `${colors.dark}44`, letterSpacing: '0.18em' }}
-              >
-                {pillar.num}
-              </span>
 
               {/* Title */}
               <h3
                 className="font-bold leading-snug mb-5"
                 style={{
                   fontFamily: fonts.bricolage,
-                  fontSize: 'clamp(20px, 1.8vw, 26px)',
+                  fontSize: 'clamp(22px, 2vw, 30px)',
                   color: colors.dark,
                   letterSpacing: '-0.02em',
                 }}

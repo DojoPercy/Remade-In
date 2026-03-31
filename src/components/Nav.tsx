@@ -7,7 +7,7 @@ import BlobButton from '@/components/ui/BlobButton'
 
 const NAV_LINKS = [
   { label: 'The Blueprint', href: '/blueprint' },
-  { label: 'About Us',      href: '#about'     },
+  { label: 'About Us',      href: '/about'     },
   { label: 'Stories',       href: '/stories'   },
   { label: 'Partner With Us', href: '/partner' },
 ]

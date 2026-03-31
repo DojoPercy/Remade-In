@@ -53,21 +53,6 @@ export default function HomePartners({ data }: Props) {
         >
           Trusted Partners
         </span>
-        <div className="ml-auto flex items-center gap-2">
-          <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: colors.orange, opacity: 0.4 }} />
-          <span
-            style={{
-              fontFamily: fonts.syne,
-              fontSize: 9,
-              fontWeight: 700,
-              textTransform: 'uppercase',
-              letterSpacing: '0.18em',
-              color: 'rgba(0,0,0,0.25)',
-            }}
-          >
-            {partners.length} Partner{partners.length !== 1 ? 's' : ''}
-          </span>
-        </div>
       </div>
 
       {/* ── Auto-scrolling logo strip ── */}
@@ -104,29 +89,19 @@ export default function HomePartners({ data }: Props) {
 
             const item = (
               <div
-                className="group flex items-center justify-center shrink-0 px-12 py-8"
+                className="group flex items-center justify-center shrink-0 px-14 py-10"
                 style={{
                   borderRight: '1px solid rgba(0,0,0,0.07)',
-                  minWidth: 200,
+                  minWidth: 240,
                 }}
               >
                 {logoSrc ? (
                   <Image
                     src={logoSrc}
                     alt={partner.logo?.alt || partner.name}
-                    width={120}
-                    height={48}
-                    className="max-h-10 w-auto object-contain"
-                    style={{
-                      filter: 'grayscale(1) opacity(0.45)',
-                      transition: 'filter 0.4s ease',
-                    }}
-                    onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLImageElement).style.filter = 'grayscale(0) opacity(1)'
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLImageElement).style.filter = 'grayscale(1) opacity(0.45)'
-                    }}
+                    width={160}
+                    height={64}
+                    className="max-h-16 w-auto object-contain"
                   />
                 ) : (
                   <span

@@ -1,6 +1,7 @@
 'use client'
 import Image from 'next/image'
 import { colors, fonts } from '@/lib/tokens'
+import NewsletterForm from '@/components/NewsletterForm'
 
 const PAGES = [
   { label: 'Home', href: '/' },
@@ -189,17 +190,7 @@ export default function Footer() {
               Research updates, events, and investment briefs — straight to your inbox.
             </p>
           </div>
-          <a
-            href="mailto:hello@remadein.nl?subject=Newsletter%20Sign-Up"
-            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-full text-[13px] font-bold tracking-wide transition-opacity duration-200 hover:opacity-90"
-            style={{ fontFamily: fonts.syne, backgroundColor: colors.orange, color: colors.cream }}
-          >
-            Get Updates
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="5" y1="12" x2="19" y2="12" />
-              <polyline points="12 5 19 12 12 19" />
-            </svg>
-          </a>
+          <NewsletterForm />
         </div>
 
         {/* Divider */}

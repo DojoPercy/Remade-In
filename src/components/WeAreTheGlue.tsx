@@ -1,12 +1,11 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
 import Image from 'next/image'
 import {
   motion,
   useScroll,
   useTransform,
-  useMotionValueEvent,
 } from 'framer-motion'
 import { colors, fonts } from '@/lib/tokens'
 import type { HomePage } from '@/lib/sanity/types'
@@ -148,8 +147,6 @@ export default function WeAreTheGlue({ data }: { data?: HomePage | null }) {
     : COLUMNS
 
   const outerRef = useRef<HTMLDivElement>(null)
-  const [activeStep, setActiveStep] = useState(0)
-
   const { scrollYProgress } = useScroll({
     target: outerRef,
     offset: ['start start', 'end end'],
@@ -170,17 +167,6 @@ export default function WeAreTheGlue({ data }: { data?: HomePage | null }) {
     { opacity: opacity1, y: y1 },
     { opacity: opacity2, y: y2 },
   ]
-
-  // Active step derived from scroll progress
-  const stepValue = useTransform(
-    scrollYProgress,
-    [0, 0.33, 0.34, 0.66, 0.67, 1],
-    [0, 0, 1, 1, 2, 2]
-  )
-
-  useMotionValueEvent(stepValue, 'change', (v) => {
-    setActiveStep(Math.round(v))
-  })
 
   const sectionHeader = (
     <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 md:gap-20">
@@ -231,33 +217,13 @@ export default function WeAreTheGlue({ data }: { data?: HomePage | null }) {
             ))}
           </div>
 
-          {/* Progress dots */}
-          <div className="flex gap-3 mt-8 items-center">
-            {[0, 1, 2].map((step) => {
-              const isActive = activeStep === step
-              return (
-                <div
-                  key={step}
-                  style={{
-                    width: isActive ? 8 : 7,
-                    height: isActive ? 8 : 7,
-                    borderRadius: '50%',
-                    backgroundColor: isActive
-                      ? colors.orange
-                      : `${colors.charcoal}33`,
-                    transition: 'background-color 0.3s, width 0.3s, height 0.3s',
-                  }}
-                />
-              )
-            })}
-          </div>
         </div>
       </div>
 
       {/* ── Mobile: stacked layout (below md) ── */}
       <div
         id="about"
-        className="md:hidden px-8 py-20"
+        className="md:hidden px-8 py-14"
         style={{ backgroundColor: colors.white }}
       >
         {sectionHeader}
@@ -281,7 +247,7 @@ export default function WeAreTheGlue({ data }: { data?: HomePage | null }) {
         </div>
       </div>
 
-      <SectionDivider fill={colors.charcoal} direction="left" height={60} />
+      <SectionDivider fill={colors.cream} direction="left" height={60} />
     </>
   )
 }

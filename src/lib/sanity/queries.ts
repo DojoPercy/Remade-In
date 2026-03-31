@@ -204,6 +204,32 @@ export const partnersQuery = groq`
   }
 `
 
+// ── Team Members ─────────────────────────────────────────────────────────────
+
+/**
+ * Active team members — co-founders first, then core team, then advisors.
+ * Within each type, ordered by the `order` field ascending.
+ */
+export const teamMembersQuery = groq`
+  *[_type == "teamMember" && active == true] | order(
+    select(memberType == "cofounder" => 0, memberType == "team" => 1, 2),
+    order asc
+  ) {
+    _id,
+    name,
+    slug,
+    role,
+    memberType,
+    photo { ${imageFragment} },
+    shortBio,
+    connectionToMission,
+    location,
+    expertise,
+    linkedin,
+    twitter
+  }
+`
+
 // ── Stories ───────────────────────────────────────────────────────────────────
 
 /** All stories across all four types, for the hub page */

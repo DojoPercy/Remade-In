@@ -37,7 +37,7 @@ export default function MissionVision() {
   return (
     <section
       ref={ref}
-      className="px-8 md:px-20 py-24 md:py-32"
+      className="px-8 md:px-20 py-14 md:py-32"
       style={{ backgroundColor: colors.white }}
     >
       {/* Eyebrow */}
