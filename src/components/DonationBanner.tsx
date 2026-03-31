@@ -4,6 +4,7 @@ import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { colors, fonts } from '@/lib/tokens'
 import BlobButton from '@/components/ui/BlobButton'
+import SectionDivider from '@/components/ui/SectionDivider'
 import type { HomePage } from '@/lib/sanity/types'
 
 // ── Fallback data ──────────────────────────────────────────────────────────────
@@ -161,6 +162,8 @@ export default function DonationBanner({ data }: { data?: HomePage | null }) {
           </div>
         ))}
       </motion.div>
+
+      <SectionDivider fill={colors.blue} direction="left" height={60} />
     </section>
   )
 }

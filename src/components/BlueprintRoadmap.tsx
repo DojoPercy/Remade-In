@@ -5,6 +5,7 @@ import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { colors, fonts } from '@/lib/tokens'
 import { imageUrl } from '@/lib/sanity/image'
+import SectionDivider from '@/components/ui/SectionDivider'
 
 interface Partner {
   _id: string
@@ -66,7 +67,7 @@ export default function BlueprintRoadmap({ partners = [] }: { partners?: Partner
   return (
     <section
       ref={ref}
-      className="px-8 md:px-20 py-24 md:py-32"
+      className="relative overflow-hidden px-8 md:px-20 py-24 md:py-32"
       style={{ backgroundColor: colors.cream }}
     >
       {/* Header */}
@@ -304,7 +305,6 @@ export default function BlueprintRoadmap({ partners = [] }: { partners?: Partner
                   width={120}
                   height={40}
                   className="max-h-9 w-auto object-contain transition-all duration-300"
-                  style={{ filter: 'grayscale(1) opacity(0.45)' }}
                   onMouseEnter={(e) => {
                     (e.currentTarget as HTMLImageElement).style.filter = 'grayscale(0) opacity(1)'
                   }}
@@ -361,6 +361,8 @@ export default function BlueprintRoadmap({ partners = [] }: { partners?: Partner
           </div>
         )}
       </motion.div>
+
+      <SectionDivider fill={colors.blue} direction="right" height={56} />
     </section>
   )
 }

@@ -3,6 +3,7 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { colors, fonts } from '@/lib/tokens'
+import SectionDivider from '@/components/ui/SectionDivider'
 
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1]
 
@@ -37,8 +38,8 @@ export default function BlueprintAct() {
   return (
     <section
       ref={ref}
-      className="px-8 md:px-20 py-24 md:py-32"
-      style={{ backgroundColor: colors.charcoal }}
+      className="relative overflow-hidden px-8 md:px-20 py-24 md:py-32"
+      style={{ backgroundColor: colors.blue }}
     >
       <motion.div {...anim(0)} className="mb-14">
         <p
@@ -54,7 +55,7 @@ export default function BlueprintAct() {
             fontWeight: 800,
             lineHeight: 1.08,
             letterSpacing: '-0.025em',
-            color: colors.cream,
+            color: '#ffffff',
             maxWidth: 560,
           }}
         >
@@ -67,7 +68,7 @@ export default function BlueprintAct() {
             fontFamily: fonts.bricolage,
             fontSize: 'clamp(14px, 1.2vw, 16px)',
             lineHeight: 1.75,
-            color: 'rgba(249,232,208,0.5)',
+            color: 'rgba(255,255,255,0.65)',
           }}
         >
           We are looking for partners who want to build this with us — not just fund it.
@@ -88,7 +89,7 @@ export default function BlueprintAct() {
             className="flex flex-col p-8 rounded-[12px]"
             style={{
               backgroundColor: 'rgba(255,255,255,0.05)',
-              border: '1px solid rgba(249,232,208,0.08)',
+              border: '1px solid rgba(255,255,255,0.14)',
             }}
           >
             <p
@@ -98,7 +99,7 @@ export default function BlueprintAct() {
                 fontWeight: 700,
                 textTransform: 'uppercase' as const,
                 letterSpacing: '0.2em',
-                color: 'rgba(249,232,208,0.3)',
+                color: 'rgba(255,255,255,0.45)',
                 marginBottom: 16,
               }}
             >
@@ -122,9 +123,9 @@ export default function BlueprintAct() {
                 className="shrink-0 px-3 py-1 rounded-full text-[10px] font-bold"
                 style={{
                   fontFamily: fonts.syne,
-                  backgroundColor: 'rgba(249,232,208,0.06)',
-                  color: 'rgba(249,232,208,0.45)',
-                  border: '1px solid rgba(249,232,208,0.12)',
+                  backgroundColor: 'rgba(255,255,255,0.10)',
+                  color: 'rgba(255,255,255,0.60)',
+                  border: '1px solid rgba(255,255,255,0.18)',
                 }}
               >
                 {p.commitment}
@@ -137,7 +138,7 @@ export default function BlueprintAct() {
                 fontFamily: fonts.bricolage,
                 fontSize: 'clamp(14px, 1.2vw, 16px)',
                 lineHeight: 1.72,
-                color: 'rgba(249,232,208,0.6)',
+                color: 'rgba(255,255,255,0.75)',
               }}
             >
               {p.outcome}
@@ -163,11 +164,11 @@ export default function BlueprintAct() {
         {...anim(0.35)}
         className="mt-10 pt-8"
         style={{
-          borderTop: '1px solid rgba(249,232,208,0.08)',
+          borderTop: '1px solid rgba(255,255,255,0.14)',
           fontFamily: fonts.bricolage,
           fontSize: 14,
           lineHeight: 1.7,
-          color: 'rgba(249,232,208,0.3)',
+          color: 'rgba(255,255,255,0.50)',
         }}
       >
         Policymaker? Our policy brief covers EPR reform, trade transparency, and tax
@@ -180,6 +181,8 @@ export default function BlueprintAct() {
           Download the Policy Brief →
         </a>
       </motion.p>
+
+      <SectionDivider fill={colors.cream} direction="left" height={56} />
     </section>
   )
 }

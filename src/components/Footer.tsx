@@ -62,7 +62,7 @@ const SOCIALS = [
 // ── Divider line ──────────────────────────────────────────────────────────────
 
 function Divider() {
-  return <div style={{ height: 1, backgroundColor: 'rgba(249,232,208,0.08)' }} />
+  return <div style={{ height: 1, backgroundColor: 'rgba(255,255,255,0.82)' }} />
 }
 
 // ── Footer column ─────────────────────────────────────────────────────────────
@@ -82,9 +82,9 @@ function FooterCol({ heading, links }: { heading: string; links: { label: string
             <a
               href={href}
               className="text-[14px] leading-snug transition-colors duration-200"
-              style={{ fontFamily: fonts.bricolage, color: `${colors.cream}70` }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = colors.cream)}
-              onMouseLeave={(e) => (e.currentTarget.style.color = `${colors.cream}70`)}
+              style={{ fontFamily: fonts.bricolage, color: 'rgba(255,255,255,0.60)' }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = '#ffffff')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.60)')}
             >
               {label}
             </a>
@@ -101,10 +101,7 @@ export default function Footer() {
   const year = new Date().getFullYear()
 
   return (
-    <footer style={{ backgroundColor: colors.charcoal }}>
-      {/* Top orange rule */}
-      <div style={{ height: 3, backgroundColor: colors.orange }} />
-
+    <footer style={{ backgroundColor: colors.blue }}>
       {/* Main body */}
       <div className="px-8 md:px-20 pt-16 pb-12">
 
@@ -124,7 +121,7 @@ export default function Footer() {
             </a>
             <p
               className="text-[15px] leading-[1.75]"
-              style={{ fontFamily: fonts.bricolage, color: `${colors.cream}65` }}
+              style={{ fontFamily: fonts.bricolage, color: 'rgba(255,255,255,0.65)' }}
             >
               Remanufacturing the global fashion system — from the ground up, with the communities who already know how.
             </p>
@@ -142,18 +139,18 @@ export default function Footer() {
                   style={{
                     width: 40,
                     height: 40,
-                    color: `${colors.cream}55`,
-                    borderColor: `${colors.cream}18`,
+                    color: 'rgba(255,255,255,0.55)',
+                    borderColor: 'rgba(255,255,255,0.18)',
                     backgroundColor: 'transparent',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.color = colors.cream
-                    e.currentTarget.style.borderColor = `${colors.cream}45`
-                    e.currentTarget.style.backgroundColor = `${colors.cream}08`
+                    e.currentTarget.style.color = '#ffffff'
+                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.45)'
+                    e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.08)'
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.color = `${colors.cream}55`
-                    e.currentTarget.style.borderColor = `${colors.cream}18`
+                    e.currentTarget.style.color = 'rgba(255,255,255,0.55)'
+                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.18)'
                     e.currentTarget.style.backgroundColor = 'transparent'
                   }}
                 >
@@ -174,7 +171,7 @@ export default function Footer() {
         {/* Newsletter / CTA strip */}
         <div
           className="mt-14 rounded-[10px] px-8 py-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6"
-          style={{ backgroundColor: `${colors.cream}07`, border: `1px solid ${colors.cream}10` }}
+          style={{ backgroundColor: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)' }}
         >
           <div>
             <p
@@ -185,7 +182,7 @@ export default function Footer() {
             </p>
             <p
               className="text-[15px]"
-              style={{ fontFamily: fonts.bricolage, color: `${colors.cream}75` }}
+              style={{ fontFamily: fonts.bricolage, color: 'rgba(255,255,255,0.75)' }}
             >
               Research updates, events, and investment briefs — straight to your inbox.
             </p>
@@ -202,13 +199,13 @@ export default function Footer() {
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <p
             className="text-[12px]"
-            style={{ fontFamily: fonts.syne, color: `${colors.cream}30` }}
+            style={{ fontFamily: fonts.syne, color: 'rgba(255,255,255,0.35)' }}
           >
             © {year} Remade In Foundation. All rights reserved.
           </p>
           <p
             className="text-[12px]"
-            style={{ fontFamily: fonts.syne, color: `${colors.cream}25` }}
+            style={{ fontFamily: fonts.syne, color: 'rgba(255,255,255,0.28)' }}
           >
             The Netherlands · Ghana
           </p>
