@@ -175,6 +175,23 @@ export interface Partner {
   active?: boolean
 }
 
+// ── Team Members ─────────────────────────────────────────────────────────────
+
+export interface TeamMember {
+  _id: string
+  name: string
+  slug: SanitySlug
+  role: string
+  memberType: 'cofounder' | 'team' | 'advisor'
+  photo?: SanityImage
+  shortBio: string
+  connectionToMission?: string
+  location?: string
+  expertise?: string[]
+  linkedin?: string
+  twitter?: string
+}
+
 // ── Research Archive ──────────────────────────────────────────────────────────
 
 export type ResearchDocType = 'Report' | 'White Paper' | 'Policy Brief'
