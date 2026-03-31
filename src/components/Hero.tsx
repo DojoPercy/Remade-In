@@ -28,9 +28,17 @@ export default function Hero({ data }: { data?: HomePage | null }) {
   const { scrollY } = useScroll()
   const bgY = useTransform(scrollY, [0, 700], [0, 90])
 
-  const primaryCta  = data?.heroPrimaryCta  ?? 'See the Blueprint'
-  const socialProof = data?.heroSocialProof?.length ? data.heroSocialProof : FALLBACK_SOCIAL_PROOF
+  const bgSrc       = data?.heroBackground?.asset?.url ?? '/images/hero_bg.png'
   const headline    = data?.heroHeadline    ?? 'Remanufacturing our circular fashion future'
+  const accent      = data?.heroAccent      ?? 'now'
+  const tagline     = data?.heroTagline     ?? null
+  const primaryCta  = data?.heroPrimaryCta  ?? 'See the Blueprint'
+  const primaryHref = data?.heroPrimaryCtaHref ?? '/blueprint'
+  const badgeTarget = data?.heroBadgeNumber ?? 1000000
+  const badgeLabel  = data?.heroBadgeLabel  ?? 'Garments'
+  const badgeSubtext = data?.heroBadgeSubtext ?? 'Remanufactured in 5 years'
+  const badgeLoc    = data?.heroBadgeLocation ?? 'Starting in the Netherlands'
+  const socialProof = data?.heroSocialProof?.length ? data.heroSocialProof : FALLBACK_SOCIAL_PROOF
 
   return (
     <section
@@ -41,7 +49,7 @@ export default function Hero({ data }: { data?: HomePage | null }) {
       <div className="absolute inset-0 overflow-hidden" style={{ zIndex: 0 }}>
         <motion.div className="absolute left-0 right-0" style={{ top: -60, bottom: -60, y: bgY }}>
           <Image
-            src="/images/hero_bg.png"
+            src={bgSrc}
             alt="Craftsperson at a sewing machine"
             fill
             className="object-cover object-center"
@@ -86,19 +94,19 @@ export default function Hero({ data }: { data?: HomePage | null }) {
           className="text-center font-extrabold leading-none"
           style={{ fontFamily: fonts.bricolage, fontSize: 58, color: '#ffffff', letterSpacing: '-0.03em' }}
         >
-          <CountUp to={1000000} duration={2.2} />
+          <CountUp to={badgeTarget} duration={2.2} />
         </span>
         <span className="text-center font-bold mt-2" style={{ fontFamily: fonts.bricolage, fontSize: 18, color: '#ffffff' }}>
-          Garments
+          {badgeLabel}
         </span>
         <span className="text-center font-semibold mt-2 leading-snug" style={{ fontFamily: fonts.bricolage, fontSize: 13, color: 'rgba(255,255,255,0.65)' }}>
-          Remanufactured in 5 years
+          {badgeSubtext}
         </span>
         <span
           className="text-center font-semibold mt-3 leading-tight"
           style={{ fontFamily: fonts.bricolage, fontSize: 11, color: 'rgba(255,255,255,0.45)', letterSpacing: '0.08em', textTransform: 'uppercase' }}
         >
-          Starting in the<br />Netherlands
+          {badgeLoc}
         </span>
       </motion.div>
 
@@ -119,14 +127,35 @@ export default function Hero({ data }: { data?: HomePage | null }) {
         >
           <SplitText text={headline} onMount delay={0.2} stagger={0.08} />
           {' '}
-          <em style={{ color: colors.orange, fontStyle: 'italic' }}>now</em>
+          <em style={{ color: colors.orange, fontStyle: 'italic' }}>{accent}</em>
+          {tagline && <><br />{tagline}</>}
         </h1>
+
+        {data?.heroSubheadline && (
+          <motion.p
+            {...fadeUp(0.55)}
+            className="max-w-lg mb-6 -mt-6 md:-mt-10"
+            style={{
+              fontFamily: fonts.bricolage,
+              fontSize: 'clamp(14px, 1.2vw, 17px)',
+              lineHeight: 1.72,
+              color: `${colors.white}88`,
+            }}
+          >
+            {data.heroSubheadline}
+          </motion.p>
+        )}
 
         {/* ── CTA ── */}
         <motion.div {...fadeUp(0.68)} className="flex flex-col sm:flex-row gap-3">
-          <BlobButton href="/blueprint" variant="solid">
+          <BlobButton href={primaryHref} variant="solid">
             {primaryCta}
           </BlobButton>
+          {data?.heroSecondaryCta && (
+            <BlobButton href={data?.heroSecondaryCtaHref ?? '/impact'} variant="ghost">
+              {data.heroSecondaryCta}
+            </BlobButton>
+          )}
         </motion.div>
 
         {/* ── Social proof — visible on mobile ── */}

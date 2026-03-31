@@ -34,9 +34,13 @@ const fadeUp = (delay = 0) => ({
 // ── Component ──────────────────────────────────────────────────────────────────
 
 export default function ImpactTeaser({ data }: { data?: HomePage | null }) {
-  const heroStats    = data?.impactHeroStats?.length    ? data.impactHeroStats    : FALLBACK_HERO_STATS
+  const heroStats      = data?.impactHeroStats?.length      ? data.impactHeroStats      : FALLBACK_HERO_STATS
   const secondaryStats = data?.impactSecondaryStats?.length ? data.impactSecondaryStats : FALLBACK_SECONDARY_STATS
-  const year         = data?.impactYear ?? 2025
+  const year           = data?.impactYear           ?? 2025
+  const eyebrow        = data?.impactEyebrow        ?? 'Our Impact'
+  const headlinePre    = data?.impactHeadline        ?? 'Turning waste'
+  const headlineAccent = data?.impactHeadlineAccent  ?? 'measurable'
+  const headlineEnd    = data?.impactHeadlineEnd     ?? 'impact.'
 
   const ref = useRef<HTMLElement>(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
@@ -72,7 +76,7 @@ export default function ImpactTeaser({ data }: { data?: HomePage | null }) {
               className="text-xs font-bold uppercase tracking-[0.12em] mb-4"
               style={{ fontFamily: fonts.syne, color: colors.orange, fontSize: 12 }}
             >
-              Our Impact
+              {eyebrow}
             </motion.p>
             <motion.h2
               {...anim(0.08)}
@@ -85,8 +89,8 @@ export default function ImpactTeaser({ data }: { data?: HomePage | null }) {
                 color: colors.white,
               }}
             >
-              Turning waste<br />
-              into <em style={{ color: colors.orange, fontStyle: 'normal' }}>measurable</em> impact.
+              {headlinePre}<br />
+              into <em style={{ color: colors.orange, fontStyle: 'normal' }}>{headlineAccent}</em> {headlineEnd}
             </motion.h2>
           </div>
 

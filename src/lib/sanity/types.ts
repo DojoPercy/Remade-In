@@ -57,8 +57,9 @@ export interface WhatWeDoPillar {
 
 export interface GlueColumn {
   num: string
+  category?: string
   title: string
-  desc: string
+  desc?: string
   imgPosition?: string
 }
 
@@ -83,12 +84,14 @@ export interface HomePage {
   // Hero
   heroHeadline: string
   heroAccent: string
-  heroTagline: string
+  heroTagline?: string
   heroSubheadline: string
   heroPrimaryCta?: string
+  heroPrimaryCtaHref?: string
   heroSecondaryCta?: string
+  heroSecondaryCtaHref?: string
   heroBackground?: SanityImage
-  heroBadgeNumber?: string
+  heroBadgeNumber?: number
   heroBadgeLabel?: string
   heroBadgeSubtext?: string
   heroBadgeLocation?: string
@@ -97,14 +100,23 @@ export interface HomePage {
   tickerItems: string[]
   // What We Do
   whatWeDoPillars?: WhatWeDoPillar[]
+  // Mission & Vision
+  missionVisionEyebrow?: string
+  missionVisionImage?: SanityImage
+  missionVisionImageCaption?: string
+  visionText?: string
+  missionText?: string
   // We Are The Glue
-  glueHeadlineProblem?: string
-  glueHeadlineSolution?: string
-  glueHeadlineAccent?: string
-  glueBody: string
-  glueColumns: GlueColumn[]
+  glueSectionHeadline?: string
+  glueSectionAccent?: string
+  glueBody?: string
+  glueColumns?: GlueColumn[]
   // Impact Teaser
   impactYear?: number
+  impactEyebrow?: string
+  impactHeadline?: string
+  impactHeadlineAccent?: string
+  impactHeadlineEnd?: string
   impactHeroStats?: ImpactHeroStat[]
   impactSecondaryStats?: ImpactSecondaryStat[]
   // Donation Banner

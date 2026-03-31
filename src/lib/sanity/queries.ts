@@ -52,6 +52,8 @@ export const homePageQuery = groq`
     heroBadgeSubtext,
     heroBadgeLocation,
     heroSocialProof,
+    heroPrimaryCtaHref,
+    heroSecondaryCtaHref,
 
     tickerItems,
 
@@ -63,18 +65,28 @@ export const homePageQuery = groq`
       accentColor
     },
 
-    glueHeadlineProblem,
-    glueHeadlineSolution,
-    glueHeadlineAccent,
+    missionVisionEyebrow,
+    missionVisionImage { ${imageFragment} },
+    missionVisionImageCaption,
+    visionText,
+    missionText,
+
+    glueSectionHeadline,
+    glueSectionAccent,
     glueBody,
     glueColumns[] {
       num,
+      category,
       title,
       desc,
       imgPosition
     },
 
     impactYear,
+    impactEyebrow,
+    impactHeadline,
+    impactHeadlineAccent,
+    impactHeadlineEnd,
     impactHeroStats[] {
       to,
       suffix,

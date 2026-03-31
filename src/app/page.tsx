@@ -42,6 +42,7 @@ export default async function Home() {
       </div>
 
       <WhatWeDo data={homeData} />
+      <MissionVision data={homeData} />
       <Gallery />
       <WeAreTheGlue data={homeData} />
       <CommunityVoice />

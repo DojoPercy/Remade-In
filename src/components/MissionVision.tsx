@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { colors, fonts } from '@/lib/tokens'
+import type { HomePage } from '@/lib/sanity/types'
 
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1]
 
@@ -30,7 +31,7 @@ const BLOCKS = [
   },
 ]
 
-export default function MissionVision() {
+export default function MissionVision({ data }: { data?: HomePage | null } = {}) {
   const ref = useRef<HTMLElement>(null)
   const inView = useInView(ref, { once: true, margin: '-60px' })
 
@@ -48,7 +49,7 @@ export default function MissionVision() {
         className="text-[11px] font-bold uppercase tracking-[0.28em] mb-14"
         style={{ color: colors.orange, fontFamily: fonts.syne }}
       >
-        Our Purpose
+        {data?.missionVisionEyebrow ?? 'Our Purpose'}
       </motion.p>
 
       {/* Grid: image + two cards */}
@@ -62,7 +63,7 @@ export default function MissionVision() {
           className="relative overflow-hidden rounded-[14px] min-h-[280px] md:min-h-0"
         >
           <Image
-            src="/Upcyclers/KSCxBenBreuer-32.jpg"
+            src={data?.missionVisionImage?.asset?.url ?? '/Upcyclers/KSCxBenBreuer-32.jpg'}
             alt="Community remanufacturing at Kantamanto"
             fill
             className="object-cover object-center"
@@ -84,7 +85,7 @@ export default function MissionVision() {
                 color: 'rgba(249,232,208,0.7)',
               }}
             >
-              Kantamanto Market · Accra, Ghana
+              {data?.missionVisionImageCaption ?? 'Kantamanto Market · Accra, Ghana'}
             </p>
           </div>
         </motion.div>
@@ -146,7 +147,9 @@ export default function MissionVision() {
                 letterSpacing: '-0.01em',
               }}
             >
-              {block.text}
+              {block.label === 'Vision'
+                ? (data?.visionText ?? block.text)
+                : (data?.missionText ?? block.text)}
             </p>
           </motion.div>
         ))}

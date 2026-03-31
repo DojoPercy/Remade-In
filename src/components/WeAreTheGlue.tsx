@@ -133,7 +133,18 @@ function GlueCard({ col }: { col: typeof COLUMNS[number] }) {
           {col.title}
         </h3>
 
-       
+        {col.desc && (
+          <p
+            style={{
+              fontFamily: fonts.bricolage,
+              fontSize: 14,
+              color: col.dimText,
+              lineHeight: 1.65,
+            }}
+          >
+            {col.desc}
+          </p>
+        )}
       </div>
     </div>
   )
@@ -145,6 +156,9 @@ export default function WeAreTheGlue({ data }: { data?: HomePage | null }) {
   const columns = data?.glueColumns?.length
     ? data.glueColumns.map((col, i) => ({ ...COLUMNS[i], ...col }))
     : COLUMNS
+
+  const glueHeadline = data?.glueSectionHeadline ?? 'We Are'
+  const glueAccent   = data?.glueSectionAccent   ?? 'The Glue.'
 
   const outerRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
@@ -180,12 +194,26 @@ export default function WeAreTheGlue({ data }: { data?: HomePage | null }) {
             color: colors.charcoal,
           }}
         >
-          We Are<br />
-          <em style={{ color: colors.orange, fontStyle: 'italic' }}>The Glue.</em>
+          {glueHeadline}<br />
+          <em style={{ color: colors.orange, fontStyle: 'italic' }}>{glueAccent}</em>
         </h2>
       </div>
 
-      {/* Right: description + pull stat */}
+      {/* Right: description */}
+      {data?.glueBody && (
+        <div className="flex-1 max-w-sm">
+          <p
+            style={{
+              fontFamily: fonts.bricolage,
+              fontSize: 'clamp(15px, 1.3vw, 18px)',
+              lineHeight: 1.75,
+              color: `${colors.charcoal}88`,
+            }}
+          >
+            {data.glueBody}
+          </p>
+        </div>
+      )}
     </div>
   )
 
