@@ -8,7 +8,10 @@
       "Bash(pnpm add lenis)",
       "Bash(pnpm add lenis -w)",
       "Bash(grep -v \"//\")",
-      "Read(//c/Users/ojoda/OneDrive/Desktop/work/**)"
+      "Read(//c/Users/ojoda/OneDrive/Desktop/work/**)",
+      "Bash(npm install:*)",
+      "Read(//c/Users/ojoda/AppData/Local/Temp/claude/c--Users-ojoda-remade-in/942d4ac3-6c15-46c1-b567-f3768bbdf540/tasks/**)",
+      "Bash(pnpm add:*)"
     ],
     "additionalDirectories": [
       "C:\\Users\\ojoda\\remadein-studio\\src\\app",

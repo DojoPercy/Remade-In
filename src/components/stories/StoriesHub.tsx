@@ -394,11 +394,11 @@ export default function StoriesHub({
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
       <section
         className="relative overflow-hidden px-8 md:px-20 pt-32 pb-16"
-        style={{ backgroundColor: colors.charcoal }}
+        style={{ backgroundColor: colors.blue }}
       >
         {/* Grid texture */}
         <div aria-hidden className="pointer-events-none absolute inset-0" style={{
-          backgroundImage: `linear-gradient(${colors.white}05 1px, transparent 1px), linear-gradient(90deg, ${colors.white}05 1px, transparent 1px)`,
+          backgroundImage: `linear-gradient(${colors.white}08 1px, transparent 1px), linear-gradient(90deg, ${colors.white}08 1px, transparent 1px)`,
           backgroundSize:  '80px 80px',
         }} />
         {/* Watermark */}
@@ -406,7 +406,7 @@ export default function StoriesHub({
           fontFamily:    fonts.bricolage,
           fontSize:      'clamp(100px,15vw,190px)',
           fontWeight:    900,
-          color:         `${colors.white}03`,
+          color:         `${colors.white}04`,
           lineHeight:    1,
           letterSpacing: '-0.05em',
         }}>
@@ -427,7 +427,7 @@ export default function StoriesHub({
             fontWeight:    900,
             lineHeight:    1.06,
             letterSpacing: '-0.028em',
-            color:         colors.cream,
+            color:         '#ffffff',
             maxWidth:      '15ch',
             marginBottom:  16,
           }}>
@@ -435,14 +435,14 @@ export default function StoriesHub({
             <em style={{ color: colors.orange, fontStyle: 'normal' }}>shapes the movement.</em>
           </h1>
 
-          <p style={{ fontFamily: fonts.bricolage, fontSize: 'clamp(14px,1.2vw,17px)', lineHeight: 1.75, color: `${colors.cream}77`, maxWidth: '46ch', marginBottom: 40 }}>
+          <p style={{ fontFamily: fonts.bricolage, fontSize: 'clamp(14px,1.2vw,17px)', lineHeight: 1.75, color: 'rgba(255,255,255,0.65)', maxWidth: '46ch', marginBottom: 40 }}>
             Field notes, interviews, event recaps, videos and press coverage from the global remanufacturing community.
           </p>
 
           {/* Stats */}
-          <div className="flex flex-wrap gap-10" style={{ borderTop: `1px solid ${colors.white}10`, paddingTop: 24 }}>
+          <div className="flex flex-wrap gap-10" style={{ borderTop: '1px solid rgba(255,255,255,0.15)', paddingTop: 24 }}>
             <div>
-              <span style={{ fontFamily: fonts.bricolage, fontSize: 'clamp(20px,2.6vw,32px)', fontWeight: 900, color: colors.cream, letterSpacing: '-0.03em', lineHeight: 1 }}>
+              <span style={{ fontFamily: fonts.bricolage, fontSize: 'clamp(20px,2.6vw,32px)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.03em', lineHeight: 1 }}>
                 {initialData.total}
               </span>
               <span style={{ fontFamily: fonts.syne, fontSize: 10, fontWeight: 700, color: `${colors.cream}44`, textTransform: 'uppercase', letterSpacing: '0.14em', display: 'block', marginTop: 4 }}>
