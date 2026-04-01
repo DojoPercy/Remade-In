@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { colors, fonts } from '@/lib/tokens'
 import type { TeamMember } from '@/lib/sanity/types'
+import SectionDivider from '@/components/ui/SectionDivider'
 
 // ── Accent palette per co-founder slot ────────────────────────────────────────
 
@@ -268,7 +269,7 @@ export default function TeamSection({ members }: { members: TeamMember[] }) {
 
   return (
     <section
-      className="px-8 md:px-20 py-20 md:py-32"
+      className="relative overflow-hidden px-8 md:px-20 py-20 md:py-32"
       style={{ backgroundColor: colors.white }}
     >
       {/* ── Section header ── */}
@@ -393,6 +394,8 @@ export default function TeamSection({ members }: { members: TeamMember[] }) {
           Get in Touch
         </a>
       </motion.div>
+
+      <SectionDivider fill={colors.lightBlue} direction="right" height={56} />
     </section>
   )
 }

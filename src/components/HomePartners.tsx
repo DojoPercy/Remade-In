@@ -32,13 +32,12 @@ export default function HomePartners({ data }: Props) {
 
   return (
     <section
-      className="relative overflow-hidden"
+      className="relative overflow-hidden py-14 md:py-20"
       style={{ backgroundColor: colors.white }}
     >
       {/* ── Label row ── */}
       <div
-        className="flex items-center px-8 md:px-20 py-5"
-        style={{ borderTop: '1px solid rgba(0,0,0,0.08)', borderBottom: '1px solid rgba(0,0,0,0.08)' }}
+        className="flex items-center px-8 md:px-20 pb-6"
       >
         <div className="w-6 h-px shrink-0 mr-4" style={{ backgroundColor: colors.orange }} />
         <span
@@ -56,10 +55,7 @@ export default function HomePartners({ data }: Props) {
       </div>
 
       {/* ── Auto-scrolling logo strip ── */}
-      <div
-        className="relative overflow-hidden"
-        style={{ borderBottom: '1px solid rgba(0,0,0,0.08)' }}
-      >
+      <div className="relative overflow-hidden">
         {/* Left fade mask */}
         <div
           className="absolute left-0 top-0 bottom-0 z-10 pointer-events-none"
@@ -89,10 +85,10 @@ export default function HomePartners({ data }: Props) {
 
             const item = (
               <div
-                className="group flex items-center justify-center shrink-0 px-14 py-10"
+                className="group flex items-center justify-center shrink-0 px-8 py-7 md:px-14 md:py-10"
                 style={{
                   borderRight: '1px solid rgba(0,0,0,0.07)',
-                  minWidth: 240,
+                  minWidth: 160,
                 }}
               >
                 {logoSrc ? (

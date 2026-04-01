@@ -83,4 +83,5 @@ body {
 .blob-a { animation: blobA 14s ease-in-out infinite; }
 .blob-b { animation: blobB 19s ease-in-out infinite 3s; }
 .ticker-track { animation: ticker 30s linear infinite; }
+@media (max-width: 767px) { .ticker-track { animation-duration: 16s; } }
 .pulse-dot { animation: pulseDot 1.9s ease-in-out infinite; }
