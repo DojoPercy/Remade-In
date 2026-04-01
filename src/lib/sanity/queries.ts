@@ -36,77 +36,95 @@ export const siteSettingsQuery = groq`
   }
 `
 
-// ── Home Page (singleton) ─────────────────────────────────────────────────────
+// ── Home Page (7 per-section singletons merged into one flat object) ──────────
+//
+// Each section is its own publishable document. We spread them together so
+// all downstream components receive the same flat `HomePage` shape they
+// already expect — zero component changes needed.
 
 export const homePageQuery = groq`
-  *[_type == "homePage"][0] {
-    heroHeadline,
-    heroAccent,
-    heroTagline,
-    heroSubheadline,
-    heroPrimaryCta,
-    heroSecondaryCta,
-    heroBackground { ${imageFragment} },
-    heroBadgeNumber,
-    heroBadgeLabel,
-    heroBadgeSubtext,
-    heroBadgeLocation,
-    heroSocialProof,
-    heroPrimaryCtaHref,
-    heroSecondaryCtaHref,
-
-    tickerItems,
-
-    whatWeDoPillars[] {
-      num,
-      title,
-      body,
-      icon,
-      accentColor
+  {
+    ...*[_type == "homeHero" && _id == "homeHero"][0] {
+      heroHeadline,
+      heroAccent,
+      heroTagline,
+      heroSubheadline,
+      heroPrimaryCta,
+      heroSecondaryCta,
+      "heroBackground": heroBackground { ${imageFragment} },
+      heroBadgeNumber,
+      heroBadgeLabel,
+      heroBadgeSubtext,
+      heroBadgeLocation,
+      heroSocialProof,
+      heroPrimaryCtaHref,
+      heroSecondaryCtaHref
     },
 
-    missionVisionEyebrow,
-    missionVisionImage { ${imageFragment} },
-    missionVisionImageCaption,
-    visionText,
-    missionText,
-
-    glueSectionHeadline,
-    glueSectionAccent,
-    glueBody,
-    glueColumns[] {
-      num,
-      category,
-      title,
-      desc,
-      imgPosition
+    ...*[_type == "homeTicker" && _id == "homeTicker"][0] {
+      tickerItems
     },
 
-    impactYear,
-    impactEyebrow,
-    impactHeadline,
-    impactHeadlineAccent,
-    impactHeadlineEnd,
-    impactHeroStats[] {
-      to,
-      suffix,
-      label,
-      note
-    },
-    impactSecondaryStats[] {
-      display,
-      label
+    ...*[_type == "homeWhatWeDo" && _id == "homeWhatWeDo"][0] {
+      whatWeDoPillars[] {
+        num,
+        title,
+        body,
+        icon,
+        accentColor
+      }
     },
 
-    donationEyebrow,
-    donationHeadline,
-    donationBody,
-    donationPrimaryLabel,
-    donationPrimaryHref,
-    donationSecondaryLabel,
-    donationStats[] {
-      value,
-      label
+    ...*[_type == "homeMissionVision" && _id == "homeMissionVision"][0] {
+      missionVisionEyebrow,
+      "missionVisionImage": missionVisionImage { ${imageFragment} },
+      missionVisionImageCaption,
+      visionText,
+      missionText
+    },
+
+    ...*[_type == "homeGlue" && _id == "homeGlue"][0] {
+      glueSectionHeadline,
+      glueSectionAccent,
+      glueBody,
+      glueColumns[] {
+        num,
+        category,
+        title,
+        desc,
+        imgPosition
+      }
+    },
+
+    ...*[_type == "homeImpact" && _id == "homeImpact"][0] {
+      impactYear,
+      impactEyebrow,
+      impactHeadline,
+      impactHeadlineAccent,
+      impactHeadlineEnd,
+      impactHeroStats[] {
+        to,
+        suffix,
+        label,
+        note
+      },
+      impactSecondaryStats[] {
+        display,
+        label
+      }
+    },
+
+    ...*[_type == "homeDonation" && _id == "homeDonation"][0] {
+      donationEyebrow,
+      donationHeadline,
+      donationBody,
+      donationPrimaryLabel,
+      donationPrimaryHref,
+      donationSecondaryLabel,
+      donationStats[] {
+        value,
+        label
+      }
     }
   }
 `
