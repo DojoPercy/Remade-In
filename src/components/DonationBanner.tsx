@@ -73,7 +73,7 @@ export default function DonationBanner({ data }: { data?: HomePage | null }) {
         {/* Row 1 — eyebrow */}
         <motion.p
           {...anim(0)}
-          className="text-xs font-bold uppercase tracking-[0.3em] mb-6"
+          className="text-[15px] font-bold uppercase tracking-[0.28em] mb-6"
           style={{ fontFamily: fonts.syne, color: 'rgba(255,255,255,0.65)' }}
         >
           {eyebrow}

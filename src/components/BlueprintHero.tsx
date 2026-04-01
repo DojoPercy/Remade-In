@@ -90,7 +90,7 @@ export default function BlueprintHero({ data }: { data?: BlueprintPage | null })
         {/* Eyebrow */}
         <motion.p
           {...anim(0)}
-          className="mb-8 text-[11px] font-bold uppercase tracking-[0.28em]"
+          className="mb-8 text-[15px] font-bold uppercase tracking-[0.28em]"
           style={{ fontFamily: fonts.syne, color: colors.orange }}
         >
           The Blueprint · March 2025 · Amsterdam Fashion Week

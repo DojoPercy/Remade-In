@@ -19,7 +19,7 @@ export default function AboutStory() {
         transition={{ duration: 0.65, ease }}
       >
         <p
-          className="text-[11px] font-bold uppercase tracking-[0.28em] mb-6"
+          className="text-[15px] font-bold uppercase tracking-[0.28em] mb-6"
           style={{ fontFamily: fonts.syne, color: colors.orange }}
         >
           Our Story

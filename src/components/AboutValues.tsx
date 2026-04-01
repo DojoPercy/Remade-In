@@ -32,7 +32,7 @@ export default function AboutValues() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-60px' }}
         transition={{ duration: 0.5, ease }}
-        className="text-[13px] font-bold uppercase tracking-[0.28em] mb-10"
+        className="text-[15px] font-bold uppercase tracking-[0.28em] mb-10"
         style={{ fontFamily: fonts.syne, color: colors.blue }}
       >
         What We Stand For

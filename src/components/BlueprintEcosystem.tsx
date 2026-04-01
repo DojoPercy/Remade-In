@@ -237,7 +237,7 @@ export default function BlueprintEcosystem() {
         className="mb-16"
       >
         <p
-          className="mb-3 text-[11px] font-bold uppercase tracking-[0.28em]"
+          className="mb-3 text-[15px] font-bold uppercase tracking-[0.28em]"
           style={{ fontFamily: fonts.syne, color: colors.orange }}
         >
           The System

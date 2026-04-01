@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { colors, fonts } from '@/lib/tokens'
 import type { StoryItem, StoriesHubData } from '@/lib/sanity/types'
 import { loadMoreStories } from '@/app/stories/actions'
+import SectionDivider from '@/components/ui/SectionDivider'
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -59,7 +60,7 @@ function TypeBadge({ type, dark }: { type: string; dark?: boolean }) {
       fontWeight:      700,
       textTransform:   'uppercase',
       letterSpacing:   '0.16em',
-      color:           dark ? colors.cream : m.accent,
+      color:           dark ? '#ffffff' : m.accent,
       backgroundColor: dark ? `${colors.white}12` : `${m.accent}16`,
       borderRadius:    4,
       padding:         '4px 9px',
@@ -120,7 +121,7 @@ function ImageArea({ item, large }: { item: StoryItem; large?: boolean }) {
           </div>
         )
       }
-      <div className="absolute inset-0" style={{ background: dark ? `linear-gradient(to top, ${colors.charcoal} 0%, transparent 55%)` : 'linear-gradient(to top, rgba(26,26,20,0.16) 0%, transparent 50%)' }} />
+      <div className="absolute inset-0" style={{ background: dark ? `linear-gradient(to top, ${colors.blue} 0%, transparent 55%)` : 'linear-gradient(to top, rgba(26,26,20,0.16) 0%, transparent 50%)' }} />
 
       {/* Video play button */}
       {item._type === 'video' && (
@@ -146,10 +147,10 @@ function ImageArea({ item, large }: { item: StoryItem; large?: boolean }) {
 
 function CardContent({ item, large, dark }: { item: StoryItem; large?: boolean; dark?: boolean }) {
   const accent    = TYPE_META[item._type]?.accent ?? colors.orange
-  const textMain  = dark ? colors.cream              : colors.charcoal
-  const textMuted = dark ? `${colors.cream}55`       : `${colors.charcoal}55`
-  const textBody  = dark ? `${colors.cream}88`       : `${colors.charcoal}77`
-  const divider   = dark ? `${colors.white}10`       : `${colors.charcoal}08`
+  const textMain  = dark ? '#ffffff'                 : colors.charcoal
+  const textMuted = dark ? 'rgba(255,255,255,0.45)'  : `${colors.charcoal}55`
+  const textBody  = dark ? 'rgba(255,255,255,0.72)'  : `${colors.charcoal}77`
+  const divider   = dark ? 'rgba(255,255,255,0.12)'  : `${colors.charcoal}08`
   const pad       = large ? '2.5rem' : '1.5rem'
 
   return (
@@ -275,7 +276,7 @@ function StoryCard({ item, size }: { item: StoryItem; size: 'hero' | 'spotlight'
     borderRadius:    12,
     textDecoration:  'none' as const,
     height:          '100%',
-    backgroundColor: dark ? colors.charcoal : colors.white,
+    backgroundColor: dark ? colors.blue : colors.white,
     border:          dark ? 'none' : `1px solid ${colors.charcoal}0d`,
   }
 
@@ -445,7 +446,7 @@ export default function StoriesHub({
               <span style={{ fontFamily: fonts.bricolage, fontSize: 'clamp(20px,2.6vw,32px)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.03em', lineHeight: 1 }}>
                 {initialData.total}
               </span>
-              <span style={{ fontFamily: fonts.syne, fontSize: 10, fontWeight: 700, color: `${colors.cream}44`, textTransform: 'uppercase', letterSpacing: '0.14em', display: 'block', marginTop: 4 }}>
+              <span style={{ fontFamily: fonts.syne, fontSize: 10, fontWeight: 700, color: 'rgba(255,255,255,0.45)', textTransform: 'uppercase', letterSpacing: '0.14em', display: 'block', marginTop: 4 }}>
                 Stories published
               </span>
             </div>
@@ -454,17 +455,18 @@ export default function StoriesHub({
               { value: 'communityVoice', label: 'Community voices'},
             ].map(({ value, label }) => (
               <div key={value}>
-                <span style={{ fontFamily: fonts.bricolage, fontSize: 'clamp(20px,2.6vw,32px)', fontWeight: 900, color: colors.cream, letterSpacing: '-0.03em', lineHeight: 1 }}>
+                <span style={{ fontFamily: fonts.bricolage, fontSize: 'clamp(20px,2.6vw,32px)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.03em', lineHeight: 1 }}>
                   {initialData.items.filter(i => i._type === value).length}
                   {initialData.total > initialData.items.length ? '+' : ''}
                 </span>
-                <span style={{ fontFamily: fonts.syne, fontSize: 10, fontWeight: 700, color: `${colors.cream}44`, textTransform: 'uppercase', letterSpacing: '0.14em', display: 'block', marginTop: 4 }}>
+                <span style={{ fontFamily: fonts.syne, fontSize: 10, fontWeight: 700, color: 'rgba(255,255,255,0.45)', textTransform: 'uppercase', letterSpacing: '0.14em', display: 'block', marginTop: 4 }}>
                   {label}
                 </span>
               </div>
             ))}
           </div>
         </div>
+        <SectionDivider fill={colors.white} direction="right" height={52} />
       </section>
 
       {/* ── Grid section ──────────────────────────────────────────────────── */}

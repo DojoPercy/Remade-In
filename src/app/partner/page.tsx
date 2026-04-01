@@ -97,7 +97,7 @@ export default async function PartnerPage() {
           style={{ zIndex: 10 }}
         >
           <p
-            className="mb-6 text-[11px] font-bold uppercase tracking-[0.28em]"
+            className="mb-6 text-[15px] font-bold uppercase tracking-[0.28em]"
             style={{ fontFamily: fonts.syne, color: colors.orange }}
           >
             Partner With Us
@@ -140,7 +140,7 @@ export default async function PartnerPage() {
         style={{ backgroundColor: colors.white }}
       >
         <p
-          className="text-[11px] font-bold uppercase tracking-[0.28em] mb-12"
+          className="text-[15px] font-bold uppercase tracking-[0.28em] mb-12"
           style={{ fontFamily: fonts.syne, color: colors.orange }}
         >
           Ways to Partner
@@ -202,7 +202,7 @@ export default async function PartnerPage() {
 
         <div className="relative max-w-2xl">
           <p
-            className="text-[11px] font-bold uppercase tracking-[0.28em] mb-4"
+            className="text-[15px] font-bold uppercase tracking-[0.28em] mb-4"
             style={{ fontFamily: fonts.syne, color: colors.orange }}
           >
             Get in Touch

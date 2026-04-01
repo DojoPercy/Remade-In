@@ -46,7 +46,7 @@ export default function MissionVision({ data }: { data?: HomePage | null } = {})
         initial={{ opacity: 0, y: 16 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.5, ease }}
-        className="text-[11px] font-bold uppercase tracking-[0.28em] mb-14"
+        className="text-[15px] font-bold uppercase tracking-[0.28em] mb-14"
         style={{ color: colors.orange, fontFamily: fonts.syne }}
       >
         {data?.missionVisionEyebrow ?? 'Our Purpose'}

@@ -73,8 +73,8 @@ export default function ImpactTeaser({ data }: { data?: HomePage | null }) {
           <div>
             <motion.p
               {...anim(0)}
-              className="text-xs font-bold uppercase tracking-[0.12em] mb-4"
-              style={{ fontFamily: fonts.syne, color: colors.orange, fontSize: 12 }}
+              className="text-[15px] font-bold uppercase tracking-[0.28em] mb-4"
+              style={{ fontFamily: fonts.syne, color: colors.orange }}
             >
               {eyebrow}
             </motion.p>

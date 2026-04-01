@@ -30,7 +30,7 @@ export default function BlueprintCrisis() {
       {/* Opening statement */}
       <motion.div {...anim(0)} className="mb-16 md:mb-20">
         <p
-          className="mb-4 text-[11px] font-bold uppercase tracking-[0.28em]"
+          className="mb-4 text-[15px] font-bold uppercase tracking-[0.28em]"
           style={{ fontFamily: fonts.syne, color: colors.orange }}
         >
           The Crisis

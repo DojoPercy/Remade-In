@@ -158,24 +158,6 @@ export default function Hero({ data }: { data?: HomePage | null }) {
           )}
         </motion.div>
 
-        {/* ── Social proof — visible on mobile ── */}
-        {socialProof.length > 0 && (
-          <motion.div
-            {...fadeUp(0.85)}
-            className="flex flex-wrap gap-x-4 gap-y-1 mt-6"
-          >
-            {socialProof.map((tag, i) => (
-              <span
-                key={tag}
-                className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em]"
-                style={{ fontFamily: fonts.apfel, color: `${colors.white}66` }}
-              >
-                {i > 0 && <span style={{ color: `${colors.white}33` }}>·</span>}
-                {tag}
-              </span>
-            ))}
-          </motion.div>
-        )}
       </div>
     </section>
   )

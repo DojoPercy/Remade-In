@@ -281,7 +281,7 @@ export default function TeamSection({ members }: { members: TeamMember[] }) {
         className="mb-14 md:mb-20"
       >
         <p
-          className="text-[13px] font-bold uppercase tracking-[0.28em] mb-6"
+          className="text-[15px] font-bold uppercase tracking-[0.28em] mb-6"
           style={{ fontFamily: fonts.syne, color: colors.orange }}
         >
           The People

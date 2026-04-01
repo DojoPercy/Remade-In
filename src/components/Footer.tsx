@@ -72,7 +72,7 @@ function FooterCol({ heading, links }: { heading: string; links: { label: string
     <div>
       <p
         className="mb-5 text-[10px] font-bold tracking-[0.25em] uppercase"
-        style={{ fontFamily: fonts.syne, color: colors.orange }}
+        style={{ fontFamily: fonts.syne, color: colors.white }}
       >
         {heading}
       </p>
@@ -176,7 +176,7 @@ export default function Footer() {
           <div>
             <p
               className="text-[10px] font-bold uppercase tracking-[0.28em] mb-1"
-              style={{ fontFamily: fonts.syne, color: colors.orange }}
+              style={{ fontFamily: fonts.syne, color: colors.white }}
             >
               Stay in the loop
             </p>

@@ -39,7 +39,7 @@ export default function BlueprintDutchContext() {
     >
       <motion.p
         {...anim(0)}
-        className="mb-10 text-[11px] font-bold uppercase tracking-[0.28em]"
+        className="mb-10 text-[15px] font-bold uppercase tracking-[0.28em]"
         style={{ fontFamily: fonts.syne, color: colors.orange }}
       >
         The Netherlands Opportunity
