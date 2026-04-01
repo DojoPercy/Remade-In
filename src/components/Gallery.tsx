@@ -63,7 +63,7 @@ export default async function Gallery() {
       {/* ── Header ── */}
       <div className="px-8 md:px-20 mb-16">
         <p
-          className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.25em] mb-4"
+          className="flex items-center gap-2 text-[15px] font-bold uppercase tracking-[0.25em] mb-4"
           style={{ color: colors.orange, fontFamily: fonts.syne }}
         >
           <CameraIcon />
