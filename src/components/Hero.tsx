@@ -1,8 +1,8 @@
 'use client'
 
-import { useRef } from 'react'
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
-import { motion, useScroll, useTransform, useInView } from 'framer-motion'
+import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion'
 import { colors, fonts } from '@/lib/tokens'
 import type { HomePage } from '@/lib/sanity/types'
 import SplitText from '@/components/ui/SplitText'
@@ -25,47 +25,56 @@ const FALLBACK_SOCIAL_PROOF = [
 
 // ── Accent word: strikes through then reveals "future" ───────────────────────
 
+type AccentPhase = 'in' | 'exit' | 'done'
+
 function AccentWord({ accent, color }: { accent: string; color: string }) {
-  const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '-10% 0px' })
+  const [phase, setPhase] = useState<AccentPhase>('in')
+
+  useEffect(() => {
+    const exitTimer = setTimeout(() => setPhase('exit'), 3000)
+    const doneTimer = setTimeout(() => setPhase('done'), 3400)
+
+    return () => {
+      clearTimeout(exitTimer)
+      clearTimeout(doneTimer)
+    }
+  }, [])
 
   return (
-    <span ref={ref} style={{ position: 'relative', display: 'inline-block', whiteSpace: 'nowrap' }}>
-      <em style={{ color, fontStyle: 'italic' }}>{accent}</em>
-
-      {/* Strike line */}
-      <motion.span
-        initial={{ scaleX: 0 }}
-        animate={inView ? { scaleX: 1 } : {}}
-        transition={{ duration: 0.45, delay: 0.85, ease: [0.22, 1, 0.36, 1] }}
-        style={{
-          position: 'absolute',
-          top: '52%',
-          left: '-2px',
-          right: '-2px',
-          height: 4,
-          borderRadius: 2,
-          backgroundColor: color,
-          transformOrigin: 'left',
-        }}
-      />
-
-      {/* "future" */}
-      <motion.em
-        initial={{ opacity: 0, y: 10 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.45, delay: 1.35, ease: [0.22, 1, 0.36, 1] }}
-        style={{
-          position: 'absolute',
-          left: 0,
-          bottom: '-1.15em',
-          color,
-          fontStyle: 'italic',
-          whiteSpace: 'nowrap',
-        }}
-      >
-        future
-      </motion.em>
+    <span
+      style={{
+        position: 'relative',
+        display: 'inline-flex',
+        whiteSpace: 'nowrap',
+        verticalAlign: 'bottom',
+        minWidth: `${Math.max(accent.length, 3) * 0.62}em`,
+        minHeight: '1.1em',
+      }}
+    >
+      <AnimatePresence mode="wait">
+        {phase !== 'done' ? (
+          <motion.em
+            key="original"
+            initial={{ opacity: 0, y: '105%' }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: '-20%', transition: { duration: 0.3 } }}
+            transition={{ duration: 0.65, delay: 0.68, ease: [0.22, 1, 0.36, 1] }}
+            style={{ color, fontStyle: 'italic', display: 'inline-block' }}
+          >
+            {accent}
+          </motion.em>
+        ) : (
+          <motion.em
+            key="replacement"
+            initial={{ opacity: 0, y: '105%' }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+            style={{ color, fontStyle: 'italic', display: 'inline-block' }}
+          >
+            now
+          </motion.em>
+        )}
+      </AnimatePresence>
     </span>
   )
 }
@@ -176,7 +185,12 @@ export default function Hero({ data }: { data?: HomePage | null }) {
           <SplitText text={headline} onMount delay={0.2} stagger={0.08} />
           {' '}
           <AccentWord accent={accent} color={colors.orange} />
-          {tagline && <><br />{tagline}</>}
+          {tagline && (
+            <>
+              <br />
+              <SplitText text={tagline} onMount delay={0.82} stagger={0.07} />
+            </>
+          )}
         </h1>
 
         {data?.heroSubheadline && (
