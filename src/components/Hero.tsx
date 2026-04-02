@@ -1,7 +1,8 @@
 'use client'
 
+import { useRef } from 'react'
 import Image from 'next/image'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll, useTransform, useInView } from 'framer-motion'
 import { colors, fonts } from '@/lib/tokens'
 import type { HomePage } from '@/lib/sanity/types'
 import SplitText from '@/components/ui/SplitText'
@@ -21,6 +22,53 @@ const FALLBACK_SOCIAL_PROOF = [
   'The Netherlands',
   'Justice-led model',
 ]
+
+// ── Accent word: strikes through then reveals "future" ───────────────────────
+
+function AccentWord({ accent, color }: { accent: string; color: string }) {
+  const ref = useRef(null)
+  const inView = useInView(ref, { once: true, margin: '-10% 0px' })
+
+  return (
+    <span ref={ref} style={{ position: 'relative', display: 'inline-block', whiteSpace: 'nowrap' }}>
+      <em style={{ color, fontStyle: 'italic' }}>{accent}</em>
+
+      {/* Strike line */}
+      <motion.span
+        initial={{ scaleX: 0 }}
+        animate={inView ? { scaleX: 1 } : {}}
+        transition={{ duration: 0.45, delay: 0.85, ease: [0.22, 1, 0.36, 1] }}
+        style={{
+          position: 'absolute',
+          top: '52%',
+          left: '-2px',
+          right: '-2px',
+          height: 4,
+          borderRadius: 2,
+          backgroundColor: color,
+          transformOrigin: 'left',
+        }}
+      />
+
+      {/* "future" */}
+      <motion.em
+        initial={{ opacity: 0, y: 10 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.45, delay: 1.35, ease: [0.22, 1, 0.36, 1] }}
+        style={{
+          position: 'absolute',
+          left: 0,
+          bottom: '-1.15em',
+          color,
+          fontStyle: 'italic',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        future
+      </motion.em>
+    </span>
+  )
+}
 
 // ── Hero ──────────────────────────────────────────────────────────────────────
 
@@ -127,7 +175,7 @@ export default function Hero({ data }: { data?: HomePage | null }) {
         >
           <SplitText text={headline} onMount delay={0.2} stagger={0.08} />
           {' '}
-          <em style={{ color: colors.orange, fontStyle: 'italic' }}>{accent}</em>
+          <AccentWord accent={accent} color={colors.orange} />
           {tagline && <><br />{tagline}</>}
         </h1>
 
