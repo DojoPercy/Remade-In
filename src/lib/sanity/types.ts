@@ -127,6 +127,10 @@ export interface HomePage {
   donationPrimaryHref?: string
   donationSecondaryLabel?: string
   donationStats?: DonationStat[]
+  // Gallery
+  galleryEyebrow?: string
+  galleryHeadline?: string
+  galleryAccent?: string
 }
 
 // ── Blueprint Page ─────────────────────────────────────────────────────────────

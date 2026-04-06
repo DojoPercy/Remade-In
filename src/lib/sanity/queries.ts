@@ -125,6 +125,12 @@ export const homePageQuery = groq`
         value,
         label
       }
+    },
+
+    ...*[_type == "homeGallery" && _id == "homeGallery"][0] {
+      galleryEyebrow,
+      galleryHeadline,
+      galleryAccent
     }
   }
 `

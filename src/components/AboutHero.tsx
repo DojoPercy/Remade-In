@@ -89,7 +89,7 @@ export default function AboutHero() {
             lineHeight: 1.0,
             letterSpacing: '-0.03em',
             color: '#ffffff',
-            maxWidth: '16ch',
+            maxWidth: '22ch',
           }}
         >
           We are the{' '}

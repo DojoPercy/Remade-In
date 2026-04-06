@@ -74,7 +74,7 @@ export default function ImpactTeaser({ data }: { data?: HomePage | null }) {
             <motion.p
               {...anim(0)}
               className="text-[15px] font-bold uppercase tracking-[0.28em] mb-4"
-              style={{ fontFamily: fonts.syne, color: colors.orange }}
+              style={{ fontFamily: fonts.syne, color: '#cbd183' }}
             >
               {eyebrow}
             </motion.p>
@@ -90,7 +90,7 @@ export default function ImpactTeaser({ data }: { data?: HomePage | null }) {
               }}
             >
               {headlinePre}<br />
-              into <em style={{ color: colors.orange, fontStyle: 'normal' }}>{headlineAccent}</em> {headlineEnd}
+              into <em style={{ color: '#cbd183', fontStyle: 'normal' }}>{headlineAccent}</em> {headlineEnd}
             </motion.h2>
           </div>
 
@@ -125,7 +125,7 @@ export default function ImpactTeaser({ data }: { data?: HomePage | null }) {
                   duration={2.2}
                   format={(n) => n.toLocaleString()}
                 />
-                <span style={{ color: colors.orange }}>{stat.suffix}</span>
+                <span style={{ color: '#cbd183' }}>{stat.suffix}</span>
               </div>
 
               {/* Label */}
@@ -174,7 +174,7 @@ export default function ImpactTeaser({ data }: { data?: HomePage | null }) {
                   fontFamily: fonts.bricolage,
                   fontSize: 'clamp(24px, 2.5vw, 32px)',
                   fontWeight: 900,
-                  color: colors.orange,
+                  color: '#cbd183',
                   letterSpacing: '-0.02em',
                   lineHeight: 1,
                 }}
@@ -210,7 +210,7 @@ export default function ImpactTeaser({ data }: { data?: HomePage | null }) {
               {['500,000L Water Saved', '6,250kg CO₂ Avoided', '250kg Textile Diverted', '12 Events Hosted', '3,200+ Participants', '€10,280 Invested', 'Justice-Led Model', 'Kantamanto → Netherlands'].map((item) => (
                 <span key={item} className="flex items-center">
                   <span className="px-8">{item}</span>
-                  <span style={{ color: colors.orange }}>·</span>
+                  <span style={{ color: '#cbd183' }}>·</span>
                 </span>
               ))}
             </span>

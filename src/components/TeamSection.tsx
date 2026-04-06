@@ -6,32 +6,17 @@ import { colors, fonts } from '@/lib/tokens'
 import type { TeamMember } from '@/lib/sanity/types'
 import SectionDivider from '@/components/ui/SectionDivider'
 
-// ── Accent palette per co-founder slot ────────────────────────────────────────
+// ── Blob shape pool ────────────────────────────────────────────────────────────
 
-const FOUNDER_PALETTES = [
-  {
-    cardBg:    '#2b2b22',
-    gradient:  'linear-gradient(to bottom, transparent 30%, rgba(43,43,34,0.98) 75%)',
-    badgeBg:   '#d8570f',
-    badgeText: '#ffffff',
-    tagBg:     'rgba(255,255,255,0.10)',
-    tagText:   'rgba(255,255,255,0.60)',
-    bioText:   'rgba(255,255,255,0.72)',
-    linkText:  'rgba(255,255,255,0.50)',
-    quoteBar:  '#d8570f',
-  },
-  {
-    cardBg:    '#6776b6',
-    gradient:  'linear-gradient(to bottom, transparent 30%, rgba(103,118,182,0.98) 75%)',
-    badgeBg:   '#d8570f',
-    badgeText: '#ffffff',
-    tagBg:     'rgba(255,255,255,0.12)',
-    tagText:   'rgba(255,255,255,0.65)',
-    bioText:   'rgba(255,255,255,0.78)',
-    linkText:  'rgba(255,255,255,0.55)',
-    quoteBar:  '#ffffff',
-  },
-] as const
+const BLOB_SHAPES = [
+  '62% 38% 46% 54% / 60% 44% 56% 40%',
+  '45% 55% 65% 35% / 55% 45% 35% 65%',
+  '70% 30% 48% 52% / 48% 70% 30% 52%',
+  '38% 62% 56% 44% / 44% 60% 40% 56%',
+  '55% 45% 38% 62% / 62% 38% 58% 42%',
+]
+
+const ROLE_ACCENTS = [colors.orange, colors.blue, '#6776b6', '#d8570f']
 
 // ── LinkedIn icon ─────────────────────────────────────────────────────────────
 
@@ -43,220 +28,108 @@ function LinkedInIcon() {
   )
 }
 
-// ── Co-Founder Card ───────────────────────────────────────────────────────────
+// ── Profile Card (grid cell) ──────────────────────────────────────────────────
 
-function FounderCard({ member, index }: { member: TeamMember; index: number }) {
-  const pal = FOUNDER_PALETTES[index % FOUNDER_PALETTES.length]
+function ProfileCard({ member, index }: { member: TeamMember; index: number }) {
+  const blobShape  = BLOB_SHAPES[index % BLOB_SHAPES.length]
+  const accent     = ROLE_ACCENTS[index % ROLE_ACCENTS.length]
 
   return (
     <motion.article
-      initial={{ opacity: 0, y: 36 }}
+      initial={{ opacity: 0, y: 28 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-80px' }}
-      transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1], delay: index * 0.18 }}
-      className="relative flex flex-col rounded-[14px] overflow-hidden"
-      style={{ backgroundColor: pal.cardBg }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1], delay: (index % 3) * 0.08 }}
+      className="flex flex-col"
     >
-      {/* ── Photo ── */}
-      <div className="relative w-full overflow-hidden" style={{ height: 360 }}>
-        {member.photo ? (
-          <>
+      {/* ── Blob image ── */}
+      <div className="relative w-full mx-auto mb-7" style={{ maxWidth: 260, aspectRatio: '4/4.5' }}>
+        {/* Glow behind blob */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            borderRadius: blobShape,
+            background: `radial-gradient(ellipse at 50% 50%, ${accent}28 0%, transparent 70%)`,
+            transform: 'scale(1.12)',
+          }}
+        />
+
+        {/* Blob image container */}
+        <div
+          className="absolute inset-0 overflow-hidden"
+          style={{ borderRadius: blobShape }}
+        >
+          {member.photo ? (
             <Image
               src={member.photo.asset.url}
               alt={member.photo.alt || member.name}
               fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover object-top"
+              sizes="260px"
               placeholder={member.photo.asset.metadata?.lqip ? 'blur' : 'empty'}
               blurDataURL={member.photo.asset.metadata?.lqip ?? undefined}
             />
-            {/* Gradient fade into card */}
-            <div className="absolute inset-0" style={{ background: pal.gradient }} />
-          </>
-        ) : (
-          <div className="w-full h-full" style={{ background: `${pal.cardBg}99` }} />
-        )}
+          ) : (
+            <div
+              className="w-full h-full flex items-center justify-center"
+              style={{ backgroundColor: `${accent}20` }}
+            >
+              <span
+                className="font-black"
+                style={{ fontFamily: fonts.bricolage, fontSize: 64, color: accent, opacity: 0.35 }}
+              >
+                {member.name.charAt(0)}
+              </span>
+            </div>
+          )}
+        </div>
+
+        {/* Role badge — bottom-left, tilted */}
+        <div
+          className="absolute bottom-6 left-0 flex items-center px-3 py-2 rounded-[50px] shadow-lg z-10"
+          style={{ backgroundColor: colors.charcoal, transform: 'rotate(-6deg)' }}
+        >
+          <span
+            className="font-bold capitalize whitespace-nowrap text-xs"
+            style={{ fontFamily: fonts.syne, color: colors.white }}
+          >
+            {member.role}
+          </span>
+        </div>
+
+        {/* Name badge — top-right, tilted */}
+        <div
+          className="absolute top-6 right-0 flex items-center px-3 py-2 rounded-[50px] shadow-lg z-10"
+          style={{ backgroundColor: accent, transform: 'rotate(6.4deg)' }}
+        >
+          <span
+            className="font-bold capitalize whitespace-nowrap text-xs"
+            style={{ fontFamily: fonts.syne, color: colors.white }}
+          >
+            {member.name}
+          </span>
+        </div>
       </div>
 
       {/* ── Content ── */}
-      <div className="flex flex-col px-7 pt-5 pb-9 gap-4">
-        {/* Location badge */}
-        {member.location && (
-          <span
-            className="self-start px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-[0.20em]"
-            style={{
-              backgroundColor: pal.badgeBg,
-              color: pal.badgeText,
-              fontFamily: fonts.syne,
-            }}
-          >
-            {member.location}
-          </span>
-        )}
-
-        {/* Role + Name */}
-        <div>
-          <p
-            className="font-bold uppercase tracking-[0.18em]"
-            style={{ fontFamily: fonts.syne, fontSize: 10, color: 'rgba(255,255,255,0.50)' }}
-          >
-            {member.role}
-          </p>
-          <h3
-            className="font-extrabold leading-[1.0] mt-1.5"
-            style={{
-              fontFamily: fonts.bricolage,
-              fontSize: 'clamp(28px, 2.8vw, 38px)',
-              letterSpacing: '-0.025em',
-              color: '#ffffff',
-            }}
-          >
-            {member.name}
-          </h3>
-        </div>
-
-        {/* Short bio */}
-        {member.shortBio && (
-          <p style={{ fontFamily: fonts.bricolage, fontSize: 15, lineHeight: 1.8, color: pal.bioText }}>
-            {member.shortBio}
-          </p>
-        )}
-
-        {/* Mission quote */}
-        {member.connectionToMission && (
-          <div className="flex gap-3 items-start mt-1">
-            <div className="flex-shrink-0 w-0.5 rounded-full self-stretch" style={{ backgroundColor: pal.quoteBar }} />
-            <p
-              className="italic"
-              style={{ fontFamily: fonts.bricolage, fontSize: 14, lineHeight: 1.7, color: 'rgba(255,255,255,0.55)' }}
-            >
-              &ldquo;{member.connectionToMission}&rdquo;
-            </p>
-          </div>
-        )}
-
-        {/* Expertise tags */}
-        {member.expertise && member.expertise.length > 0 && (
-          <div className="flex flex-wrap gap-2 mt-1">
-            {member.expertise.map((tag) => (
-              <span
-                key={tag}
-                className="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-[0.10em]"
-                style={{ backgroundColor: pal.tagBg, color: pal.tagText, fontFamily: fonts.syne }}
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-        )}
-
-        {/* Social links */}
-        <div className="flex gap-4 mt-1">
-          {member.linkedin && (
-            <a
-              href={member.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.12em] transition-opacity hover:opacity-100"
-              style={{ fontFamily: fonts.syne, color: pal.linkText, opacity: 0.7 }}
-            >
-              <LinkedInIcon />
-              LinkedIn
-            </a>
-          )}
-          {member.twitter && (
-            <a
-              href={member.twitter}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.12em] transition-opacity hover:opacity-100"
-              style={{ fontFamily: fonts.syne, color: pal.linkText, opacity: 0.7 }}
-            >
-              &#64;
-            </a>
-          )}
-        </div>
-      </div>
     </motion.article>
   )
 }
 
-// ── Core Team / Advisor Card ──────────────────────────────────────────────────
+// ── Group label divider ───────────────────────────────────────────────────────
 
-function CompactCard({ member, index }: { member: TeamMember; index: number }) {
+function GroupLabel({ label }: { label: string }) {
   return (
-    <motion.article
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-50px' }}
-      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: index * 0.08 }}
-      className="flex gap-4 items-start p-5 rounded-2xl"
-      style={{ backgroundColor: colors.lightBlue }}
-    >
-      {/* Avatar */}
-      {member.photo ? (
-        <div
-          className="relative flex-shrink-0 rounded-xl overflow-hidden"
-          style={{ width: 68, height: 68 }}
-        >
-          <Image
-            src={member.photo.asset.url}
-            alt={member.photo.alt || member.name}
-            fill
-            className="object-cover"
-            sizes="68px"
-          />
-        </div>
-      ) : (
-        <div
-          className="flex-shrink-0 rounded-xl flex items-center justify-center"
-          style={{ width: 68, height: 68, backgroundColor: colors.blue + '22' }}
-        >
-          <span
-            className="font-black"
-            style={{ fontFamily: fonts.bricolage, fontSize: 22, color: colors.blue }}
-          >
-            {member.name.charAt(0)}
-          </span>
-        </div>
-      )}
-
-      {/* Info */}
-      <div className="min-w-0">
-        <p
-          className="font-bold uppercase tracking-[0.12em]"
-          style={{ fontFamily: fonts.syne, fontSize: 10, color: colors.orange }}
-        >
-          {member.role}
-        </p>
-        <h4
-          className="font-extrabold mt-0.5 leading-snug"
-          style={{ fontFamily: fonts.bricolage, fontSize: 17, color: colors.dark, letterSpacing: '-0.01em' }}
-        >
-          {member.name}
-        </h4>
-        {member.shortBio && (
-          <p
-            className="mt-1.5"
-            style={{ fontFamily: fonts.bricolage, fontSize: 13, lineHeight: 1.7, color: `${colors.dark}88` }}
-          >
-            {member.shortBio}
-          </p>
-        )}
-        {member.linkedin && (
-          <a
-            href={member.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 mt-2 text-[10px] font-bold uppercase tracking-[0.1em]"
-            style={{ fontFamily: fonts.syne, color: colors.blue }}
-          >
-            <LinkedInIcon />
-            LinkedIn
-          </a>
-        )}
-      </div>
-    </motion.article>
+    <div className="flex items-center gap-4 mb-12">
+      <div className="h-px flex-1" style={{ backgroundColor: `${colors.dark}14` }} />
+      <p
+        className="text-[11px] font-bold uppercase tracking-[0.28em] flex-shrink-0"
+        style={{ fontFamily: fonts.syne, color: `${colors.dark}44` }}
+      >
+        {label}
+      </p>
+      <div className="h-px flex-1" style={{ backgroundColor: `${colors.dark}14` }} />
+    </div>
   )
 }
 
@@ -266,6 +139,8 @@ export default function TeamSection({ members }: { members: TeamMember[] }) {
   const cofounders = members.filter((m) => m.memberType === 'cofounder')
   const coreTeam   = members.filter((m) => m.memberType === 'team')
   const advisors   = members.filter((m) => m.memberType === 'advisor')
+
+  let globalIdx = 0
 
   return (
     <section
@@ -278,7 +153,7 @@ export default function TeamSection({ members }: { members: TeamMember[] }) {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-80px' }}
         transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-        className="mb-14 md:mb-20"
+        className="mb-20 md:mb-28"
       >
         <p
           className="text-[15px] font-bold uppercase tracking-[0.28em] mb-6"
@@ -310,29 +185,23 @@ export default function TeamSection({ members }: { members: TeamMember[] }) {
 
       {/* ── Co-founders ── */}
       {cofounders.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-20">
-          {cofounders.map((member, i) => (
-            <FounderCard key={member._id} member={member} index={i} />
-          ))}
+        <div className="mb-24">
+          <GroupLabel label="Co-Founders" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-10 gap-y-16">
+            {cofounders.map((member) => (
+              <ProfileCard key={member._id} member={member} index={globalIdx++} />
+            ))}
+          </div>
         </div>
       )}
 
       {/* ── Core team ── */}
       {coreTeam.length > 0 && (
-        <div className="mb-16">
-          <div className="flex items-center gap-4 mb-8">
-            <div className="h-px flex-1" style={{ backgroundColor: `${colors.dark}14` }} />
-            <p
-              className="text-[11px] font-bold uppercase tracking-[0.28em] flex-shrink-0"
-              style={{ fontFamily: fonts.syne, color: `${colors.dark}44` }}
-            >
-              Core Team
-            </p>
-            <div className="h-px flex-1" style={{ backgroundColor: `${colors.dark}14` }} />
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {coreTeam.map((member, i) => (
-              <CompactCard key={member._id} member={member} index={i} />
+        <div className="mb-24">
+          <GroupLabel label="Core Team" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-10 gap-y-16">
+            {coreTeam.map((member) => (
+              <ProfileCard key={member._id} member={member} index={globalIdx++} />
             ))}
           </div>
         </div>
@@ -340,20 +209,11 @@ export default function TeamSection({ members }: { members: TeamMember[] }) {
 
       {/* ── Advisory board ── */}
       {advisors.length > 0 && (
-        <div className="mb-16">
-          <div className="flex items-center gap-4 mb-8">
-            <div className="h-px flex-1" style={{ backgroundColor: `${colors.dark}14` }} />
-            <p
-              className="text-[11px] font-bold uppercase tracking-[0.28em] flex-shrink-0"
-              style={{ fontFamily: fonts.syne, color: `${colors.dark}44` }}
-            >
-              Advisory Board
-            </p>
-            <div className="h-px flex-1" style={{ backgroundColor: `${colors.dark}14` }} />
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {advisors.map((member, i) => (
-              <CompactCard key={member._id} member={member} index={i} />
+        <div className="mb-24">
+          <GroupLabel label="Advisory Board" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-10 gap-y-16">
+            {advisors.map((member) => (
+              <ProfileCard key={member._id} member={member} index={globalIdx++} />
             ))}
           </div>
         </div>
@@ -365,7 +225,7 @@ export default function TeamSection({ members }: { members: TeamMember[] }) {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-40px' }}
         transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-        className="flex flex-col sm:flex-row sm:items-center gap-5 mt-4 p-7 rounded-2xl"
+        className="flex flex-col sm:flex-row sm:items-center gap-5 p-7 rounded-2xl"
         style={{ backgroundColor: colors.lightBlue }}
       >
         <div className="flex-1">
@@ -385,11 +245,7 @@ export default function TeamSection({ members }: { members: TeamMember[] }) {
         <a
           href="mailto:info@remade-in.com"
           className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-[12px] uppercase tracking-[0.12em] transition-opacity hover:opacity-80 flex-shrink-0"
-          style={{
-            backgroundColor: colors.dark,
-            color: '#ffffff',
-            fontFamily: fonts.syne,
-          }}
+          style={{ backgroundColor: colors.dark, color: '#ffffff', fontFamily: fonts.syne }}
         >
           Get in Touch
         </a>
