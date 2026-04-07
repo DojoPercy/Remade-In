@@ -45,6 +45,14 @@ export interface SiteSettings {
   socialLinks: Array<{ platform: string; url: string }>
   contactEmail?: string
   footerText?: string
+  footerColumns?: Array<{
+    heading: string
+    links: Array<{ label: string; href: string }>
+  }>
+  footerNewsletterEyebrow?: string
+  footerNewsletterText?: string
+  footerCopyright?: string
+  footerLocations?: string
 }
 
 export interface WhatWeDoPillar {

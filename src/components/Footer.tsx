@@ -24,6 +24,12 @@ const LEGAL = [
   { label: 'Terms of Use',   href: '/terms' },
 ]
 
+const FALLBACK_COLUMNS = [
+  { heading: 'Pages',    links: PAGES },
+  { heading: 'Research', links: RESEARCH },
+  { heading: 'Legal',    links: LEGAL },
+]
+
 // ── Fallback social links (used when CMS is empty) ────────────────────────────
 
 const FALLBACK_SOCIALS = [
@@ -128,6 +134,11 @@ export default async function Footer() {
   const socials = settings?.socialLinks?.length ? settings.socialLinks : FALLBACK_SOCIALS
   const footerText = settings?.footerText ?? 'Remanufacturing the global fashion system — from the ground up, with the communities who already know how.'
   const year = new Date().getFullYear()
+  const footerColumns = settings?.footerColumns?.filter((column) => column.heading && column.links?.length) ?? []
+  const newsletterEyebrow = settings?.footerNewsletterEyebrow ?? 'Stay in the loop'
+  const newsletterText = settings?.footerNewsletterText ?? 'Research updates, events, and investment briefs â€” straight to your inbox.'
+  const footerCopyright = settings?.footerCopyright ?? `© ${year} Remade In Foundation. All rights reserved.`
+  const footerLocations = settings?.footerLocations ?? 'The Netherlands · Ghana'
 
   return (
     <footer style={{ backgroundColor: colors.blue }}>
@@ -173,9 +184,9 @@ export default async function Footer() {
 
           {/* Nav columns */}
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-14 gap-y-10">
-            <FooterCol heading="Pages"    links={PAGES} />
-            <FooterCol heading="Research" links={RESEARCH} />
-            <FooterCol heading="Legal"    links={LEGAL} />
+            {(footerColumns.length ? footerColumns : FALLBACK_COLUMNS).map((column) => (
+              <FooterCol key={column.heading} heading={column.heading} links={column.links} />
+            ))}
           </div>
         </div>
 
@@ -189,13 +200,13 @@ export default async function Footer() {
               className="text-[10px] font-bold uppercase tracking-[0.28em] mb-1"
               style={{ fontFamily: fonts.syne, color: colors.white }}
             >
-              Stay in the loop
+              {newsletterEyebrow}
             </p>
             <p
               className="text-[15px]"
               style={{ fontFamily: fonts.bricolage, color: 'rgba(255,255,255,0.75)' }}
             >
-              Research updates, events, and investment briefs — straight to your inbox.
+              {newsletterText}
             </p>
           </div>
           <NewsletterForm />
@@ -211,13 +222,13 @@ export default async function Footer() {
             className="text-[12px]"
             style={{ fontFamily: fonts.syne, color: 'rgba(255,255,255,0.35)' }}
           >
-            © {year} Remade In Foundation. All rights reserved.
+            {footerCopyright}
           </p>
           <p
             className="text-[12px]"
             style={{ fontFamily: fonts.syne, color: 'rgba(255,255,255,0.28)' }}
           >
-            The Netherlands · Ghana
+            {footerLocations}
           </p>
         </div>
       </div>

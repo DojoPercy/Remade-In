@@ -32,7 +32,18 @@ export const siteSettingsQuery = groq`
     mainNav,
     socialLinks,
     contactEmail,
-    footerText
+    footerText,
+    footerColumns[] {
+      heading,
+      links[] {
+        label,
+        href
+      }
+    },
+    footerNewsletterEyebrow,
+    footerNewsletterText,
+    footerCopyright,
+    footerLocations
   }
 `
 
@@ -396,7 +407,11 @@ export const storiesHubQuery = groq`
       _type in ${STORY_TYPES}
       && ($type == "" || $type == "all" || _type == $type)
       && ($q    == "" || title match ($q + "*") || name match ($q + "*"))
-    ] | order(featured desc, coalesce(publishedAt, date, _createdAt) desc)
+    ] | order(
+      featured desc,
+      coalesce(select(featured => _updatedAt), publishedAt, date, _createdAt) desc,
+      coalesce(publishedAt, date, _createdAt) desc
+    )
     [$offset...$end] {
       _type, _id, featured,
       "slug":     coalesce(slug.current, null),

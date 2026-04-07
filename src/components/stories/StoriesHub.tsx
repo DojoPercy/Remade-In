@@ -20,15 +20,13 @@ const TYPE_OPTIONS = [
   { label: 'Community', value: 'communityVoice' },
 ]
 
-const TYPE_META: Record<string, { label: string; accent: string }> = {
-  article:        { label: 'Article',   accent: colors.orange   },
-  video:          { label: 'Video',     accent: colors.blue     },
-  newsItem:       { label: 'News',      accent: colors.charcoal },
-  event:          { label: 'Event',     accent: '#6E8B5A'       },
-  communityVoice: { label: 'Community', accent: colors.blue     },
+const TYPE_META: Record<string, { label: string; accent: string; surface: string; dark: boolean }> = {
+  article:        { label: 'Article',   accent: colors.blue,   surface: '#6776b618', dark: false },
+  video:          { label: 'Video',     accent: colors.orange, surface: '#d8570f18', dark: false },
+  newsItem:       { label: 'News',      accent: colors.blue,   surface: '#6776b618', dark: false },
+  event:          { label: 'Event',     accent: colors.green,  surface: '#cbd18333', dark: false },
+  communityVoice: { label: 'Community', accent: colors.peach,  surface: '#f8cab840', dark: false },
 }
-
-const DARK_TYPES = new Set(['video', 'communityVoice'])
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1]
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -49,10 +47,14 @@ function getHref(item: StoryItem): string | null {
   return item.slug ? `/stories/${item.slug}` : null
 }
 
+function getTypeMeta(type: string) {
+  return TYPE_META[type] ?? TYPE_META.article
+}
+
 // ── Type badge ────────────────────────────────────────────────────────────────
 
 function TypeBadge({ type, dark }: { type: string; dark?: boolean }) {
-  const m = TYPE_META[type] ?? TYPE_META.article
+  const m = getTypeMeta(type)
   return (
     <span style={{
       fontFamily:      fonts.syne,
@@ -60,8 +62,8 @@ function TypeBadge({ type, dark }: { type: string; dark?: boolean }) {
       fontWeight:      700,
       textTransform:   'uppercase',
       letterSpacing:   '0.16em',
-      color:           dark ? '#ffffff' : m.accent,
-      backgroundColor: dark ? `${colors.white}12` : `${m.accent}16`,
+      color:           dark ? '#ffffff' : colors.charcoal,
+      backgroundColor: dark ? `${colors.white}12` : m.accent,
       borderRadius:    4,
       padding:         '4px 9px',
       display:         'inline-block',
@@ -75,10 +77,9 @@ function TypeBadge({ type, dark }: { type: string; dark?: boolean }) {
 // ── Image area ────────────────────────────────────────────────────────────────
 
 function ImageArea({ item, large }: { item: StoryItem; large?: boolean }) {
-  const dark   = DARK_TYPES.has(item._type)
+  const { accent, dark } = getTypeMeta(item._type)
   const ytId   = item.videoUrl ? getYouTubeId(item.videoUrl) : null
   const imgSrc = item.imageUrl ?? (ytId ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg` : null)
-  const accent = TYPE_META[item._type]?.accent ?? colors.orange
 
   // Event: calendar date overlay
   if (item._type === 'event') {
@@ -116,7 +117,7 @@ function ImageArea({ item, large }: { item: StoryItem; large?: boolean }) {
         : (
           <div className="absolute inset-0 flex items-center justify-center">
             <span style={{ fontFamily: fonts.bricolage, fontSize: 72, fontWeight: 900, color: dark ? `${colors.white}04` : `${colors.charcoal}06`, lineHeight: 1 }}>
-              {(TYPE_META[item._type]?.label ?? 'S')[0]}
+              {getTypeMeta(item._type).label[0]}
             </span>
           </div>
         )
@@ -146,7 +147,7 @@ function ImageArea({ item, large }: { item: StoryItem; large?: boolean }) {
 // ── Card content ──────────────────────────────────────────────────────────────
 
 function CardContent({ item, large, dark }: { item: StoryItem; large?: boolean; dark?: boolean }) {
-  const accent    = TYPE_META[item._type]?.accent ?? colors.orange
+  const accent    = getTypeMeta(item._type).accent
   const textMain  = dark ? '#ffffff'                 : colors.charcoal
   const textMuted = dark ? 'rgba(255,255,255,0.45)'  : `${colors.charcoal}55`
   const textBody  = dark ? 'rgba(255,255,255,0.72)'  : `${colors.charcoal}77`
@@ -254,7 +255,8 @@ function CardContent({ item, large, dark }: { item: StoryItem; large?: boolean; 
 // size='standard'  everything else col-span-1  vertical
 
 function StoryCard({ item, size }: { item: StoryItem; size: 'hero' | 'spotlight' | 'standard' }) {
-  const dark    = DARK_TYPES.has(item._type)
+  const typeMeta = getTypeMeta(item._type)
+  const dark    = typeMeta.dark
   const href    = getHref(item)
   const isExt   = item._type === 'newsItem' && !!item.externalUrl
   const isHoriz = size !== 'standard'
@@ -276,8 +278,8 @@ function StoryCard({ item, size }: { item: StoryItem; size: 'hero' | 'spotlight'
     borderRadius:    12,
     textDecoration:  'none' as const,
     height:          '100%',
-    backgroundColor: dark ? colors.blue : colors.white,
-    border:          dark ? 'none' : `1px solid ${colors.charcoal}0d`,
+    backgroundColor: dark ? typeMeta.accent : typeMeta.surface,
+    border:          `1px solid ${typeMeta.accent}22`,
   }
 
   const content = isHoriz ? (
@@ -344,6 +346,9 @@ export default function StoriesHub({
   useEffect(() => { setSearchVal(q)   }, [q])
 
   const allItems = [...initialData.items, ...extraItems]
+  const isAllView = !type || type === 'all'
+  const featuredItem = isAllView && !q ? allItems.find(item => item.featured) ?? null : null
+  const gridItems = featuredItem ? allItems.filter(item => item._id !== featuredItem._id) : allItems
   const hasMore  = allItems.length < initialData.total
 
   // ── URL helpers ─────────────────────────────────────────────────────────────
@@ -472,12 +477,25 @@ export default function StoriesHub({
       {/* ── Grid section ──────────────────────────────────────────────────── */}
       <section className="px-8 md:px-20 py-14" style={{ backgroundColor: colors.white }}>
 
+        {featuredItem && (
+          <div className="mb-10">
+            <div className="flex items-center gap-4 mb-5">
+              <div className="w-8 h-px" style={{ backgroundColor: colors.orange }} />
+              <span style={{ fontFamily: fonts.syne, fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.22em', color: colors.orange }}>
+                Featured story
+              </span>
+            </div>
+            <StoryCard item={featuredItem} size="hero" />
+          </div>
+        )}
+
         {/* ── Controls ── */}
         <div className="flex flex-wrap items-center gap-3 mb-10">
           {/* Type tabs */}
           <div className="flex items-center gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden flex-1 min-w-0 pb-px">
             {TYPE_OPTIONS.map(({ label, value }) => {
               const isActive = type === value
+              const accent = value ? getTypeMeta(value).accent : colors.orange
               return (
                 <button
                   key={value}
@@ -494,8 +512,8 @@ export default function StoriesHub({
                     cursor:        'pointer',
                     border:        'none',
                     ...(isActive
-                      ? { background: colors.orange,         color: colors.white         }
-                      : { background: `${colors.charcoal}08`, color: `${colors.charcoal}55` }),
+                      ? { background: accent,        color: colors.white }
+                      : { background: `${accent}16`, color: accent       }),
                   }}
                 >
                   {label}
@@ -545,10 +563,10 @@ export default function StoriesHub({
             transition={{ duration: 0.28, ease }}
             className="grid grid-cols-1 md:grid-cols-3 gap-5"
           >
-            {allItems.length === 0 ? (
+            {gridItems.length === 0 ? (
               <EmptyState />
             ) : (
-              allItems.map((item, idx) => (
+              gridItems.map((item, idx) => (
                 <motion.div
                   key={`${item._type}-${item._id}`}
                   initial={{ opacity: 0, y: 12 }}
