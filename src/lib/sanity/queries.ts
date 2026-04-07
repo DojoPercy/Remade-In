@@ -47,6 +47,41 @@ export const siteSettingsQuery = groq`
   }
 `
 
+export const pageByIdQuery = groq`
+  *[_type == "page" && _id in [$documentId, "drafts." + $documentId]][0] {
+    _id,
+    _updatedAt,
+    title,
+    "slug": slug.current,
+    hero {
+      eyebrow,
+      headline,
+      subheadline,
+      theme,
+      cta,
+      secondaryCta,
+      image {
+        asset->{
+          _id,
+          url,
+          metadata { lqip, dimensions }
+        },
+        alt,
+        caption
+      }
+    },
+    content,
+    seo {
+      metaTitle,
+      metaDescription,
+      ogImage {
+        ${imageFragment}
+      },
+      noIndex
+    }
+  }
+`
+
 // ── Home Page (7 per-section singletons merged into one flat object) ──────────
 //
 // Each section is its own publishable document. We spread them together so

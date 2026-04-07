@@ -144,24 +144,66 @@ function VideoDetail({ story }: { story: StoryVideo }) {
         </div>
       </section>
 
-      {/* Caption */}
-      {story.caption && (
-        <section className="px-8 md:px-20 py-16" style={{ backgroundColor: colors.white }}>
-          <div className="flex items-center gap-6 mb-8" style={{ borderBottom: `1px solid ${colors.charcoal}10`, paddingBottom: 16 }}>
-            <span style={{ fontFamily: fonts.syne, fontSize: 11, color: `${colors.charcoal}44`, letterSpacing: '0.1em' }}>
-              {fmtDate(story.publishedAt)}
-            </span>
-            {story.duration && (
-              <span style={{ fontFamily: fonts.syne, fontSize: 11, fontWeight: 700, color: colors.orange, letterSpacing: '0.1em' }}>
-                {story.duration}
-              </span>
-            )}
-          </div>
-          <p className="max-w-2xl" style={{ fontFamily: fonts.bricolage, fontSize: 'clamp(16px, 1.4vw, 19px)', lineHeight: 1.8, color: `${colors.charcoal}cc` }}>
-            {story.caption}
-          </p>
-        </section>
-      )}
+    {/* Caption */}
+{story.caption && (
+  <section
+    className="px-6 md:px-16 lg:px-24 py-14 md:py-20"
+    style={{ backgroundColor: colors.white }}
+  >
+    <div className="max-w-3xl mx-auto">
+      
+      {/* Meta Info */}
+      <div
+        className="flex items-center gap-4 mb-8 pb-4"
+        style={{
+          borderBottom: `1px solid ${colors.charcoal}08`,
+        }}
+      >
+        <span
+          className="px-3 py-1 rounded-full"
+          style={{
+            fontFamily: fonts.syne,
+            fontSize: 11,
+            color: `${colors.charcoal}66`,
+            backgroundColor: `${colors.charcoal}08`,
+            letterSpacing: '0.08em',
+          }}
+        >
+          {fmtDate(story.publishedAt)}
+        </span>
+
+        {story.duration && (
+          <span
+            className="px-3 py-1 rounded-full"
+            style={{
+              fontFamily: fonts.syne,
+              fontSize: 11,
+              fontWeight: 700,
+              color: colors.orange,
+              backgroundColor: `${colors.orange}15`,
+              letterSpacing: '0.08em',
+            }}
+          >
+            {story.duration}
+          </span>
+        )}
+      </div>
+
+      {/* Caption Text */}
+      <p
+        className="leading-relaxed"
+        style={{
+          fontFamily: fonts.bricolage,
+          fontSize: 'clamp(16px, 1.3vw, 20px)',
+          lineHeight: 1.9,
+          color: `${colors.charcoal}dd`,
+        }}
+      >
+        {story.caption}
+      </p>
+    </div>
+  </section>
+)}
     </main>
   )
 }

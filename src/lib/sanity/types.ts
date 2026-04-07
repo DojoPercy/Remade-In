@@ -34,6 +34,31 @@ export interface Seo {
   noIndex?: boolean
 }
 
+export interface CtaLink {
+  label: string
+  href: string
+}
+
+export interface PageHero {
+  eyebrow?: string
+  headline?: string
+  subheadline?: string
+  theme?: 'dark' | 'light' | 'orange'
+  cta?: CtaLink
+  secondaryCta?: CtaLink
+  image?: SanityImage
+}
+
+export interface GenericPage {
+  _id: string
+  _updatedAt?: string
+  title: string
+  slug?: string
+  hero?: PageHero
+  content?: unknown[]
+  seo?: Seo
+}
+
 // ── Documents ─────────────────────────────────────────────────────────────────
 
 export interface SiteSettings {
