@@ -18,6 +18,7 @@ export interface VoiceItem {
   photoSrc: string
   market: string
   location: string
+  role?: string
 }
 
 // ── Variants ───────────────────────────────────────────────────────────────────
@@ -159,8 +160,8 @@ export default function CommunityVoiceCarousel({ voices }: { voices: VoiceItem[]
               {voice.name}
             </motion.p>
           </AnimatePresence>
- <BlobButton href={`#${voice.slug}`} variant="solid">
-           Read {voice.name.split(' ')[0]}&apos;s Story
+          <BlobButton href={`/community/${voice.slug}`} variant="solid">
+            Read {voice.name.split(' ')[0]}&apos;s Story
           </BlobButton>
         
 

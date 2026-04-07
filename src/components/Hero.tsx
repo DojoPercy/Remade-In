@@ -41,13 +41,14 @@ function AccentWord({ accent, color }: { accent: string; color: string }) {
   }, [])
 
   return (
-    <span
+    <motion.span
+      layout
+      transition={{ layout: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } }}
       style={{
         position: 'relative',
         display: 'inline-flex',
         whiteSpace: 'nowrap',
         verticalAlign: 'bottom',
-        minWidth: `${Math.max(accent.length, 3) * 0.62}em`,
         minHeight: '1.1em',
       }}
     >
@@ -75,7 +76,7 @@ function AccentWord({ accent, color }: { accent: string; color: string }) {
           </motion.em>
         )}
       </AnimatePresence>
-    </span>
+    </motion.span>
   )
 }
 
@@ -186,10 +187,7 @@ export default function Hero({ data }: { data?: HomePage | null }) {
           {' '}
           <AccentWord accent={accent} color={colors.orange} />
           {tagline && (
-            <>
-              <br />
-              <SplitText text={tagline} onMount delay={0.82} stagger={0.07} />
-            </>
+            <>&nbsp;&nbsp;<SplitText text={tagline} onMount delay={0.82} stagger={0.07} /></>
           )}
         </h1>
 

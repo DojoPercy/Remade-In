@@ -74,7 +74,7 @@ export default async function Gallery() {
       <div className="px-8 md:px-20 mb-16">
         <p
           className="flex items-center gap-2 text-[15px] font-bold uppercase tracking-[0.25em] mb-4"
-          style={{ color: GALLERY_TEXT_ACCENT, fontFamily: fonts.syne }}
+          style={{ color: colors.orange, fontFamily: fonts.syne }}
         >
           <CameraIcon />
           {eyebrow}
@@ -89,7 +89,7 @@ export default async function Gallery() {
           }}
         >
           {headline}{' '}
-          <em style={{ color: GALLERY_TEXT_ACCENT, fontStyle: 'italic' }}>{accent}</em>
+          <em style={{ color: colors.orange, fontStyle: 'italic' }}>{accent}</em>
         </h2>
       </div>
 

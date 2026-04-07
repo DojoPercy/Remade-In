@@ -3,10 +3,11 @@
 import { motion } from 'framer-motion'
 import { colors, fonts } from '@/lib/tokens'
 import SectionDivider from '@/components/ui/SectionDivider'
+import type { AboutPage } from '@/lib/sanity/types'
 
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1]
 
-const VALUES = [
+const FALLBACK_VALUES = [
   {
     title: 'Justice First',
     body: 'We centre the voices and labour of communities in the Global South who are most affected by textile waste — not as beneficiaries, but as experts and co-designers.',
@@ -21,7 +22,10 @@ const VALUES = [
   },
 ]
 
-export default function AboutValues() {
+export default function AboutValues({ data }: { data?: AboutPage | null }) {
+  const eyebrow = data?.valuesEyebrow ?? 'What We Stand For'
+  const values  = data?.values?.length ? data.values : FALLBACK_VALUES
+
   return (
     <section
       className="relative overflow-hidden px-8 md:px-20 py-16 md:py-24"
@@ -35,11 +39,11 @@ export default function AboutValues() {
         className="text-[15px] font-bold uppercase tracking-[0.28em] mb-10"
         style={{ fontFamily: fonts.syne, color: colors.blue }}
       >
-        What We Stand For
+        {eyebrow}
       </motion.p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-        {VALUES.map((v, i) => (
+        {values.map((v, i) => (
           <motion.div
             key={v.title}
             initial={{ opacity: 0, y: 28 }}

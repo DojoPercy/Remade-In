@@ -5,11 +5,18 @@ import { useRef } from 'react'
 import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import { colors, fonts } from '@/lib/tokens'
 import SectionDivider from '@/components/ui/SectionDivider'
+import type { AboutPage } from '@/lib/sanity/types'
 
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1]
-const PHOTO = '/Events/250830-Fashion Week-Kantamanto Social Club_RT-17.jpg'
+const FALLBACK_PHOTO = '/Events/250830-Fashion Week-Kantamanto Social Club_RT-17.jpg'
 
-export default function AboutHero() {
+export default function AboutHero({ data }: { data?: AboutPage | null }) {
+  const eyebrow       = data?.heroEyebrow        ?? 'About Us'
+  const headlineBefore = data?.heroHeadlineBefore ?? 'We are the'
+  const accent        = data?.heroAccent          ?? 'connective tissue'
+  const headlineAfter = data?.heroHeadlineAfter   ?? 'of a new textile economy.'
+  const subheadline   = data?.heroSubheadline     ?? 'A Dutch foundation working at the intersection of fashion, justice, and systems change — building the infrastructure to make textile remanufacturing accessible, scalable, and socially just.'
+  const bgSrc         = data?.heroBackground?.asset?.url ?? FALLBACK_PHOTO
   const ref = useRef<HTMLElement>(null)
   const inView = useInView(ref, { once: true })
   const { scrollY } = useScroll()
@@ -26,13 +33,13 @@ export default function AboutHero() {
     <section
       ref={ref}
       className="relative min-h-[75svh] md:min-h-[85svh] overflow-hidden flex flex-col"
-      style={{ backgroundColor: colors.blue, paddingTop: 66 }}
+      style={{ backgroundColor: '#d8570f', paddingTop: 66 }}
     >
       {/* Layer 0: Photo with parallax */}
       <div className="absolute inset-0 overflow-hidden" style={{ zIndex: 0 }}>
         <motion.div className="absolute left-0 right-0" style={{ top: -60, bottom: -60, y: bgY }}>
           <Image
-            src={PHOTO}
+            src={bgSrc}
             alt="Remade In community at work"
             fill
             className="object-cover object-center"
@@ -48,7 +55,7 @@ export default function AboutHero() {
         className="absolute inset-0"
         style={{
           zIndex: 1,
-          background: `linear-gradient(105deg, ${colors.blue}f2 35%, ${colors.blue}cc 52%, ${colors.blue}66 100%)`,
+          background: `linear-gradient(105deg, #d8570ff2 35%, #d8570fcc 52%, #d8570f66 100%)`,
         }}
       />
 
@@ -64,8 +71,8 @@ export default function AboutHero() {
         }}
       />
 
-      {/* Orange top accent line */}
-      <div className="absolute top-0 left-0 w-full h-1 z-10" style={{ backgroundColor: colors.orange }} />
+      {/* Top accent line */}
+      <div className="absolute top-0 left-0 w-full h-1 z-10" style={{ backgroundColor: colors.lightBlue }} />
 
       {/* Content */}
       <div
@@ -75,9 +82,9 @@ export default function AboutHero() {
         <motion.p
           {...anim(0)}
           className="mb-6 text-[15px] font-bold uppercase tracking-[0.28em]"
-          style={{ fontFamily: fonts.syne, color: colors.orange }}
+          style={{ fontFamily: fonts.syne, color: colors.lightBlue }}
         >
-          About Us
+          {eyebrow}
         </motion.p>
 
         <motion.h1
@@ -92,9 +99,9 @@ export default function AboutHero() {
             maxWidth: '22ch',
           }}
         >
-          We are the{' '}
-          <em style={{ color: colors.orange, fontStyle: 'italic' }}>connective tissue</em>{' '}
-          of a new textile economy.
+          {headlineBefore}{' '}
+          <em style={{ color: colors.lightBlue, fontStyle: 'italic' }}>{accent}</em>{' '}
+          {headlineAfter}
         </motion.h1>
 
         <motion.p
@@ -107,8 +114,7 @@ export default function AboutHero() {
             color: 'rgba(255,255,255,0.65)',
           }}
         >
-          A Dutch foundation working at the intersection of fashion, justice, and systems change —
-          building the infrastructure to make textile remanufacturing accessible, scalable, and socially just.
+          {subheadline}
         </motion.p>
       </div>
 

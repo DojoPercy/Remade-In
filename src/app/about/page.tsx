@@ -1,6 +1,6 @@
 import { client } from '@/lib/sanity/client'
-import { teamMembersQuery, homePageQuery } from '@/lib/sanity/queries'
-import type { TeamMember, HomePage } from '@/lib/sanity/types'
+import { teamMembersQuery, homePageQuery, aboutPageQuery } from '@/lib/sanity/queries'
+import type { TeamMember, HomePage, AboutPage } from '@/lib/sanity/types'
 
 import Nav from '@/components/Nav'
 import AboutHero from '@/components/AboutHero'
@@ -19,12 +19,14 @@ export const metadata = {
 
 export default async function AboutPage() {
   let homeData: HomePage | null = null
+  let aboutData: AboutPage | null = null
   let teamMembers: TeamMember[] = []
 
   try {
     const isr = { next: { revalidate: 60 } }
-    ;[homeData, teamMembers] = await Promise.all([
+    ;[homeData, aboutData, teamMembers] = await Promise.all([
       client.fetch<HomePage>(homePageQuery, {}, isr),
+      client.fetch<AboutPage>(aboutPageQuery, {}, isr),
       client.fetch<TeamMember[]>(teamMembersQuery, {}, isr),
     ])
   } catch {
@@ -34,11 +36,11 @@ export default async function AboutPage() {
   return (
     <>
       <Nav />
-      <AboutHero />
-      <AboutStory />
+      <AboutHero data={aboutData} />
+      <AboutStory data={aboutData} />
       <MissionVision data={homeData} />
       <TeamSection members={teamMembers} />
-      <AboutValues />
+      <AboutValues data={aboutData} />
       <DonationBanner data={homeData} />
       <Footer />
     </>

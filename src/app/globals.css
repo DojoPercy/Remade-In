@@ -85,3 +85,24 @@ body {
 .ticker-track { animation: ticker 30s linear infinite; }
 @media (max-width: 767px) { .ticker-track { animation-duration: 16s; } }
 .pulse-dot { animation: pulseDot 1.9s ease-in-out infinite; }
+
+/* ── Footer interactive links ── */
+.footer-link {
+  color: rgba(255,255,255,0.60);
+  transition: color 0.2s;
+}
+.footer-link:hover { color: #ffffff; }
+
+.footer-social {
+  width: 40px; height: 40px;
+  color: rgba(255,255,255,0.55);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 9999px;
+  display: flex; align-items: center; justify-content: center;
+  transition: color 0.2s, border-color 0.2s, background-color 0.2s;
+}
+.footer-social:hover {
+  color: #ffffff;
+  border-color: rgba(255,255,255,0.45);
+  background-color: rgba(255,255,255,0.08);
+}

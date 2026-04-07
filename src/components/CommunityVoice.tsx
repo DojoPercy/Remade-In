@@ -56,9 +56,10 @@ function normalise(doc: CommunityVoiceCMS): VoiceItem {
     quote: doc.quote,
     photoSrc: doc.photo?.asset
       ? imageUrl(doc.photo.asset, 840, 960)
-      : '/Upcyclers/KSCxBenBreuer-6.jpg', // fallback photo
+      : '/Upcyclers/KSCxBenBreuer-6.jpg',
     market: doc.market ?? 'Kantamanto Market',
     location: doc.location ?? 'Accra, Ghana',
+    role: doc.role,
   }
 }
 

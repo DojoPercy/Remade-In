@@ -18,6 +18,8 @@ const SLOTS = [
   { key: 'c', rotate: -1,   accent: colors.orange },
   { key: 'd', rotate:  2,   accent: colors.blue   },
   { key: 'e', rotate: -1.5, accent: colors.orange },
+  { key: 'a', rotate: -2,   accent: colors.orange },
+  { key: 'b', rotate:  1.5, accent: colors.blue   },
 ]
 
 // ── Modern photo card ──────────────────────────────────────────────────────────
@@ -96,7 +98,7 @@ export default function GalleryStrip({ cells }: { cells: Record<string, CellData
   })
 
   // Single row drifts left as you scroll through the section
-  const x = useTransform(scrollYProgress, [0, 1], ['6%', '-22%'])
+  const x = useTransform(scrollYProgress, [0, 1], ['6%', '-52%'])
 
   // Blob parallaxes independently
   const blobX = useTransform(scrollYProgress, [0, 1], ['0%', '-5%'])

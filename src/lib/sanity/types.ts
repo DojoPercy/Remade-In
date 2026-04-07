@@ -176,6 +176,9 @@ export interface CommunityVoice {
   photo?: SanityImage
   market: string
   location: string
+  role?: string
+  story?: unknown[]
+  gallery?: SanityImage[]
 }
 
 // ── Partners ─────────────────────────────────────────────────────────────────
@@ -206,6 +209,41 @@ export interface TeamMember {
   expertise?: string[]
   linkedin?: string
   twitter?: string
+}
+
+// ── About Page ────────────────────────────────────────────────────────────────
+
+export interface AboutPage {
+  // Hero
+  heroEyebrow?: string
+  heroHeadlineBefore?: string
+  heroAccent?: string
+  heroHeadlineAfter?: string
+  heroSubheadline?: string
+  heroBackground?: SanityImage
+  // Story
+  storyEyebrow?: string
+  storyHeadline?: string
+  storyBodyParagraphs?: string[]
+  storyImage?: SanityImage
+  // Values
+  valuesEyebrow?: string
+  values?: { title: string; body: string }[]
+}
+
+// ── Partner Page ──────────────────────────────────────────────────────────────
+
+export interface PartnerPage {
+  // Hero
+  heroEyebrow?: string
+  heroHeadlineBefore?: string
+  heroAccent?: string
+  heroHeadlineAfter?: string
+  heroSubheadline?: string
+  heroBackground?: SanityImage
+  // Partnership types
+  typesEyebrow?: string
+  partnershipTypes?: { label: string; iconName: string; body: string }[]
 }
 
 // ── Research Archive ──────────────────────────────────────────────────────────

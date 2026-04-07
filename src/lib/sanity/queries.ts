@@ -135,6 +135,53 @@ export const homePageQuery = groq`
   }
 `
 
+// ── About Page (per-section singletons merged into one flat object) ───────────
+
+export const aboutPageQuery = groq`
+  {
+    ...*[_type == "aboutHero" && _id == "aboutHero"][0] {
+      heroEyebrow,
+      heroHeadlineBefore,
+      heroAccent,
+      heroHeadlineAfter,
+      heroSubheadline,
+      "heroBackground": heroBackground { ${imageFragment} }
+    },
+
+    ...*[_type == "aboutStory" && _id == "aboutStory"][0] {
+      "storyEyebrow": eyebrow,
+      "storyHeadline": headline,
+      "storyBodyParagraphs": bodyParagraphs,
+      "storyImage": image { ${imageFragment} }
+    },
+
+    ...*[_type == "aboutValues" && _id == "aboutValues"][0] {
+      "valuesEyebrow": eyebrow,
+      values[] { title, body }
+    }
+  }
+`
+
+// ── Partner Page (per-section singletons merged into one flat object) ─────────
+
+export const partnerPageQuery = groq`
+  {
+    ...*[_type == "partnerHero" && _id == "partnerHero"][0] {
+      heroEyebrow,
+      heroHeadlineBefore,
+      heroAccent,
+      heroHeadlineAfter,
+      heroSubheadline,
+      "heroBackground": heroBackground { ${imageFragment} }
+    },
+
+    ...*[_type == "partnerTypes" && _id == "partnerTypes"][0] {
+      "typesEyebrow": eyebrow,
+      partnershipTypes[] { label, iconName, body }
+    }
+  }
+`
+
 // ── Blueprint Page (singleton) ────────────────────────────────────────────────
 
 export const blueprintPageQuery = groq`
@@ -224,7 +271,24 @@ export const communityVoicesQuery = groq`
     quote,
     photo { ${imageFragment} },
     market,
-    location
+    location,
+    role
+  }
+`
+
+/** Single community voice by slug — for detail page */
+export const communityVoiceBySlugQuery = groq`
+  *[_type == "communityVoice" && slug.current == $slug][0] {
+    _id,
+    name,
+    slug,
+    quote,
+    role,
+    photo { ${imageFragment} },
+    market,
+    location,
+    story,
+    gallery[] { ${imageFragment} }
   }
 `
 

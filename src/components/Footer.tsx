@@ -1,71 +1,92 @@
-'use client'
 import Image from 'next/image'
 import { colors, fonts } from '@/lib/tokens'
 import NewsletterForm from '@/components/NewsletterForm'
+import { client } from '@/lib/sanity/client'
+import { siteSettingsQuery } from '@/lib/sanity/queries'
+import type { SiteSettings } from '@/lib/sanity/types'
+
+// ── Static nav lists ──────────────────────────────────────────────────────────
 
 const PAGES = [
-  { label: 'Home', href: '/' },
-  { label: 'The Blueprint', href: '/blueprint' },
-  { label: 'Impact', href: '/#impact' },
-  { label: 'Research', href: '/#research' },
-  { label: 'Community', href: '/#community' },
+  { label: 'Home',           href: '/' },
+  { label: 'The Blueprint',  href: '/blueprint' },
+  { label: 'Impact',         href: '/#impact' },
+  { label: 'Research',       href: '/#research' },
+  { label: 'Community',      href: '/#community' },
   { label: 'Partner With Us', href: '/partner' },
 ]
 
 const RESEARCH = [
-  { label: 'White Paper (Full)', href: '/blueprint' },
-  { label: 'Executive Summary', href: '/blueprint#downloads' },
-  { label: 'Kantamanto Report', href: '/blueprint#downloads' },
-  { label: 'Impact Data 2024', href: '/blueprint#downloads' },
+  { label: 'White Paper (Full)',   href: '/blueprint' },
+  { label: 'Executive Summary',   href: '/blueprint#downloads' },
 ]
 
 const LEGAL = [
   { label: 'Privacy Policy', href: '/privacy' },
-  { label: 'Cookie Policy', href: '/cookies' },
-  { label: 'Terms of Use', href: '/terms' },
+  { label: 'Cookie Policy',  href: '/cookies' },
+  { label: 'Terms of Use',   href: '/terms' },
 ]
 
-const SOCIALS = [
-  {
-    label: 'Instagram',
-    href: 'https://www.instagram.com/remadein.nl',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+// ── Fallback social links (used when CMS is empty) ────────────────────────────
+
+const FALLBACK_SOCIALS = [
+  { platform: 'Instagram', url: 'https://www.instagram.com/remadein.nl' },
+  { platform: 'LinkedIn',  url: 'https://www.linkedin.com/company/remadein' },
+  { platform: 'Twitter / X', url: 'https://x.com/remadeinnl' },
+]
+
+// ── Platform → SVG icon map ───────────────────────────────────────────────────
+
+function SocialIcon({ platform }: { platform: string }) {
+  const p = platform.toLowerCase()
+
+  if (p.includes('instagram'))
+    return (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
         <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
         <circle cx="12" cy="12" r="4" />
         <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none" />
       </svg>
-    ),
-  },
-  {
-    label: 'LinkedIn',
-    href: 'https://www.linkedin.com/company/remadein',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+    )
+
+  if (p.includes('linkedin'))
+    return (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
         <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
         <rect x="2" y="9" width="4" height="12" />
         <circle cx="4" cy="4" r="2" />
       </svg>
-    ),
-  },
-  {
-    label: 'X / Twitter',
-    href: 'https://x.com/remadeinnl',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+    )
+
+  if (p.includes('twitter') || p.includes('x'))
+    return (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
         <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
       </svg>
-    ),
-  },
-]
+    )
 
-// ── Divider line ──────────────────────────────────────────────────────────────
+  if (p.includes('youtube'))
+    return (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+        <path d="M22.54 6.42A2.78 2.78 0 0 0 20.59 4.46C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.54C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58zM9.75 15.02V8.98L15.5 12l-5.75 3.02z" />
+      </svg>
+    )
+
+  // Generic globe fallback
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <circle cx="12" cy="12" r="10" />
+      <line x1="2" y1="12" x2="22" y2="12" />
+      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+    </svg>
+  )
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
 
 function Divider() {
   return <div style={{ height: 1, backgroundColor: 'rgba(255,255,255,0.82)' }} />
 }
-
-// ── Footer column ─────────────────────────────────────────────────────────────
 
 function FooterCol({ heading, links }: { heading: string; links: { label: string; href: string }[] }) {
   return (
@@ -81,10 +102,8 @@ function FooterCol({ heading, links }: { heading: string; links: { label: string
           <li key={label}>
             <a
               href={href}
-              className="text-[14px] leading-snug transition-colors duration-200"
-              style={{ fontFamily: fonts.bricolage, color: 'rgba(255,255,255,0.60)' }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = '#ffffff')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.60)')}
+              className="footer-link text-[14px] leading-snug"
+              style={{ fontFamily: fonts.bricolage }}
             >
               {label}
             </a>
@@ -97,12 +116,24 @@ function FooterCol({ heading, links }: { heading: string; links: { label: string
 
 // ── Footer ────────────────────────────────────────────────────────────────────
 
-export default function Footer() {
+export default async function Footer() {
+  let settings: SiteSettings | null = null
+  try {
+    settings = await client.fetch<SiteSettings>(
+      siteSettingsQuery,
+      {},
+      { next: { revalidate: 60 } },
+    )
+  } catch {
+    // CMS unavailable — fall back to hardcoded values
+  }
+
+  const socials = settings?.socialLinks?.length ? settings.socialLinks : FALLBACK_SOCIALS
+  const footerText = settings?.footerText ?? 'Remanufacturing the global fashion system — from the ground up, with the communities who already know how.'
   const year = new Date().getFullYear()
 
   return (
     <footer style={{ backgroundColor: colors.blue }}>
-      {/* Main body */}
       <div className="px-8 md:px-20 pt-16 pb-12">
 
         {/* Row 1: Logo + mission left / nav columns right */}
@@ -123,38 +154,21 @@ export default function Footer() {
               className="text-[15px] leading-[1.75]"
               style={{ fontFamily: fonts.bricolage, color: 'rgba(255,255,255,0.65)' }}
             >
-              Remanufacturing the global fashion system — from the ground up, with the communities who already know how.
+              {footerText}
             </p>
 
-            {/* Social row */}
+            {/* Social row — driven by CMS */}
             <div className="flex gap-4 mt-8">
-              {SOCIALS.map(({ label, href, icon }) => (
+              {socials.map(({ platform, url }) => (
                 <a
-                  key={label}
-                  href={href}
+                  key={platform}
+                  href={url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={label}
-                  className="flex items-center justify-center rounded-full border transition-all duration-200"
-                  style={{
-                    width: 40,
-                    height: 40,
-                    color: 'rgba(255,255,255,0.55)',
-                    borderColor: 'rgba(255,255,255,0.18)',
-                    backgroundColor: 'transparent',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.color = '#ffffff'
-                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.45)'
-                    e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.08)'
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.color = 'rgba(255,255,255,0.55)'
-                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.18)'
-                    e.currentTarget.style.backgroundColor = 'transparent'
-                  }}
+                  aria-label={platform}
+                  className="footer-social"
                 >
-                  {icon}
+                  <SocialIcon platform={platform} />
                 </a>
               ))}
             </div>
@@ -162,13 +176,13 @@ export default function Footer() {
 
           {/* Nav columns */}
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-14 gap-y-10">
-            <FooterCol heading="Pages" links={PAGES} />
+            <FooterCol heading="Pages"    links={PAGES} />
             <FooterCol heading="Research" links={RESEARCH} />
-            <FooterCol heading="Legal" links={LEGAL} />
+            <FooterCol heading="Legal"    links={LEGAL} />
           </div>
         </div>
 
-        {/* Newsletter / CTA strip */}
+        {/* Newsletter strip */}
         <div
           className="mt-14 rounded-[10px] px-8 py-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6"
           style={{ backgroundColor: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)' }}
@@ -190,7 +204,6 @@ export default function Footer() {
           <NewsletterForm />
         </div>
 
-        {/* Divider */}
         <div className="mt-12 mb-8">
           <Divider />
         </div>
