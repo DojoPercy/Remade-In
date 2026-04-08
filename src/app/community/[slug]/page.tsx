@@ -115,6 +115,24 @@ export default async function CommunityVoiceDetailPage({
     ? imageUrl(voice.photo, 900, 1000)
     : null
 
+    function getYouTubeId(url: string): string | null {
+  const m = url.match(/(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/\s]{11})/)
+  return m ? m[1] : null
+}
+
+function getVimeoId(url: string): string | null {
+  const m = url.match(/vimeo\.com\/([0-9]+)/)
+  return m ? m[1] : null
+}
+
+function getEmbedUrl(url: string): string {
+  const yt = getYouTubeId(url)
+  if (yt) return `https://www.youtube.com/embed/${yt}?rel=0`
+  const vi = getVimeoId(url)
+  if (vi) return `https://player.vimeo.com/video/${vi}`
+  return url
+}
+
   return (
     <>
       <Nav />
@@ -302,75 +320,58 @@ export default async function CommunityVoiceDetailPage({
         </section>
       )}
       {/* ── Videos ── */}
-      {Array.isArray(voice.videos) && voice.videos.length > 0 && (
-        <section
-          className="px-8 md:px-20 py-16 md:py-24"
-          style={{ backgroundColor: colors.white }}
-        >
-          <p
-            className="text-[11px] font-bold uppercase tracking-[0.28em] mb-8"
-            style={{ fontFamily: fonts.syne, color: colors.orange }}
-          >
-            Videos
-          </p>
+     {/* ── Videos ── */}
+{Array.isArray(voice.videos) && voice.videos.length > 0 && (
+  <section
+    className="px-8 md:px-20 py-16 md:py-24"
+    style={{ backgroundColor: colors.white }}
+  >
+    <p
+      className="text-[11px] font-bold uppercase tracking-[0.28em] mb-8"
+      style={{ fontFamily: fonts.syne, color: colors.orange }}
+    >
+      Videos
+    </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {voice.videos.map((video) => {
-              const thumbnailSrc = video.thumbnail?.asset
-                ? imageUrl(video.thumbnail, 800, 500)
-                : null
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+      {voice.videos.map((video) => {
+        const embedUrl = getEmbedUrl(video.videoUrl)
 
-              return (
-                <div key={video._id} className="group">
+        return (
+          <div key={video._id}>
+            
+            {/* 16:9 Player */}
+            <div
+              className="relative w-full rounded-2xl overflow-hidden mb-4"
+              style={{ paddingBottom: '56.25%' }} // keeps SAME size as your story page
+            >
+              <iframe
+                src={embedUrl}
+                className="absolute inset-0 w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                title={video.title}
+                style={{ border: 'none' }}
+              />
+            </div>
 
-                  {/* Thumbnail */}
-                  <div
-                    className="relative w-full rounded-2xl overflow-hidden mb-4"
-                    style={{ aspectRatio: '16/9' }}
-                  >
-                    {thumbnailSrc ? (
-                      <Image
-                        src={thumbnailSrc}
-                        alt={video.thumbnail?.alt || video.title}
-                        fill
-                        className="object-cover group-hover:scale-105 transition"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-gray-200" />
-                    )}
-
-                    {/* Play button */}
-                    <a
-                      href={video.videoUrl}
-                      target="_blank"
-                      className="absolute inset-0 flex items-center justify-center"
-                    >
-                      <div
-                        className="w-14 h-14 rounded-full flex items-center justify-center"
-                        style={{ backgroundColor: colors.orange }}
-                      >
-                        ▶
-                      </div>
-                    </a>
-                  </div>
-
-                  {/* Title */}
-                  <p
-                    style={{
-                      fontFamily: fonts.bricolage,
-                      fontWeight: 700,
-                      fontSize: 16,
-                      color: colors.dark,
-                    }}
-                  >
-                    {video.title}
-                  </p>
-                </div>
-              )
-            })}
+            {/* Title */}
+            <p
+              style={{
+                fontFamily: fonts.bricolage,
+                fontWeight: 700,
+                fontSize: 16,
+                color: colors.dark,
+              }}
+            >
+              {video.title}
+            </p>
           </div>
-        </section>
-      )}
+        )
+      })}
+    </div>
+  </section>
+)}
       {/* ── CTA ── */}
       <section
         className="px-8 md:px-20 py-16 md:py-20 flex flex-col sm:flex-row sm:items-center gap-6"
