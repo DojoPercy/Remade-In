@@ -1,6 +1,6 @@
 'use client'
 
-import { useActionState } from 'react'
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { colors, fonts } from '@/lib/tokens'
 import { submitPartnerInquiry } from '@/app/actions/submitPartner'
@@ -10,10 +10,21 @@ const PARTNERSHIP_TYPES = [
   'Investors & Funders',
   'Institutions & Policy Makers',
   'Tailors & Makers',
+  'Municipalities & Sorters',
   'Other',
 ]
 
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1]
+
+const FORM_BASE = 'https://docs.google.com/forms/d/e/1FAIpQLSdnjDgvqkO-AD4j2PUlUV2Ojo-sEDR913FaaDqJ4nLz7LElVw/formResponse'
+
+const FIELD_IDS = {
+  name:    'entry.475841831',
+  org:     'entry.593763383',
+  email:   'entry.95946478',
+  type:    'entry.1105097268',
+  message: 'entry.1972218974',
+}
 
 const inputStyle = {
   fontFamily: fonts.bricolage,
@@ -44,10 +55,60 @@ function Field({ id, label, children }: { id: string; label: string; children: R
   )
 }
 
-export default function PartnerForm() {
-  const [state, action, pending] = useActionState(submitPartnerInquiry, null)
+type Status = 'idle' | 'pending' | 'success' | 'error'
 
-  if (state?.success) {
+export default function PartnerForm() {
+  const [status, setStatus] = useState<Status>('idle')
+  const [errorMsg, setErrorMsg] = useState('')
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setStatus('pending')
+    setErrorMsg('')
+
+    const data = new FormData(e.currentTarget)
+
+    const fields = {
+      name:    data.get('name')    as string,
+      org:     data.get('org')     as string,
+      email:   data.get('email')   as string,
+      type:    data.get('type')    as string,
+      message: data.get('message') as string,
+    }
+
+    // Google Forms body
+    const gBody = new URLSearchParams()
+    gBody.append(FIELD_IDS.name,    fields.name)
+    gBody.append(FIELD_IDS.org,     fields.org)
+    gBody.append(FIELD_IDS.email,   fields.email)
+    gBody.append(FIELD_IDS.type,    fields.type)
+    gBody.append(FIELD_IDS.message, fields.message)
+
+    try {
+      // Fire both in parallel — server action + Google Forms
+      const [actionResult] = await Promise.all([
+        submitPartnerInquiry(null, data),
+        fetch(FORM_BASE, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: gBody.toString(),
+        }),
+      ])
+
+      if (actionResult?.success) {
+        setStatus('success')
+      } else {
+        setStatus('error')
+        setErrorMsg(actionResult?.message ?? 'Something went wrong. Please try again.')
+      }
+    } catch {
+      setStatus('error')
+      setErrorMsg('Something went wrong. Please try again.')
+    }
+  }
+
+  if (status === 'success') {
     return (
       <motion.div
         initial={{ opacity: 0, y: 16 }}
@@ -71,21 +132,18 @@ export default function PartnerForm() {
           Message sent.
         </p>
         <p style={{ fontFamily: fonts.bricolage, fontSize: 15, lineHeight: 1.75, color: 'rgba(255,255,255,0.65)' }}>
-          {state.message}
+          Thanks for reaching out. We'll be in touch shortly.
         </p>
       </motion.div>
     )
   }
 
   return (
-    <form action={action} className="flex flex-col gap-5">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <Field id="name" label="Name *">
           <input
-            id="name"
-            name="name"
-            type="text"
-            required
+            id="name" name="name" type="text" required
             placeholder="Your name"
             className="px-4 py-3 rounded-xl border text-[15px] outline-none transition-colors duration-200 placeholder:opacity-30"
             style={inputStyle}
@@ -93,9 +151,7 @@ export default function PartnerForm() {
         </Field>
         <Field id="org" label="Organisation">
           <input
-            id="org"
-            name="org"
-            type="text"
+            id="org" name="org" type="text"
             placeholder="Your organisation"
             className="px-4 py-3 rounded-xl border text-[15px] outline-none transition-colors duration-200 placeholder:opacity-30"
             style={inputStyle}
@@ -105,10 +161,7 @@ export default function PartnerForm() {
 
       <Field id="email" label="Email *">
         <input
-          id="email"
-          name="email"
-          type="email"
-          required
+          id="email" name="email" type="email" required
           placeholder="your@email.com"
           className="px-4 py-3 rounded-xl border text-[15px] outline-none transition-colors duration-200 placeholder:opacity-30"
           style={inputStyle}
@@ -117,8 +170,7 @@ export default function PartnerForm() {
 
       <Field id="type" label="Partnership Type">
         <select
-          id="type"
-          name="type"
+          id="type" name="type"
           className="px-4 py-3 rounded-xl border text-[15px] outline-none"
           style={{ ...inputStyle, backgroundColor: 'rgba(255,255,255,0.06)' }}
         >
@@ -133,32 +185,26 @@ export default function PartnerForm() {
 
       <Field id="message" label="Message *">
         <textarea
-          id="message"
-          name="message"
-          rows={5}
-          required
+          id="message" name="message" rows={5} required
           placeholder="Tell us about your interest and how you'd like to collaborate…"
           className="px-4 py-3 rounded-xl border text-[15px] outline-none resize-none transition-colors duration-200 placeholder:opacity-30"
           style={inputStyle}
         />
       </Field>
 
-      {state && !state.success && (
-        <p
-          className="text-[13px]"
-          style={{ fontFamily: fonts.bricolage, color: colors.peach }}
-        >
-          {state.message}
+      {status === 'error' && (
+        <p className="text-[13px]" style={{ fontFamily: fonts.bricolage, color: colors.peach }}>
+          {errorMsg}
         </p>
       )}
 
       <button
         type="submit"
-        disabled={pending}
+        disabled={status === 'pending'}
         className="self-start px-8 py-3.5 rounded-full text-[13px] font-bold uppercase tracking-[0.1em] transition-opacity duration-200 hover:opacity-90 disabled:opacity-50"
         style={{ fontFamily: fonts.syne, backgroundColor: colors.orange, color: '#ffffff' }}
       >
-        {pending ? 'Sending…' : 'Send Message'}
+        {status === 'pending' ? 'Sending…' : 'Send Message'}
       </button>
     </form>
   )
