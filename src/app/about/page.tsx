@@ -40,7 +40,6 @@ export default async function AboutPage() {
       <AboutStory data={aboutData} />
       <MissionVision data={homeData} />
       <TeamSection members={teamMembers} />
-      <AboutValues data={aboutData} />
       <DonationBanner data={homeData} />
       <Footer />
     </>

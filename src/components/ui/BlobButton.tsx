@@ -6,7 +6,7 @@ import { colors, fonts } from '@/lib/tokens'
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
-type Variant = 'solid' | 'ghost' | 'dark'
+type Variant = 'solid' | 'ghost' | 'dark' | 'white'
 type Size    = 'sm' | 'md'
 
 interface BlobButtonProps {

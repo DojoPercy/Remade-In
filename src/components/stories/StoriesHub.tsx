@@ -398,81 +398,111 @@ export default function StoriesHub({
   return (
     <>
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
-      <section
-        className="relative overflow-hidden px-8 md:px-20 pt-32 pb-16"
-        style={{ backgroundColor: colors.blue }}
+    {/* ── Hero ──────────────────────────────────────────────────────────── */}
+{/* ── Hero ──────────────────────────────────────────────────────────── */}
+<section
+  className="relative overflow-hidden px-8 md:px-20 pt-32 pb-20 md:pt-44 md:pb-28"
+>
+ {/* Background Image */}
+{/* Background Image */}
+<div className="absolute inset-0" style={{ backgroundColor: '#d0e2ff' }}>
+  <Image
+    src="/Events/KantamantoHomecoming_By_6.jpg"
+    alt="Stories"
+    fill
+    className="object-cover object-center scale-[1.03]"
+    priority
+  />
+
+  {/* 1 — Dark base scrim */}
+  <div className="absolute inset-0" style={{ backgroundColor: 'rgba(10,10,8,0.28)' }} />
+
+  {/* 2 — Blue tint wash */}
+  <div className="absolute inset-0" style={{ backgroundColor: '#d0e2ff', opacity: 0.22 }} />
+
+  {/* 3 — Bottom fade for text legibility */}
+  <div
+    className="absolute inset-0"
+    style={{
+      background: 'linear-gradient(to top, rgba(10,10,8,0.78) 0%, rgba(10,10,8,0.35) 32%, transparent 60%)',
+    }}
+  />
+
+  {/* 4 — Left content shield */}
+  <div
+    className="absolute inset-0"
+    style={{
+      background: 'linear-gradient(to right, rgba(10,10,8,0.55) 0%, rgba(10,10,8,0.18) 52%, transparent 100%)',
+    }}
+  />
+
+  {/* 5 — Top edge anchor */}
+  <div
+    className="absolute inset-0"
+    style={{
+      background: 'linear-gradient(to bottom, rgba(10,10,8,0.35) 0%, transparent 28%)',
+    }}
+  />
+
+  {/* 6 — Orange radial glow */}
+  <div
+    className="absolute inset-0"
+    style={{
+      background: `radial-gradient(ellipse 70% 50% at 15% 85%, ${colors.orange}28 0%, transparent 60%)`,
+    }}
+  />
+</div>
+  {/* Content */}
+  <div className="relative z-10 max-w-3xl">
+    <div className="flex items-center gap-4 mb-6">
+      <div className="w-8 h-px" style={{ backgroundColor: colors.orange }} />
+      <span
+        style={{
+          fontFamily:    fonts.apfel,
+          fontSize:      15,
+          fontWeight:    700,
+          textTransform: 'uppercase',
+          letterSpacing: '0.22em',
+          color:         colors.orange,
+        }}
       >
-        {/* Grid texture */}
-        <div aria-hidden className="pointer-events-none absolute inset-0" style={{
-          backgroundImage: `linear-gradient(${colors.white}08 1px, transparent 1px), linear-gradient(90deg, ${colors.white}08 1px, transparent 1px)`,
-          backgroundSize:  '80px 80px',
-        }} />
-        {/* Watermark */}
-        <span aria-hidden className="pointer-events-none select-none absolute right-0 top-1/2 -translate-y-1/2" style={{
-          fontFamily:    fonts.bricolage,
-          fontSize:      'clamp(100px,15vw,190px)',
-          fontWeight:    900,
-          color:         `${colors.white}04`,
-          lineHeight:    1,
-          letterSpacing: '-0.05em',
-        }}>
-          STORIES
-        </span>
+        Stories
+      </span>
+    </div>
 
-        <div className="relative">
-          <div className="flex items-center gap-4 mb-6">
-            <div className="w-8 h-px" style={{ backgroundColor: colors.orange }} />
-            <span style={{ fontFamily: fonts.apfel, fontSize: 15, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.22em', color: colors.orange }}>
-              Stories
-            </span>
-          </div>
+    <h1
+      style={{
+        fontFamily:    fonts.bricolage,
+        fontSize:      'clamp(36px,5vw,68px)',
+        fontWeight:    900,
+        lineHeight:    1.06,
+        letterSpacing: '-0.028em',
+        color:         colors.white,
+        maxWidth:      '15ch',
+        marginBottom:  16,
+      }}
+    >
+      Every story{' '}
+      <em style={{ color: colors.orange, fontStyle: 'normal' }}>
+        shapes the movement.
+      </em>
+    </h1>
 
-          <h1 style={{
-            fontFamily:    fonts.bricolage,
-            fontSize:      'clamp(36px,5vw,68px)',
-            fontWeight:    900,
-            lineHeight:    1.06,
-            letterSpacing: '-0.028em',
-            color:         '#ffffff',
-            maxWidth:      '15ch',
-            marginBottom:  16,
-          }}>
-            Every story{' '}
-            <em style={{ color: colors.orange, fontStyle: 'normal' }}>shapes the movement.</em>
-          </h1>
+    <p
+      style={{
+        fontFamily: fonts.bricolage,
+        fontSize:   'clamp(14px,1.2vw,17px)',
+        lineHeight: 1.75,
+        color:      'rgba(255,255,255,0.72)',
+        maxWidth:   '46ch',
+      }}
+    >
+      Field notes, interviews, event recaps, videos and press coverage from the global remanufacturing community.
+    </p>
+  </div>
 
-          <p style={{ fontFamily: fonts.bricolage, fontSize: 'clamp(14px,1.2vw,17px)', lineHeight: 1.75, color: 'rgba(255,255,255,0.65)', maxWidth: '46ch', marginBottom: 40 }}>
-            Field notes, interviews, event recaps, videos and press coverage from the global remanufacturing community.
-          </p>
-
-          {/* Stats */}
-          <div className="flex flex-wrap gap-10" style={{ borderTop: '1px solid rgba(255,255,255,0.15)', paddingTop: 24 }}>
-            <div>
-              <span style={{ fontFamily: fonts.bricolage, fontSize: 'clamp(20px,2.6vw,32px)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.03em', lineHeight: 1 }}>
-                {initialData.total}
-              </span>
-              <span style={{ fontFamily: fonts.apfel, fontSize: 10, fontWeight: 700, color: 'rgba(255,255,255,0.45)', textTransform: 'uppercase', letterSpacing: '0.14em', display: 'block', marginTop: 4 }}>
-                Stories published
-              </span>
-            </div>
-            {[
-              { value: 'event',          label: 'Events'          },
-              { value: 'communityVoice', label: 'Community voices'},
-            ].map(({ value, label }) => (
-              <div key={value}>
-                <span style={{ fontFamily: fonts.bricolage, fontSize: 'clamp(20px,2.6vw,32px)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.03em', lineHeight: 1 }}>
-                  {initialData.items.filter(i => i._type === value).length}
-                  {initialData.total > initialData.items.length ? '+' : ''}
-                </span>
-                <span style={{ fontFamily: fonts.apfel, fontSize: 10, fontWeight: 700, color: 'rgba(255,255,255,0.45)', textTransform: 'uppercase', letterSpacing: '0.14em', display: 'block', marginTop: 4 }}>
-                  {label}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-        <SectionDivider fill={colors.white} direction="right" height={52} />
-      </section>
+  <SectionDivider fill={colors.white} direction="right" height={52} />
+</section>
 
       {/* ── Grid section ──────────────────────────────────────────────────── */}
       <section className="px-8 md:px-20 py-14" style={{ backgroundColor: colors.white }}>
