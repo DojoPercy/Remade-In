@@ -18,8 +18,8 @@ const SLOTS = [
   { key: 'c', rotate: -1,   accent: colors.orange },
   { key: 'd', rotate:  2,   accent: colors.blue   },
   { key: 'e', rotate: -1.5, accent: colors.orange },
-  { key: 'f', rotate: -2,   accent: colors.orange },
-  { key: 'g', rotate:  1.5, accent: colors.blue   },
+  { key: 'a', rotate: -2,   accent: colors.orange },
+  { key: 'b', rotate:  1.5, accent: colors.blue   },
 ]
 
 // ── Modern photo card ──────────────────────────────────────────────────────────
