@@ -327,8 +327,8 @@ function getEmbedUrl(url: string): string {
     style={{ backgroundColor: colors.white }}
   >
     <p
-      className="text-[11px] font-bold uppercase tracking-[0.28em] mb-8"
-      style={{ fontFamily: fonts.syne, color: colors.orange }}
+      className="text-[15px] font-bold uppercase tracking-[0.28em] mb-8"
+      style={{ fontFamily: fonts.apfel, color: colors.orange }}
     >
       Videos
     </p>

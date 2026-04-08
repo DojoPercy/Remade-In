@@ -116,7 +116,7 @@ export default function DonationBanner({ data }: { data?: HomePage | null }) {
             <BlobButton href={primaryHref} variant="dark" external>
               {primaryLabel}
             </BlobButton>
-            <BlobButton href="/partner" variant="ghost">
+            <BlobButton href="/partner" variant="white">
               {secondaryLabel}
             </BlobButton>
           </motion.div>

@@ -47,6 +47,12 @@ const VARIANTS: Record<Variant, {
     shadow:      '0 4px 20px rgba(0,0,0,0.25)',
     hoverShadow: '0 8px 28px rgba(0,0,0,0.35)',
   },
+  white: {
+    bg:          colors.white,
+    color:       colors.charcoal,
+    shadow:      '0 4px 20px rgba(255,255,255,0.25)',
+    hoverShadow: '0 8px 28px rgba(255,255,255,0.35)',
+  }
 }
 
 const SIZE_CLASSES: Record<Size, string> = {
