@@ -15,7 +15,7 @@ const PAGES = [
 
 const RESEARCH = [
   { label: 'White Paper (Full)',   href: '/blueprint' },
-  { label: 'Executive Summary',   href: '/blueprint#downloads' },
+  { label: 'Policy Brief',   href: '/blueprint#downloads' },
 ]
 
 const LEGAL = [

@@ -212,6 +212,15 @@ export interface CommunityVoice {
   role?: string
   story?: unknown[]
   gallery?: SanityImage[]
+  videos?: {
+  _id: string
+  title: string
+  videoUrl: string
+  thumbnail?: {
+    asset?: any
+    alt?: string
+  }
+}[]
 }
 
 // ── Partners ─────────────────────────────────────────────────────────────────

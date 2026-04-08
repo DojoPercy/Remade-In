@@ -1,13 +1,13 @@
-import { notFound }                    from 'next/navigation'
-import Image                            from 'next/image'
-import { client }                       from '@/lib/sanity/client'
-import { communityVoiceBySlugQuery }    from '@/lib/sanity/queries'
-import { imageUrl }                     from '@/lib/sanity/image'
-import type { CommunityVoice }          from '@/lib/sanity/types'
-import { colors, fonts }                from '@/lib/tokens'
-import Nav                              from '@/components/Nav'
-import Footer                           from '@/components/Footer'
-import BlobButton                       from '@/components/ui/BlobButton'
+import { notFound } from 'next/navigation'
+import Image from 'next/image'
+import { client } from '@/lib/sanity/client'
+import { communityVoiceBySlugQuery } from '@/lib/sanity/queries'
+import { imageUrl } from '@/lib/sanity/image'
+import type { CommunityVoice } from '@/lib/sanity/types'
+import { colors, fonts } from '@/lib/tokens'
+import Nav from '@/components/Nav'
+import Footer from '@/components/Footer'
+import BlobButton from '@/components/ui/BlobButton'
 
 // ── Portable text renderer ────────────────────────────────────────────────────
 
@@ -107,7 +107,7 @@ export default async function CommunityVoiceDetailPage({
       { slug },
       { next: { revalidate: 60 } },
     )
-  } catch {}
+  } catch { }
 
   if (!voice) notFound()
 
@@ -301,7 +301,76 @@ export default async function CommunityVoiceDetailPage({
           </div>
         </section>
       )}
+      {/* ── Videos ── */}
+      {Array.isArray(voice.videos) && voice.videos.length > 0 && (
+        <section
+          className="px-8 md:px-20 py-16 md:py-24"
+          style={{ backgroundColor: colors.white }}
+        >
+          <p
+            className="text-[11px] font-bold uppercase tracking-[0.28em] mb-8"
+            style={{ fontFamily: fonts.syne, color: colors.orange }}
+          >
+            Videos
+          </p>
 
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {voice.videos.map((video) => {
+              const thumbnailSrc = video.thumbnail?.asset
+                ? imageUrl(video.thumbnail, 800, 500)
+                : null
+
+              return (
+                <div key={video._id} className="group">
+
+                  {/* Thumbnail */}
+                  <div
+                    className="relative w-full rounded-2xl overflow-hidden mb-4"
+                    style={{ aspectRatio: '16/9' }}
+                  >
+                    {thumbnailSrc ? (
+                      <Image
+                        src={thumbnailSrc}
+                        alt={video.thumbnail?.alt || video.title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gray-200" />
+                    )}
+
+                    {/* Play button */}
+                    <a
+                      href={video.videoUrl}
+                      target="_blank"
+                      className="absolute inset-0 flex items-center justify-center"
+                    >
+                      <div
+                        className="w-14 h-14 rounded-full flex items-center justify-center"
+                        style={{ backgroundColor: colors.orange }}
+                      >
+                        ▶
+                      </div>
+                    </a>
+                  </div>
+
+                  {/* Title */}
+                  <p
+                    style={{
+                      fontFamily: fonts.bricolage,
+                      fontWeight: 700,
+                      fontSize: 16,
+                      color: colors.dark,
+                    }}
+                  >
+                    {video.title}
+                  </p>
+                </div>
+              )
+            })}
+          </div>
+        </section>
+      )}
       {/* ── CTA ── */}
       <section
         className="px-8 md:px-20 py-16 md:py-20 flex flex-col sm:flex-row sm:items-center gap-6"
@@ -343,7 +412,7 @@ export async function generateMetadata({
       { slug },
       { next: { revalidate: 60 } },
     )
-  } catch {}
+  } catch { }
 
   if (!voice) return {}
   return {

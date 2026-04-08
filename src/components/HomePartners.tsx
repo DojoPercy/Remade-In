@@ -42,8 +42,8 @@ export default function HomePartners({ data }: Props) {
         <div className="w-6 h-px shrink-0 mr-4" style={{ backgroundColor: colors.orange }} />
         <span
           style={{
-            fontFamily: fonts.syne,
-            fontSize: 10,
+            fontFamily: fonts.apfel,
+            fontSize: 15,
             fontWeight: 700,
             textTransform: 'uppercase',
             letterSpacing: '0.22em',

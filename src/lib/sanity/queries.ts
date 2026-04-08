@@ -334,7 +334,17 @@ export const communityVoiceBySlugQuery = groq`
     market,
     location,
     story,
-    gallery[] { ${imageFragment} }
+    gallery[] { ${imageFragment} },
+
+    videos[]->{
+      _id,
+      title,
+      videoUrl,
+      thumbnail {
+        asset,
+        alt
+      }
+    }
   }
 `
 

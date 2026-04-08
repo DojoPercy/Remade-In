@@ -422,7 +422,7 @@ export default function StoriesHub({
         <div className="relative">
           <div className="flex items-center gap-4 mb-6">
             <div className="w-8 h-px" style={{ backgroundColor: colors.orange }} />
-            <span style={{ fontFamily: fonts.syne, fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.22em', color: colors.orange }}>
+            <span style={{ fontFamily: fonts.apfel, fontSize: 15, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.22em', color: colors.orange }}>
               Stories
             </span>
           </div>
@@ -451,7 +451,7 @@ export default function StoriesHub({
               <span style={{ fontFamily: fonts.bricolage, fontSize: 'clamp(20px,2.6vw,32px)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.03em', lineHeight: 1 }}>
                 {initialData.total}
               </span>
-              <span style={{ fontFamily: fonts.syne, fontSize: 10, fontWeight: 700, color: 'rgba(255,255,255,0.45)', textTransform: 'uppercase', letterSpacing: '0.14em', display: 'block', marginTop: 4 }}>
+              <span style={{ fontFamily: fonts.apfel, fontSize: 10, fontWeight: 700, color: 'rgba(255,255,255,0.45)', textTransform: 'uppercase', letterSpacing: '0.14em', display: 'block', marginTop: 4 }}>
                 Stories published
               </span>
             </div>
@@ -464,7 +464,7 @@ export default function StoriesHub({
                   {initialData.items.filter(i => i._type === value).length}
                   {initialData.total > initialData.items.length ? '+' : ''}
                 </span>
-                <span style={{ fontFamily: fonts.syne, fontSize: 10, fontWeight: 700, color: 'rgba(255,255,255,0.45)', textTransform: 'uppercase', letterSpacing: '0.14em', display: 'block', marginTop: 4 }}>
+                <span style={{ fontFamily: fonts.apfel, fontSize: 10, fontWeight: 700, color: 'rgba(255,255,255,0.45)', textTransform: 'uppercase', letterSpacing: '0.14em', display: 'block', marginTop: 4 }}>
                   {label}
                 </span>
               </div>
@@ -481,7 +481,7 @@ export default function StoriesHub({
           <div className="mb-10">
             <div className="flex items-center gap-4 mb-5">
               <div className="w-8 h-px" style={{ backgroundColor: colors.orange }} />
-              <span style={{ fontFamily: fonts.syne, fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.22em', color: colors.orange }}>
+              <span style={{ fontFamily: fonts.apfel, fontSize: 15, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.22em', color: colors.orange }}>
                 Featured story
               </span>
             </div>
