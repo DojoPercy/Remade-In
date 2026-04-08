@@ -16,6 +16,18 @@ const BLOB_SHAPES = [
   '55% 45% 38% 62% / 62% 38% 58% 42%',
 ]
 
+// Morph target — each blob subtly oscillates toward this alternate shape
+const BLOB_MORPH_TARGETS = [
+  '54% 46% 52% 48% / 52% 56% 44% 48%',
+  '52% 48% 58% 42% / 48% 52% 42% 58%',
+  '60% 40% 42% 58% / 55% 62% 38% 45%',
+  '46% 54% 50% 50% / 50% 52% 48% 50%',
+  '48% 52% 44% 56% / 55% 44% 52% 48%',
+]
+
+// Stagger the animation phase per blob so they don't all pulse together
+const BLOB_DURATIONS = [7, 8.5, 7.8, 9.2, 8]
+
 const ROLE_ACCENTS = [colors.orange, colors.blue, '#6776b6', '#d8570f']
 
 // ── LinkedIn icon ─────────────────────────────────────────────────────────────
@@ -28,10 +40,44 @@ function LinkedInIcon() {
   )
 }
 
+// ── Animated blob wrapper ─────────────────────────────────────────────────────
+
+function AnimatedBlob({
+  shapeA,
+  shapeB,
+  duration,
+  children,
+  style,
+}: {
+  shapeA: string
+  shapeB: string
+  duration: number
+  children: React.ReactNode
+  style?: React.CSSProperties
+}) {
+  return (
+    <motion.div
+      animate={{ borderRadius: [shapeA, shapeB, shapeA] }}
+      transition={{
+        duration,
+        ease: 'easeInOut',
+        repeat: Infinity,
+        repeatType: 'loop',
+      }}
+      style={{ ...style, overflow: 'hidden' }}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
 // ── Profile Card (grid cell) ──────────────────────────────────────────────────
 
 function ProfileCard({ member, index }: { member: TeamMember; index: number }) {
-  const blobShape  = BLOB_SHAPES[index % BLOB_SHAPES.length]
+  const blobIdx    = index % BLOB_SHAPES.length
+  const shapeA     = BLOB_SHAPES[blobIdx]
+  const shapeB     = BLOB_MORPH_TARGETS[blobIdx]
+  const duration   = BLOB_DURATIONS[blobIdx]
   const accent     = ROLE_ACCENTS[index % ROLE_ACCENTS.length]
 
   return (
@@ -44,20 +90,29 @@ function ProfileCard({ member, index }: { member: TeamMember; index: number }) {
     >
       {/* ── Blob image ── */}
       <div className="relative w-full mx-auto mb-7" style={{ maxWidth: 260, aspectRatio: '4/4.5' }}>
-        {/* Glow behind blob */}
-        <div
-          className="absolute inset-0 pointer-events-none"
+
+        {/* Glow behind blob — also morphs in sync */}
+        <AnimatedBlob
+          shapeA={shapeA}
+          shapeB={shapeB}
+          duration={duration}
           style={{
-            borderRadius: blobShape,
+            position: 'absolute',
+            inset: 0,
+            pointerEvents: 'none',
             background: `radial-gradient(ellipse at 50% 50%, ${accent}28 0%, transparent 70%)`,
             transform: 'scale(1.12)',
           }}
-        />
+        >
+          <div />
+        </AnimatedBlob>
 
         {/* Blob image container */}
-        <div
-          className="absolute inset-0 overflow-hidden"
-          style={{ borderRadius: blobShape }}
+        <AnimatedBlob
+          shapeA={shapeA}
+          shapeB={shapeB}
+          duration={duration}
+          style={{ position: 'absolute', inset: 0 }}
         >
           {member.photo ? (
             <Image
@@ -82,7 +137,7 @@ function ProfileCard({ member, index }: { member: TeamMember; index: number }) {
               </span>
             </div>
           )}
-        </div>
+        </AnimatedBlob>
 
         {/* Role badge — bottom-left, tilted */}
         <div

@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { colors, fonts } from '@/lib/tokens'
@@ -8,26 +7,37 @@ import type { HomePage } from '@/lib/sanity/types'
 
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1]
 
+const PRINCIPLES = [
+  {
+    label: 'Justice First',
+    text: 'We centre the communities in the Global South who are most affected by textile waste.',
+  },
+  {
+    label: 'Radical Collaboration',
+    text: 'We build with, not for. System change happens through shared value across brands, manufacturers, funders, policymakers, and communities.',
+  },
+  {
+    label: 'Remanufacturing Futures',
+    text: 'Drawing from inherited knowledge and emerging innovation, we remake what already exists.',
+  },
+]
+
 const BLOCKS = [
   {
-    num: '01',
     label: 'Vision',
     text: 'A justice-led textile economy where remanufacturing is the norm, shifting value and power back to the communities most impacted by textile waste.',
     bg: colors.lightBlue,
     textColor: colors.charcoal,
-    numColor: `${colors.charcoal}08`,
     rotate: 0.6,
-    delay: 0.1,
+    delay: 0.2,
   },
   {
-    num: '02',
     label: 'Mission',
     text: 'Remade In builds the digital & connects the physical infrastructure to make textile remanufacturing accessible, scalable, cost-effective & socially just.',
     bg: colors.charcoal,
     textColor: colors.cream,
-    numColor: 'rgba(249,232,208,0.055)',
     rotate: -0.8,
-    delay: 0.2,
+    delay: 0.3,
   },
 ]
 
@@ -49,45 +59,61 @@ export default function MissionVision({ data }: { data?: HomePage | null } = {})
         className="text-[15px] font-bold uppercase tracking-[0.28em] mb-14"
         style={{ color: colors.orange, fontFamily: fonts.syne }}
       >
-        {data?.missionVisionEyebrow ?? 'Our Purpose'}
+        What we stand for
       </motion.p>
 
-      {/* Grid: image + two cards */}
       <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr_1fr] gap-5 md:gap-6 items-stretch">
 
-        {/* Image panel */}
+        {/* Principles panel */}
         <motion.div
           initial={{ opacity: 0, y: 48 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, delay: 0, ease }}
-          className="relative overflow-hidden rounded-[14px] min-h-[280px] md:min-h-0"
+          transition={{ duration: 0.7, delay: 0.1, ease }}
+          className="flex flex-col justify-between rounded-[14px] overflow-hidden"
+          style={{
+            backgroundColor: `${colors.orange}0f`,
+            border: `1px solid ${colors.orange}22`,
+            padding: 'clamp(28px, 4vw, 44px)',
+            minHeight: 'clamp(260px, 30vw, 360px)',
+          }}
         >
-          <Image
-            src={data?.missionVisionImage?.asset?.url ?? '/Upcyclers/KSCxBenBreuer-32.jpg'}
-            alt="Community remanufacturing at Kantamanto"
-            fill
-            className="object-cover object-center"
-            sizes="(max-width: 768px) 100vw, 33vw"
-          />
-          {/* Subtle gradient overlay at bottom */}
-          <div
-            className="absolute inset-0"
-            style={{ background: 'linear-gradient(to top, rgba(24,48,40,0.55) 0%, transparent 55%)' }}
-          />
-          <div className="absolute bottom-5 left-5 right-5">
-            <p
+          {PRINCIPLES.map((p, i) => (
+            <div
+              key={p.label}
+              className="flex flex-col gap-1.5"
               style={{
-                fontFamily: fonts.syne,
-                fontSize: 10,
-                fontWeight: 700,
-                textTransform: 'uppercase',
-                letterSpacing: '0.2em',
-                color: 'rgba(249,232,208,0.7)',
+                paddingBottom: i < PRINCIPLES.length - 1 ? 'clamp(16px, 2vw, 24px)' : 0,
+                borderBottom: i < PRINCIPLES.length - 1
+                  ? `1px solid ${colors.orange}18`
+                  : 'none',
+                marginBottom: i < PRINCIPLES.length - 1 ? 'clamp(16px, 2vw, 24px)' : 0,
               }}
             >
-              {data?.missionVisionImageCaption ?? 'Kantamanto Market · Accra, Ghana'}
-            </p>
-          </div>
+              <span
+                style={{
+                  fontFamily:    fonts.syne,
+                  fontSize:      10,
+                  fontWeight:    700,
+                  textTransform: 'uppercase' as const,
+                  letterSpacing: '0.18em',
+                  color:         colors.orange,
+                }}
+              >
+                {p.label}
+              </span>
+              <p
+                style={{
+                  fontFamily:  fonts.bricolage,
+                  fontSize:    'clamp(13px, 1.1vw, 15px)',
+                  lineHeight:  1.65,
+                  color:       `${colors.charcoal}bb`,
+                  fontWeight:  400,
+                }}
+              >
+                {p.text}
+              </p>
+            </div>
+          ))}
         </motion.div>
 
         {/* Vision + Mission cards */}
@@ -101,35 +127,23 @@ export default function MissionVision({ data }: { data?: HomePage | null } = {})
             className="relative overflow-hidden flex flex-col"
             style={{
               backgroundColor: block.bg,
-              borderRadius: 14,
-              padding: 'clamp(28px, 4vw, 44px)',
-              rotate: block.rotate,
-              minHeight: 'clamp(260px, 30vw, 360px)',
-              boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+              borderRadius:    14,
+              padding:         'clamp(28px, 4vw, 44px)',
+              rotate:          block.rotate,
+              minHeight:       'clamp(260px, 30vw, 360px)',
+              boxShadow:       '0 8px 32px rgba(0,0,0,0.12)',
             }}
           >
-            {/* Ghost number */}
-            <span
-              aria-hidden
-              className="absolute bottom-2 right-4 font-extrabold leading-none select-none pointer-events-none"
-              style={{
-                fontFamily: fonts.bricolage,
-                fontSize: 'clamp(110px, 13vw, 160px)',
-                color: block.numColor,
-                lineHeight: 1,
-              }}
-            >
-              {block.num}
-            </span>
-
             {/* Label pill */}
             <span
               className="self-start inline-flex items-center px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-[0.22em] mb-auto"
               style={{
-                fontFamily: fonts.syne,
-                backgroundColor: block.bg === colors.lightBlue ? `${colors.charcoal}12` : 'rgba(255,255,255,0.14)',
-                color: block.textColor,
-                backdropFilter: 'blur(4px)',
+                fontFamily:      fonts.syne,
+                backgroundColor: block.bg === colors.lightBlue
+                  ? `${colors.charcoal}12`
+                  : 'rgba(255,255,255,0.14)',
+                color:           block.textColor,
+                backdropFilter:  'blur(4px)',
               }}
             >
               {block.label}
@@ -139,11 +153,11 @@ export default function MissionVision({ data }: { data?: HomePage | null } = {})
             <p
               className="relative z-10 mt-10"
               style={{
-                fontFamily: fonts.bricolage,
-                fontSize: 'clamp(17px, 1.8vw, 22px)',
-                fontWeight: 700,
-                lineHeight: 1.45,
-                color: block.textColor,
+                fontFamily:    fonts.bricolage,
+                fontSize:      'clamp(17px, 1.8vw, 22px)',
+                fontWeight:    700,
+                lineHeight:    1.45,
+                color:         block.textColor,
                 letterSpacing: '-0.01em',
               }}
             >
@@ -153,6 +167,7 @@ export default function MissionVision({ data }: { data?: HomePage | null } = {})
             </p>
           </motion.div>
         ))}
+
       </div>
     </section>
   )
