@@ -222,7 +222,7 @@ export function ArticleDetail({ story }: { story: StoryArticle }) {
       )}
 
       {/* Header + Body */}
-      // change to
+    
 <section
   className="px-8 md:px-20 py-16 md:py-20"
   style={{ backgroundColor: colors.white }}
