@@ -37,9 +37,9 @@ export default function HomePartners({ data }: Props) {
     >
       {/* ── Label row ── */}
       <div
-        className="flex items-center px-8 md:px-20 pb-6"
+        className="flex items-center px- md:px-20 pb-6"
       >
-        <div className="w-6 x shrnk-0 mr-4" style={{ backgroundColor: colors.orange }} />
+        <div className="w-6 x shrnk-0 mr-" style={{ backgroundColor: colors.orange }} />
         <span
           style={{
             fontFamily: fonts.apfel,
