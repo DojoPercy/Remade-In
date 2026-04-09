@@ -39,7 +39,7 @@ export default function HomePartners({ data }: Props) {
       <div
         className="flex items-center px-8 md:px-20 pb-6"
       >
-        <div className="w-6 h-px shrink-0 mr-4" style={{ backgroundColor: colors.orange }} />
+        <div className="w-6 x shrnk-0 mr-4" style={{ backgroundColor: colors.orange }} />
         <span
           style={{
             fontFamily: fonts.apfel,
@@ -50,7 +50,7 @@ export default function HomePartners({ data }: Props) {
             color: colors.orange,
           }}
         >
-          Trusted Partners
+        Trusted Partners
         </span>
       </div>
 
