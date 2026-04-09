@@ -8,6 +8,7 @@ import Footer from '@/components/Footer'
 import Image  from 'next/image'
 import BlobButton from '@/components/ui/BlobButton'
 import { notFound } from 'next/navigation'
+import { ArticleDetail } from '@/components/stories/articledetails'
 
 // ── Video embed helpers ──────────────────────────────────────────────────────
 
@@ -37,73 +38,73 @@ function fmtDate(iso: string) {
 
 // ── Article detail ────────────────────────────────────────────────────────────
 
-function ArticleDetail({ story }: { story: StoryArticle }) {
-  const cover = story.coverImage?.asset?.url
-    ? imageUrl(story.coverImage, 1400, 700)
-    : null
+// function ArticleDetail({ story }: { story: StoryArticle }) {
+//   const cover = story.coverImage?.asset?.url
+//     ? imageUrl(story.coverImage, 1400, 700)
+//     : null
 
-  return (
-    <main>
-      {/* Cover */}
-      {cover && (
-        <div className="relative w-full" style={{ height: 'clamp(300px, 50vw, 560px)' }}>
-          <Image src={cover} alt={story.coverImage?.alt ?? story.title} fill className="object-cover" priority />
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, transparent 40%, rgba(26,26,20,0.7) 100%)' }} />
-        </div>
-      )}
+//   return (
+//     <main>
+//       {/* Cover */}
+//       {cover && (
+//         <div className="relative w-full" style={{ height: 'clamp(300px, 50vw, 560px)' }}>
+//           <Image src={cover} alt={story.coverImage?.alt ?? story.title} fill className="object-cover" priority />
+//           <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, transparent 40%, rgba(26,26,20,0.7) 100%)' }} />
+//         </div>
+//       )}
 
-      {/* Header */}
-      <section className="px-8 md:px-20 py-16 md:py-20" style={{ backgroundColor: colors.white }}>
-        <a
-          href="/stories"
-          className="inline-flex items-center gap-2 mb-8"
-          style={{ fontFamily: fonts.syne, fontSize: 11, fontWeight: 700, color: `${colors.charcoal}55`, textTransform: 'uppercase', letterSpacing: '0.16em' }}
-        >
-          ← Stories
-        </a>
+//       {/* Header */}
+//       <section className="px-8 md:px-20 py-16 md:py-20" style={{ backgroundColor: colors.white }}>
+//         <a
+//           href="/stories"
+//           className="inline-flex items-center gap-2 mb-8"
+//           style={{ fontFamily: fonts.syne, fontSize: 11, fontWeight: 700, color: `${colors.charcoal}55`, textTransform: 'uppercase', letterSpacing: '0.16em' }}
+//         >
+//           ← Stories
+//         </a>
 
-        <p style={{ fontFamily: fonts.syne, fontSize: 10, fontWeight: 700, color: colors.orange, textTransform: 'uppercase', letterSpacing: '0.22em', marginBottom: 16 }}>
-          {story.category}
-        </p>
+//         <p style={{ fontFamily: fonts.syne, fontSize: 10, fontWeight: 700, color: colors.orange, textTransform: 'uppercase', letterSpacing: '0.22em', marginBottom: 16 }}>
+//           {story.category}
+//         </p>
 
-        <h1 style={{ fontFamily: fonts.bricolage, fontSize: 'clamp(32px, 5vw, 64px)', fontWeight: 900, lineHeight: 1.08, letterSpacing: '-0.025em', color: colors.charcoal, maxWidth: '18ch', marginBottom: 24 }}>
-          {story.title}
-        </h1>
+//         <h1 style={{ fontFamily: fonts.bricolage, fontSize: 'clamp(32px, 5vw, 64px)', fontWeight: 900, lineHeight: 1.08, letterSpacing: '-0.025em', color: colors.charcoal, maxWidth: '18ch', marginBottom: 24 }}>
+//           {story.title}
+//         </h1>
 
-        <div className="flex items-center gap-6" style={{ borderTop: `1px solid ${colors.charcoal}12`, paddingTop: 16, marginBottom: 48 }}>
-          {story.author && (
-            <span style={{ fontFamily: fonts.syne, fontSize: 11, fontWeight: 700, color: `${colors.charcoal}66`, textTransform: 'uppercase', letterSpacing: '0.14em' }}>
-              {story.author}
-            </span>
-          )}
-          <span style={{ fontFamily: fonts.syne, fontSize: 11, color: `${colors.charcoal}44`, letterSpacing: '0.1em' }}>
-            {fmtDate(story.publishedAt)}
-          </span>
-        </div>
+//         <div className="flex items-center gap-6" style={{ borderTop: `1px solid ${colors.charcoal}12`, paddingTop: 16, marginBottom: 48 }}>
+//           {story.author && (
+//             <span style={{ fontFamily: fonts.syne, fontSize: 11, fontWeight: 700, color: `${colors.charcoal}66`, textTransform: 'uppercase', letterSpacing: '0.14em' }}>
+//               {story.author}
+//             </span>
+//           )}
+//           <span style={{ fontFamily: fonts.syne, fontSize: 11, color: `${colors.charcoal}44`, letterSpacing: '0.1em' }}>
+//             {fmtDate(story.publishedAt)}
+//           </span>
+//         </div>
 
-        {/* Body — plain paragraphs from blocks */}
-        <div className="max-w-2xl" style={{ fontFamily: fonts.bricolage, fontSize: 'clamp(16px, 1.4vw, 19px)', lineHeight: 1.8, color: `${colors.charcoal}dd` }}>
-          {story.excerpt && (
-            <p className="mb-8" style={{ fontSize: 'clamp(18px, 1.6vw, 22px)', fontWeight: 500, color: colors.charcoal, lineHeight: 1.6 }}>
-              {story.excerpt}
-            </p>
-          )}
-          {Array.isArray(story.body) && story.body.map((block: any, i: number) => {
-            if (block._type === 'block' && Array.isArray(block.children)) {
-              const text = block.children.map((c: any) => c.text ?? '').join('')
-              if (!text) return null
-              if (block.style === 'h2') return <h2 key={i} style={{ fontFamily: fonts.bricolage, fontSize: 'clamp(22px, 2.5vw, 30px)', fontWeight: 800, color: colors.charcoal, letterSpacing: '-0.015em', marginTop: 48, marginBottom: 16 }}>{text}</h2>
-              if (block.style === 'h3') return <h3 key={i} style={{ fontFamily: fonts.bricolage, fontSize: 'clamp(18px, 2vw, 24px)', fontWeight: 700, color: colors.charcoal, marginTop: 36, marginBottom: 12 }}>{text}</h3>
-              if (block.style === 'blockquote') return <blockquote key={i} style={{ borderLeft: `3px solid ${colors.orange}`, paddingLeft: 24, marginLeft: 0, marginTop: 32, marginBottom: 32, fontStyle: 'italic', color: `${colors.charcoal}88`, fontSize: 'clamp(18px, 1.6vw, 22px)' }}>{text}</blockquote>
-              return <p key={i} style={{ marginBottom: 24 }}>{text}</p>
-            }
-            return null
-          })}
-        </div>
-      </section>
-    </main>
-  )
-}
+//         {/* Body — plain paragraphs from blocks */}
+//         <div className="max-w-2xl" style={{ fontFamily: fonts.bricolage, fontSize: 'clamp(16px, 1.4vw, 19px)', lineHeight: 1.8, color: `${colors.charcoal}dd` }}>
+//           {story.excerpt && (
+//             <p className="mb-8" style={{ fontSize: 'clamp(18px, 1.6vw, 22px)', fontWeight: 500, color: colors.charcoal, lineHeight: 1.6 }}>
+//               {story.excerpt}
+//             </p>
+//           )}
+//           {Array.isArray(story.body) && story.body.map((block: any, i: number) => {
+//             if (block._type === 'block' && Array.isArray(block.children)) {
+//               const text = block.children.map((c: any) => c.text ?? '').join('')
+//               if (!text) return null
+//               if (block.style === 'h2') return <h2 key={i} style={{ fontFamily: fonts.bricolage, fontSize: 'clamp(22px, 2.5vw, 30px)', fontWeight: 800, color: colors.charcoal, letterSpacing: '-0.015em', marginTop: 48, marginBottom: 16 }}>{text}</h2>
+//               if (block.style === 'h3') return <h3 key={i} style={{ fontFamily: fonts.bricolage, fontSize: 'clamp(18px, 2vw, 24px)', fontWeight: 700, color: colors.charcoal, marginTop: 36, marginBottom: 12 }}>{text}</h3>
+//               if (block.style === 'blockquote') return <blockquote key={i} style={{ borderLeft: `3px solid ${colors.orange}`, paddingLeft: 24, marginLeft: 0, marginTop: 32, marginBottom: 32, fontStyle: 'italic', color: `${colors.charcoal}88`, fontSize: 'clamp(18px, 1.6vw, 22px)' }}>{text}</blockquote>
+//               return <p key={i} style={{ marginBottom: 24 }}>{text}</p>
+//             }
+//             return null
+//           })}
+//         </div>
+//       </section>
+//     </main>
+//   )
+// }
 
 // ── Video detail ──────────────────────────────────────────────────────────────
 

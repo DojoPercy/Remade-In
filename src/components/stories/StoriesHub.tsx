@@ -15,30 +15,84 @@ const TYPE_OPTIONS = [
   { label: 'All',       value: ''               },
   { label: 'Articles',  value: 'article'        },
   { label: 'Videos',    value: 'video'          },
-  { label: 'News',      value: 'newsItem'       },
   { label: 'Events',    value: 'event'          },
   { label: 'Community', value: 'communityVoice' },
+  { label: 'News',      value: 'newsItem'       },
 ]
 
-const TYPE_META: Record<string, { label: string; accent: string; surface: string; dark: boolean }> = {
-  article:        { label: 'Article',   accent: colors.blue,   surface: '#6776b618', dark: false },
-  video:          { label: 'Video',     accent: colors.orange, surface: '#d8570f18', dark: false },
-  newsItem:       { label: 'News',      accent: colors.blue,   surface: '#6776b618', dark: false },
-  event:          { label: 'Event',     accent: colors.green,  surface: '#cbd18333', dark: false },
-  communityVoice: { label: 'Community', accent: colors.peach,  surface: '#f8cab840', dark: false },
+/**
+ * Each content type gets its own distinct palette:
+ *   accent  — used for badges, borders, highlights
+ *   surface — card background (light tint of the accent)
+ *   text    — readable text colour on the surface
+ *   dark    — whether to render card text in white (for dark-surfaced cards)
+ *
+ * Chosen to be clearly distinguishable at a glance while staying editorial:
+ *   article        → indigo/blue
+ *   video          → warm orange
+ *   event          → forest green
+ *   communityVoice → mauve/violet
+ *   newsItem       → teal
+ */
+const TYPE_META: Record<
+  string,
+  { label: string; accent: string; surface: string; dark: boolean }
+> = {
+  article: {
+    label:   'Article',
+    accent:  '#4F6FD4',          // indigo-blue
+    surface: '#4F6FD412',
+    dark:    false,
+  },
+  video: {
+    label:   'Video',
+    accent:  '#D8570F',          // burnt orange
+    surface: '#D8570F14',
+    dark:    false,
+  },
+  newsItem: {
+    label:   'News',
+    accent:  '#0E9E82',          // teal
+    surface: '#0E9E8212',
+    dark:    false,
+  },
+  event: {
+    label:   'Event',
+    accent:  '#3A7D44',          // forest green
+    surface: '#3A7D4414',
+    dark:    false,
+  },
+  communityVoice: {
+    label:   'Community',
+    accent:  '#8A5CF7',          // violet/mauve
+    surface: '#8A5CF714',
+    dark:    false,
+  },
 }
+
+/**
+ * Accent colour for the "All" filter tab — fall back to a warm neutral
+ * so it doesn't clash with any type colour.
+ */
+const ALL_ACCENT = '#C07836'   // warm amber
+
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1]
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 function getYouTubeId(url: string): string | null {
-  const m = url.match(/(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/\s]{11})/)
+  const m = url.match(
+    /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/\s]{11})/,
+  )
   return m ? m[1] : null
 }
 
 function fmtDate(iso: string) {
-  try { return new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) }
-  catch { return '' }
+  try {
+    return new Date(iso).toLocaleDateString('en-GB', {
+      day: 'numeric', month: 'short', year: 'numeric',
+    })
+  } catch { return '' }
 }
 
 function getHref(item: StoryItem): string | null {
@@ -56,19 +110,24 @@ function getTypeMeta(type: string) {
 function TypeBadge({ type, dark }: { type: string; dark?: boolean }) {
   const m = getTypeMeta(type)
   return (
-    <span style={{
-      fontFamily:      fonts.syne,
-      fontSize:        9,
-      fontWeight:      700,
-      textTransform:   'uppercase',
-      letterSpacing:   '0.16em',
-      color:           dark ? '#ffffff' : colors.charcoal,
-      backgroundColor: dark ? `${colors.white}12` : m.accent,
-      borderRadius:    4,
-      padding:         '4px 9px',
-      display:         'inline-block',
-      flexShrink:      0,
-    }}>
+    <span
+      style={{
+        fontFamily:      fonts.syne,
+        fontSize:        9,
+        fontWeight:      700,
+        textTransform:   'uppercase',
+        letterSpacing:   '0.16em',
+        // On dark cards render white text on a semi-transparent white pill;
+        // on light cards render the accent colour as the pill background with
+        // white text for contrast (the accent colours chosen are all dark enough).
+        color:           dark ? '#ffffff' : '#ffffff',
+        backgroundColor: dark ? `${colors.white}18` : m.accent,
+        borderRadius:    4,
+        padding:         '4px 9px',
+        display:         'inline-block',
+        flexShrink:      0,
+      }}
+    >
       {m.label}
     </span>
   )
@@ -88,20 +147,57 @@ function ImageArea({ item, large }: { item: StoryItem; large?: boolean }) {
     const day    = d.toLocaleDateString('en-GB', { day: '2-digit' })
     const month  = d.toLocaleDateString('en-GB', { month: 'short' }).toUpperCase()
     return (
-      <div className="absolute inset-0 flex items-center justify-center overflow-hidden"
-        style={{ backgroundColor: `${colors.charcoal}06` }}>
-        {imgSrc && <Image src={imgSrc} alt={item.title} fill className="object-cover opacity-30" />}
-        <div className="absolute inset-0" style={{ background: `linear-gradient(to top, ${colors.white} 0%, transparent 60%)` }} />
+      <div
+        className="absolute inset-0 flex items-center justify-center overflow-hidden"
+        style={{ backgroundColor: `${colors.charcoal}06` }}
+      >
+        {imgSrc && (
+          <Image src={imgSrc} alt={item.title} fill className="object-cover opacity-30" />
+        )}
+        <div
+          className="absolute inset-0"
+          style={{ background: `linear-gradient(to top, ${colors.white} 0%, transparent 60%)` }}
+        />
         <div className="relative flex flex-col items-center">
-          <span style={{ fontFamily: fonts.bricolage, fontSize: large ? 88 : 60, fontWeight: 900, color: isPast ? `${colors.charcoal}22` : accent, lineHeight: 1, letterSpacing: '-0.04em' }}>
+          <span
+            style={{
+              fontFamily:  fonts.bricolage,
+              fontSize:    large ? 88 : 60,
+              fontWeight:  900,
+              color:       isPast ? `${colors.charcoal}22` : accent,
+              lineHeight:  1,
+              letterSpacing: '-0.04em',
+            }}
+          >
             {day}
           </span>
-          <span style={{ fontFamily: fonts.syne, fontSize: 12, fontWeight: 700, color: isPast ? `${colors.charcoal}44` : accent, letterSpacing: '0.18em' }}>
+          <span
+            style={{
+              fontFamily:    fonts.syne,
+              fontSize:      12,
+              fontWeight:    700,
+              color:         isPast ? `${colors.charcoal}44` : accent,
+              letterSpacing: '0.18em',
+            }}
+          >
             {month}
           </span>
         </div>
         {isPast && (
-          <span className="absolute top-3 right-3" style={{ fontFamily: fonts.syne, fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.14em', backgroundColor: `${colors.charcoal}14`, color: `${colors.charcoal}55`, borderRadius: 4, padding: '3px 8px' }}>
+          <span
+            className="absolute top-3 right-3"
+            style={{
+              fontFamily:      fonts.syne,
+              fontSize:        9,
+              fontWeight:      700,
+              textTransform:   'uppercase',
+              letterSpacing:   '0.14em',
+              backgroundColor: `${colors.charcoal}14`,
+              color:           `${colors.charcoal}55`,
+              borderRadius:    4,
+              padding:         '3px 8px',
+            }}
+          >
             Past
           </span>
         )}
@@ -110,25 +206,57 @@ function ImageArea({ item, large }: { item: StoryItem; large?: boolean }) {
   }
 
   return (
-    <div className="absolute inset-0 overflow-hidden"
-      style={{ backgroundColor: dark ? `${colors.white}06` : `${colors.charcoal}06` }}>
-      {imgSrc
-        ? <Image src={imgSrc} alt={item.title} fill className="object-cover group-hover:scale-105 transition-transform duration-700" />
-        : (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span style={{ fontFamily: fonts.bricolage, fontSize: 72, fontWeight: 900, color: dark ? `${colors.white}04` : `${colors.charcoal}06`, lineHeight: 1 }}>
-              {getTypeMeta(item._type).label[0]}
-            </span>
-          </div>
-        )
-      }
-      <div className="absolute inset-0" style={{ background: dark ? `linear-gradient(to top, ${colors.blue} 0%, transparent 55%)` : 'linear-gradient(to top, rgba(26,26,20,0.16) 0%, transparent 50%)' }} />
+    <div
+      className="absolute inset-0 overflow-hidden"
+      style={{ backgroundColor: dark ? `${colors.white}06` : `${colors.charcoal}06` }}
+    >
+      {imgSrc ? (
+        <Image
+          src={imgSrc}
+          alt={item.title}
+          fill
+          className="object-cover group-hover:scale-105 transition-transform duration-700"
+        />
+      ) : (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span
+            style={{
+              fontFamily:  fonts.bricolage,
+              fontSize:    72,
+              fontWeight:  900,
+              color:       dark ? `${colors.white}04` : `${colors.charcoal}06`,
+              lineHeight:  1,
+            }}
+          >
+            {getTypeMeta(item._type).label[0]}
+          </span>
+        </div>
+      )}
+      <div
+        className="absolute inset-0"
+        style={{
+          background: dark
+            ? `linear-gradient(to top, ${colors.blue} 0%, transparent 55%)`
+            : 'linear-gradient(to top, rgba(26,26,20,0.16) 0%, transparent 50%)',
+        }}
+      />
 
       {/* Video play button */}
       {item._type === 'video' && (
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="group-hover:scale-110 transition-transform duration-300"
-            style={{ width: 54, height: 54, borderRadius: '50%', backgroundColor: accent, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: `0 4px 24px ${accent}66` }}>
+          <div
+            className="group-hover:scale-110 transition-transform duration-300"
+            style={{
+              width:           54,
+              height:          54,
+              borderRadius:    '50%',
+              backgroundColor: accent,
+              display:         'flex',
+              alignItems:      'center',
+              justifyContent:  'center',
+              boxShadow:       `0 4px 24px ${accent}66`,
+            }}
+          >
             <svg width="16" height="18" viewBox="0 0 16 18" fill="none" aria-hidden>
               <path d="M1.5 1.5L14.5 9L1.5 16.5V1.5Z" fill="white" />
             </svg>
@@ -136,7 +264,19 @@ function ImageArea({ item, large }: { item: StoryItem; large?: boolean }) {
         </div>
       )}
       {item._type === 'video' && item.duration && (
-        <span className="absolute bottom-3 right-3" style={{ fontFamily: fonts.syne, fontSize: 10, fontWeight: 700, backgroundColor: 'rgba(0,0,0,0.7)', color: colors.cream, padding: '3px 8px', borderRadius: 4, letterSpacing: '0.06em' }}>
+        <span
+          className="absolute bottom-3 right-3"
+          style={{
+            fontFamily:      fonts.syne,
+            fontSize:        10,
+            fontWeight:      700,
+            backgroundColor: 'rgba(0,0,0,0.7)',
+            color:           colors.cream,
+            padding:         '3px 8px',
+            borderRadius:    4,
+            letterSpacing:   '0.06em',
+          }}
+        >
           {item.duration}
         </span>
       )}
@@ -146,12 +286,20 @@ function ImageArea({ item, large }: { item: StoryItem; large?: boolean }) {
 
 // ── Card content ──────────────────────────────────────────────────────────────
 
-function CardContent({ item, large, dark }: { item: StoryItem; large?: boolean; dark?: boolean }) {
+function CardContent({
+  item,
+  large,
+  dark,
+}: {
+  item:  StoryItem
+  large?: boolean
+  dark?: boolean
+}) {
   const accent    = getTypeMeta(item._type).accent
-  const textMain  = dark ? '#ffffff'                 : colors.charcoal
-  const textMuted = dark ? 'rgba(255,255,255,0.45)'  : `${colors.charcoal}55`
-  const textBody  = dark ? 'rgba(255,255,255,0.72)'  : `${colors.charcoal}77`
-  const divider   = dark ? 'rgba(255,255,255,0.12)'  : `${colors.charcoal}08`
+  const textMain  = dark ? '#ffffff'                : colors.charcoal
+  const textMuted = dark ? 'rgba(255,255,255,0.45)' : `${colors.charcoal}55`
+  const textBody  = dark ? 'rgba(255,255,255,0.72)' : `${colors.charcoal}77`
+  const divider   = dark ? 'rgba(255,255,255,0.12)' : `${colors.charcoal}08`
   const pad       = large ? '2.5rem' : '1.5rem'
 
   return (
@@ -159,51 +307,89 @@ function CardContent({ item, large, dark }: { item: StoryItem; large?: boolean; 
       {/* Badge + date */}
       <div className="flex items-center justify-between gap-2 flex-wrap">
         <TypeBadge type={item._type} dark={dark} />
-        <span style={{ fontFamily: fonts.syne, fontSize: 10, color: textMuted, letterSpacing: '0.08em' }}>
+        <span
+          style={{
+            fontFamily:    fonts.syne,
+            fontSize:      10,
+            color:         textMuted,
+            letterSpacing: '0.08em',
+          }}
+        >
           {fmtDate(item.date)}
         </span>
       </div>
 
       {/* Sub-label */}
       {(item.category || item.source || item.market) && (
-        <p style={{ fontFamily: fonts.syne, fontSize: 10, fontWeight: 700, color: accent, textTransform: 'uppercase', letterSpacing: '0.18em' }}>
+        <p
+          style={{
+            fontFamily:    fonts.syne,
+            fontSize:      10,
+            fontWeight:    700,
+            color:         accent,
+            textTransform: 'uppercase',
+            letterSpacing: '0.18em',
+          }}
+        >
           {item.category ?? item.source ?? item.market}
         </p>
       )}
 
-      {/* Community voice: pull quote layout */}
+      {/* Community voice: pull-quote layout */}
       {item._type === 'communityVoice' ? (
         <div className="flex gap-3 flex-1">
-          <span aria-hidden style={{ fontFamily: fonts.bricolage, fontSize: large ? 52 : 34, color: accent, lineHeight: 0.8, opacity: 0.45, flexShrink: 0 }}>
+          <span
+            aria-hidden
+            style={{
+              fontFamily:  fonts.bricolage,
+              fontSize:    large ? 52 : 34,
+              color:       accent,
+              lineHeight:  0.8,
+              opacity:     0.45,
+              flexShrink:  0,
+            }}
+          >
             &ldquo;
           </span>
-          <p style={{ fontFamily: fonts.bricolage, fontSize: large ? 19 : 14, color: textBody, lineHeight: 1.75, fontStyle: 'italic' }}>
+          <p
+            style={{
+              fontFamily: fonts.bricolage,
+              fontSize:   large ? 19 : 14,
+              color:      textBody,
+              lineHeight: 1.75,
+              fontStyle:  'italic',
+            }}
+          >
             {item.quote ?? item.excerpt}
           </p>
         </div>
       ) : (
         <>
-          <h3 style={{
-            fontFamily:    fonts.bricolage,
-            fontSize:      large ? 'clamp(22px,2.6vw,36px)' : 'clamp(16px,1.5vw,20px)',
-            fontWeight:    900,
-            color:         textMain,
-            lineHeight:    1.12,
-            letterSpacing: '-0.018em',
-          }}>
+          <h3
+            style={{
+              fontFamily:    fonts.bricolage,
+              fontSize:      large ? 'clamp(22px,2.6vw,36px)' : 'clamp(16px,1.5vw,20px)',
+              fontWeight:    900,
+              color:         textMain,
+              lineHeight:    1.12,
+              letterSpacing: '-0.018em',
+            }}
+          >
             {item.title}
           </h3>
           {item.excerpt && (
-            <p style={{
-              fontFamily:           fonts.bricolage,
-              fontSize:             large ? 15 : 13,
-              color:                textBody,
-              lineHeight:           1.75,
-              display:              '-webkit-box',
-              WebkitLineClamp:      large ? 4 : 2,
-              WebkitBoxOrient:      'vertical',
-              overflow:             'hidden',
-            }}>
+            <p
+              style={{
+                fontFamily:      fonts.bricolage,
+                fontSize:        large ? 15 : 13,
+                color:           textBody,
+                lineHeight:      1.75,
+                display:         '-webkit-box',
+                WebkitLineClamp: large ? 4 : 2,
+                WebkitBoxOrient: 'vertical',
+                overflow:        'hidden',
+              }}
+            >
               {item.excerpt}
             </p>
           )}
@@ -211,15 +397,39 @@ function CardContent({ item, large, dark }: { item: StoryItem; large?: boolean; 
       )}
 
       {/* Footer row */}
-      <div className="flex items-center gap-3 flex-wrap mt-auto pt-3" style={{ borderTop: `1px solid ${divider}` }}>
+      <div
+        className="flex items-center gap-3 flex-wrap mt-auto pt-3"
+        style={{ borderTop: `1px solid ${divider}` }}
+      >
         {item._type === 'communityVoice' && (
-          <span style={{ fontFamily: fonts.syne, fontSize: 11, fontWeight: 700, color: textMain, letterSpacing: '0.07em' }}>
+          <span
+            style={{
+              fontFamily:    fonts.syne,
+              fontSize:      11,
+              fontWeight:    700,
+              color:         textMain,
+              letterSpacing: '0.07em',
+            }}
+          >
             {item.name}
-            {item.location && <span style={{ color: textMuted, fontWeight: 400 }}>{' '}·{' '}{item.location}</span>}
+            {item.location && (
+              <span style={{ color: textMuted, fontWeight: 400 }}>
+                {' '}·{' '}{item.location}
+              </span>
+            )}
           </span>
         )}
         {item.author && (
-          <span style={{ fontFamily: fonts.syne, fontSize: 10, fontWeight: 700, color: textMuted, textTransform: 'uppercase', letterSpacing: '0.14em' }}>
+          <span
+            style={{
+              fontFamily:    fonts.syne,
+              fontSize:      10,
+              fontWeight:    700,
+              color:         textMuted,
+              textTransform: 'uppercase',
+              letterSpacing: '0.14em',
+            }}
+          >
             {item.author}
           </span>
         )}
@@ -229,19 +439,53 @@ function CardContent({ item, large, dark }: { item: StoryItem; large?: boolean; 
           </span>
         )}
         {item._type === 'event' && item.isOnline && (
-          <span style={{ fontFamily: fonts.syne, fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', backgroundColor: `${colors.blue}18`, color: colors.blue, borderRadius: 4, padding: '3px 8px' }}>
+          <span
+            style={{
+              fontFamily:      fonts.syne,
+              fontSize:        9,
+              fontWeight:      700,
+              textTransform:   'uppercase',
+              letterSpacing:   '0.12em',
+              backgroundColor: `${accent}18`,
+              color:           accent,
+              borderRadius:    4,
+              padding:         '3px 8px',
+            }}
+          >
             Online
           </span>
         )}
         {item._type === 'event' && item.registrationUrl && new Date(item.date) >= new Date() && (
-          <span style={{ fontFamily: fonts.syne, fontSize: 10, fontWeight: 700, color: accent, textTransform: 'uppercase', letterSpacing: '0.14em', marginLeft: 'auto' }}>
+          <span
+            style={{
+              fontFamily:    fonts.syne,
+              fontSize:      10,
+              fontWeight:    700,
+              color:         accent,
+              textTransform: 'uppercase',
+              letterSpacing: '0.14em',
+              marginLeft:    'auto',
+            }}
+          >
             Register →
           </span>
         )}
         {item._type === 'newsItem' && item.externalUrl && (
-          <svg className="ml-auto" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={textMuted} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-            <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+          <svg
+            className="ml-auto"
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke={textMuted}
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden
+          >
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+            <polyline points="15 3 21 3 21 9" />
+            <line x1="10" y1="14" x2="21" y2="3" />
           </svg>
         )}
       </div>
@@ -250,36 +494,32 @@ function CardContent({ item, large, dark }: { item: StoryItem; large?: boolean; 
 }
 
 // ── Unified story card ────────────────────────────────────────────────────────
-// size='hero'      idx=0          col-span-3  horizontal, large
-// size='spotlight' idx%5===4      col-span-2  horizontal, medium
-// size='standard'  everything else col-span-1  vertical
 
 function StoryCard({ item, size }: { item: StoryItem; size: 'hero' | 'spotlight' | 'standard' }) {
   const typeMeta = getTypeMeta(item._type)
-  const dark    = typeMeta.dark
-  const href    = getHref(item)
-  const isExt   = item._type === 'newsItem' && !!item.externalUrl
-  const isHoriz = size !== 'standard'
-  const isLarge = size === 'hero'
+  const dark     = typeMeta.dark
+  const href     = getHref(item)
+  const isExt    = item._type === 'newsItem' && !!item.externalUrl
+  const isHoriz  = size !== 'standard'
+  const isLarge  = size === 'hero'
 
-  // Tailwind classes for image column in horizontal cards
   const imgColClass = isLarge
     ? 'relative w-full h-[220px] flex-shrink-0 md:w-[42%] md:h-auto md:self-stretch'
     : 'relative w-full h-[220px] flex-shrink-0 md:w-[38%] md:h-auto md:self-stretch'
 
-  // Standard card: fixed-height image on top
   const imgStdClass = 'relative w-full'
   const imgStdH     = 210
 
   const wrapClass = isHoriz
     ? 'group flex flex-col md:flex-row overflow-hidden'
     : 'group flex flex-col overflow-hidden'
+
   const cardStyle = {
     borderRadius:    12,
     textDecoration:  'none' as const,
     height:          '100%',
     backgroundColor: dark ? typeMeta.accent : typeMeta.surface,
-    border:          `1px solid ${typeMeta.accent}22`,
+    border:          `1px solid ${typeMeta.accent}28`,
   }
 
   const content = isHoriz ? (
@@ -300,8 +540,12 @@ function StoryCard({ item, size }: { item: StoryItem; size: 'hero' | 'spotlight'
 
   if (href) {
     return (
-      <a href={href} className={wrapClass} style={cardStyle}
-        {...(isExt ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+      <a
+        href={href}
+        className={wrapClass}
+        style={cardStyle}
+        {...(isExt ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+      >
         {content}
       </a>
     )
@@ -317,7 +561,15 @@ function EmptyState() {
       <p style={{ fontFamily: fonts.bricolage, fontSize: 17, color: `${colors.charcoal}44` }}>
         No stories match your filter.
       </p>
-      <p style={{ fontFamily: fonts.syne, fontSize: 11, color: `${colors.charcoal}33`, letterSpacing: '0.14em', textTransform: 'uppercase' }}>
+      <p
+        style={{
+          fontFamily:    fonts.syne,
+          fontSize:      11,
+          color:         `${colors.charcoal}33`,
+          letterSpacing: '0.14em',
+          textTransform: 'uppercase',
+        }}
+      >
         Try a different type or clear your search.
       </p>
     </div>
@@ -345,11 +597,13 @@ export default function StoriesHub({
   useEffect(() => { setExtraItems([]) }, [type, q])
   useEffect(() => { setSearchVal(q)   }, [q])
 
-  const allItems = [...initialData.items, ...extraItems]
-  const isAllView = !type || type === 'all'
-  const featuredItem = isAllView && !q ? allItems.find(item => item.featured) ?? null : null
+  const allItems     = [...initialData.items, ...extraItems]
+  const isAllView    = !type || type === 'all'
+  const featuredItem = isAllView && !q
+    ? allItems.find(item => item.featured) ?? null
+    : null
   const gridItems = featuredItem ? allItems.filter(item => item._id !== featuredItem._id) : allItems
-  const hasMore  = allItems.length < initialData.total
+  const hasMore   = allItems.length < initialData.total
 
   // ── URL helpers ─────────────────────────────────────────────────────────────
 
@@ -398,111 +652,96 @@ export default function StoriesHub({
   return (
     <>
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
-    {/* ── Hero ──────────────────────────────────────────────────────────── */}
-{/* ── Hero ──────────────────────────────────────────────────────────── */}
-<section
-  className="relative overflow-hidden px-8 md:px-20 pt-32 pb-20 md:pt-44 md:pb-28"
->
- {/* Background Image */}
-{/* Background Image */}
-<div className="absolute inset-0" style={{ backgroundColor: '#d0e2ff' }}>
-  <Image
-    src="/Events/KantamantoHomecoming_By_6.jpg"
-    alt="Stories"
-    fill
-    className="object-cover object-center scale-[1.03]"
-    priority
-  />
+      <section className="relative overflow-hidden px-8 md:px-20 pt-32 pb-20 md:pt-44 md:pb-28">
+        {/* Background */}
+        <div className="absolute inset-0" style={{ backgroundColor: '#d0e2ff' }}>
+          <Image
+            src="/Events/KantamantoHomecoming_By_6.jpg"
+            alt="Stories"
+            fill
+            className="object-cover object-center scale-[1.03]"
+            priority
+          />
+          <div className="absolute inset-0" style={{ backgroundColor: 'rgba(10,10,8,0.28)' }} />
+          <div className="absolute inset-0" style={{ backgroundColor: '#d0e2ff', opacity: 0.22 }} />
+          <div
+            className="absolute inset-0"
+            style={{
+              background: 'linear-gradient(to top, rgba(10,10,8,0.78) 0%, rgba(10,10,8,0.35) 32%, transparent 60%)',
+            }}
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background: 'linear-gradient(to right, rgba(10,10,8,0.55) 0%, rgba(10,10,8,0.18) 52%, transparent 100%)',
+            }}
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background: 'linear-gradient(to bottom, rgba(10,10,8,0.35) 0%, transparent 28%)',
+            }}
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background: `radial-gradient(ellipse 70% 50% at 15% 85%, ${colors.orange}28 0%, transparent 60%)`,
+            }}
+          />
+        </div>
 
-  {/* 1 — Dark base scrim */}
-  <div className="absolute inset-0" style={{ backgroundColor: 'rgba(10,10,8,0.28)' }} />
+        {/* Content */}
+        <div className="relative z-10 max-w-3xl">
+          <div className="flex items-center gap-4 mb-6">
+            <div className="w-8 h-px" style={{ backgroundColor: colors.orange }} />
+            <span
+              style={{
+                fontFamily:    fonts.apfel,
+                fontSize:      15,
+                fontWeight:    700,
+                textTransform: 'uppercase',
+                letterSpacing: '0.22em',
+                color:         colors.orange,
+              }}
+            >
+              Stories
+            </span>
+          </div>
 
-  {/* 2 — Blue tint wash */}
-  <div className="absolute inset-0" style={{ backgroundColor: '#d0e2ff', opacity: 0.22 }} />
+          <h1
+            style={{
+              fontFamily:    fonts.bricolage,
+              fontSize:      'clamp(36px,5vw,68px)',
+              fontWeight:    900,
+              lineHeight:    1.06,
+              letterSpacing: '-0.028em',
+              color:         colors.white,
+              maxWidth:      '15ch',
+              marginBottom:  16,
+            }}
+          >
+            Every story{' '}
+            <em style={{ color: colors.orange, fontStyle: 'normal' }}>
+              shapes the movement.
+            </em>
+          </h1>
 
-  {/* 3 — Bottom fade for text legibility */}
-  <div
-    className="absolute inset-0"
-    style={{
-      background: 'linear-gradient(to top, rgba(10,10,8,0.78) 0%, rgba(10,10,8,0.35) 32%, transparent 60%)',
-    }}
-  />
+          <p
+            style={{
+              fontFamily: fonts.bricolage,
+              fontSize:   'clamp(14px,1.2vw,17px)',
+              lineHeight: 1.75,
+              color:      'rgba(255,255,255,0.72)',
+              maxWidth:   '46ch',
+            }}
+          >
+            Field notes, interviews, event recaps, videos and press coverage from the global
+            remanufacturing community.
+          </p>
+        </div>
 
-  {/* 4 — Left content shield */}
-  <div
-    className="absolute inset-0"
-    style={{
-      background: 'linear-gradient(to right, rgba(10,10,8,0.55) 0%, rgba(10,10,8,0.18) 52%, transparent 100%)',
-    }}
-  />
-
-  {/* 5 — Top edge anchor */}
-  <div
-    className="absolute inset-0"
-    style={{
-      background: 'linear-gradient(to bottom, rgba(10,10,8,0.35) 0%, transparent 28%)',
-    }}
-  />
-
-  {/* 6 — Orange radial glow */}
-  <div
-    className="absolute inset-0"
-    style={{
-      background: `radial-gradient(ellipse 70% 50% at 15% 85%, ${colors.orange}28 0%, transparent 60%)`,
-    }}
-  />
-</div>
-  {/* Content */}
-  <div className="relative z-10 max-w-3xl">
-    <div className="flex items-center gap-4 mb-6">
-      <div className="w-8 h-px" style={{ backgroundColor: colors.orange }} />
-      <span
-        style={{
-          fontFamily:    fonts.apfel,
-          fontSize:      15,
-          fontWeight:    700,
-          textTransform: 'uppercase',
-          letterSpacing: '0.22em',
-          color:         colors.orange,
-        }}
-      >
-        Stories
-      </span>
-    </div>
-
-    <h1
-      style={{
-        fontFamily:    fonts.bricolage,
-        fontSize:      'clamp(36px,5vw,68px)',
-        fontWeight:    900,
-        lineHeight:    1.06,
-        letterSpacing: '-0.028em',
-        color:         colors.white,
-        maxWidth:      '15ch',
-        marginBottom:  16,
-      }}
-    >
-      Every story{' '}
-      <em style={{ color: colors.orange, fontStyle: 'normal' }}>
-        shapes the movement.
-      </em>
-    </h1>
-
-    <p
-      style={{
-        fontFamily: fonts.bricolage,
-        fontSize:   'clamp(14px,1.2vw,17px)',
-        lineHeight: 1.75,
-        color:      'rgba(255,255,255,0.72)',
-        maxWidth:   '46ch',
-      }}
-    >
-      Field notes, interviews, event recaps, videos and press coverage from the global remanufacturing community.
-    </p>
-  </div>
-
-  <SectionDivider fill={colors.white} direction="right" height={52} />
-</section>
+        <SectionDivider fill={colors.white} direction="right" height={52} />
+      </section>
 
       {/* ── Grid section ──────────────────────────────────────────────────── */}
       <section className="px-8 md:px-20 py-14" style={{ backgroundColor: colors.white }}>
@@ -511,7 +750,16 @@ export default function StoriesHub({
           <div className="mb-10">
             <div className="flex items-center gap-4 mb-5">
               <div className="w-8 h-px" style={{ backgroundColor: colors.orange }} />
-              <span style={{ fontFamily: fonts.apfel, fontSize: 15, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.22em', color: colors.orange }}>
+              <span
+                style={{
+                  fontFamily:    fonts.apfel,
+                  fontSize:      15,
+                  fontWeight:    700,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.22em',
+                  color:         colors.orange,
+                }}
+              >
                 Featured story
               </span>
             </div>
@@ -521,11 +769,15 @@ export default function StoriesHub({
 
         {/* ── Controls ── */}
         <div className="flex flex-wrap items-center gap-3 mb-10">
-          {/* Type tabs */}
+          {/* Type tabs — each tab uses its own type's accent colour */}
           <div className="flex items-center gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden flex-1 min-w-0 pb-px">
             {TYPE_OPTIONS.map(({ label, value }) => {
               const isActive = type === value
-              const accent = value ? getTypeMeta(value).accent : colors.orange
+              // "All" tab uses the warm amber; every other tab uses its type's accent
+              const accent = value
+                ? (TYPE_META[value]?.accent ?? ALL_ACCENT)
+                : ALL_ACCENT
+
               return (
                 <button
                   key={value}
@@ -542,8 +794,8 @@ export default function StoriesHub({
                     cursor:        'pointer',
                     border:        'none',
                     ...(isActive
-                      ? { background: accent,        color: colors.white }
-                      : { background: `${accent}16`, color: accent       }),
+                      ? { background: accent,         color: '#ffffff'   }
+                      : { background: `${accent}16`,  color: accent      }),
                   }}
                 >
                   {label}
@@ -554,8 +806,20 @@ export default function StoriesHub({
 
           {/* Search */}
           <div className="relative shrink-0">
-            <svg className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={`${colors.charcoal}44`} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+            <svg
+              className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke={`${colors.charcoal}44`}
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden
+            >
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.35-4.35" />
             </svg>
             <input
               type="search"
@@ -578,7 +842,15 @@ export default function StoriesHub({
           </div>
 
           {/* Total count */}
-          <span style={{ fontFamily: fonts.syne, fontSize: 10, color: `${colors.charcoal}33`, letterSpacing: '0.1em', flexShrink: 0 }}>
+          <span
+            style={{
+              fontFamily:    fonts.syne,
+              fontSize:      10,
+              color:         `${colors.charcoal}33`,
+              letterSpacing: '0.1em',
+              flexShrink:    0,
+            }}
+          >
             {initialData.total} {initialData.total === 1 ? 'story' : 'stories'}
           </span>
         </div>
@@ -635,8 +907,7 @@ export default function StoriesHub({
             >
               {isLoadingMore
                 ? 'Loading…'
-                : `Load more · ${initialData.total - allItems.length} remaining`
-              }
+                : `Load more · ${initialData.total - allItems.length} remaining`}
             </button>
             <div style={{ height: 1, flex: 1, backgroundColor: `${colors.charcoal}0d` }} />
           </div>

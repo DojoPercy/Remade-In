@@ -3,7 +3,6 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { colors, fonts } from '@/lib/tokens'
-import type { HomePage } from '@/lib/sanity/types'
 
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1]
 
@@ -11,37 +10,30 @@ const PRINCIPLES = [
   {
     label: 'Justice First',
     text: 'We centre the communities in the Global South who are most affected by textile waste.',
-  },
-  {
-    label: 'Radical Collaboration',
-    text: 'We build with, not for. System change happens through shared value across brands, manufacturers, funders, policymakers, and communities.',
-  },
-  {
-    label: 'Remanufacturing Futures',
-    text: 'Drawing from inherited knowledge and emerging innovation, we remake what already exists.',
-  },
-]
-
-const BLOCKS = [
-  {
-    label: 'Vision',
-    text: 'A justice-led textile economy where remanufacturing is the norm, shifting value and power back to the communities most impacted by textile waste.',
-    bg: colors.lightBlue,
+    bg: '#d0e2ff',
     textColor: colors.charcoal,
     rotate: 0.6,
     delay: 0.2,
   },
   {
-    label: 'Mission',
-    text: 'Remade In builds the digital & connects the physical infrastructure to make textile remanufacturing accessible, scalable, cost-effective & socially just.',
-    bg: colors.charcoal,
-    textColor: colors.cream,
+    label: 'Radical Collaboration',
+    text: 'We build with, not for. System change happens through shared value across brands, manufacturers, funders, policymakers, and communities.',
+    bg: '#cbd183',
+    textColor: colors.charcoal,
     rotate: -0.8,
     delay: 0.3,
   },
+  {
+    label: 'Remanufacturing Futures',
+    text: 'Drawing from inherited knowledge and emerging innovation, we remake what already exists.',
+    bg: '#f8cab8',
+    textColor: colors.charcoal,
+    rotate: 0.5,
+    delay: 0.4,
+  },
 ]
 
-export default function MissionVision({ data }: { data?: HomePage | null } = {}) {
+export default function MissionVision() {
   const ref = useRef<HTMLElement>(null)
   const inView = useInView(ref, { once: true, margin: '-60px' })
 
@@ -62,62 +54,9 @@ export default function MissionVision({ data }: { data?: HomePage | null } = {})
         What we stand for
       </motion.p>
 
-      <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr_1fr] gap-5 md:gap-6 items-stretch">
-
-        {/* Principles panel */}
-        <motion.div
-          initial={{ opacity: 0, y: 48 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, delay: 0.1, ease }}
-          className="flex flex-col justify-between rounded-[14px] overflow-hidden"
-          style={{
-            backgroundColor: `${colors.orange}0f`,
-            border: `1px solid ${colors.orange}22`,
-            padding: 'clamp(28px, 4vw, 44px)',
-            minHeight: 'clamp(260px, 30vw, 360px)',
-          }}
-        >
-          {PRINCIPLES.map((p, i) => (
-            <div
-              key={p.label}
-              className="flex flex-col gap-1.5"
-              style={{
-                paddingBottom: i < PRINCIPLES.length - 1 ? 'clamp(16px, 2vw, 24px)' : 0,
-                borderBottom: i < PRINCIPLES.length - 1
-                  ? `1px solid ${colors.orange}18`
-                  : 'none',
-                marginBottom: i < PRINCIPLES.length - 1 ? 'clamp(16px, 2vw, 24px)' : 0,
-              }}
-            >
-              <span
-                style={{
-                  fontFamily:    fonts.syne,
-                  fontSize:      10,
-                  fontWeight:    700,
-                  textTransform: 'uppercase' as const,
-                  letterSpacing: '0.18em',
-                  color:         colors.orange,
-                }}
-              >
-                {p.label}
-              </span>
-              <p
-                style={{
-                  fontFamily:  fonts.bricolage,
-                  fontSize:    'clamp(13px, 1.1vw, 15px)',
-                  lineHeight:  1.65,
-                  color:       `${colors.charcoal}bb`,
-                  fontWeight:  400,
-                }}
-              >
-                {p.text}
-              </p>
-            </div>
-          ))}
-        </motion.div>
-
-        {/* Vision + Mission cards */}
-        {BLOCKS.map((block) => (
+      {/* 3 Styled Principle Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
+        {PRINCIPLES.map((block) => (
           <motion.div
             key={block.label}
             initial={{ opacity: 0, y: 48 }}
@@ -127,47 +66,42 @@ export default function MissionVision({ data }: { data?: HomePage | null } = {})
             className="relative overflow-hidden flex flex-col"
             style={{
               backgroundColor: block.bg,
-              borderRadius:    14,
-              padding:         'clamp(28px, 4vw, 44px)',
-              rotate:          block.rotate,
-              minHeight:       'clamp(260px, 30vw, 360px)',
-              boxShadow:       '0 8px 32px rgba(0,0,0,0.12)',
+              borderRadius: 14,
+              padding: 'clamp(28px, 4vw, 44px)',
+              rotate: block.rotate,
+              minHeight: 'clamp(260px, 30vw, 360px)',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
             }}
           >
-            {/* Label pill */}
+            {/* Label */}
             <span
               className="self-start inline-flex items-center px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-[0.22em] mb-auto"
               style={{
-                fontFamily:      fonts.syne,
-                backgroundColor: block.bg === colors.lightBlue
-                  ? `${colors.charcoal}12`
-                  : 'rgba(255,255,255,0.14)',
-                color:           block.textColor,
-                backdropFilter:  'blur(4px)',
+                fontFamily: fonts.syne,
+                backgroundColor: `${colors.charcoal}12`,
+                color: block.textColor,
+                backdropFilter: 'blur(4px)',
               }}
             >
               {block.label}
             </span>
 
-            {/* Statement */}
+            {/* Text */}
             <p
               className="relative z-10 mt-10"
               style={{
-                fontFamily:    fonts.bricolage,
-                fontSize:      'clamp(17px, 1.8vw, 22px)',
-                fontWeight:    700,
-                lineHeight:    1.45,
-                color:         block.textColor,
+                fontFamily: fonts.bricolage,
+                fontSize: 'clamp(17px, 1.8vw, 22px)',
+                fontWeight: 700,
+                lineHeight: 1.45,
+                color: block.textColor,
                 letterSpacing: '-0.01em',
               }}
             >
-              {block.label === 'Vision'
-                ? (data?.visionText ?? block.text)
-                : (data?.missionText ?? block.text)}
+              {block.text}
             </p>
           </motion.div>
         ))}
-
       </div>
     </section>
   )
