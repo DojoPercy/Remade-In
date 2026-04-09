@@ -222,7 +222,7 @@ export default async function PartnerPage() {
               color: '#ffffff',
             }}
           >
-            Tell us about your interest.
+            Lets Collaborate!
           </h2>
 
           <PartnerForm />
