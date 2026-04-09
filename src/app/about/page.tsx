@@ -38,7 +38,7 @@ export default async function AboutPage() {
       <Nav />
       <AboutHero data={aboutData} />
       <AboutStory data={aboutData} />
-      <MissionVision data={homeData} />
+      <MissionVision/>
       <TeamSection members={teamMembers} />
       <DonationBanner data={homeData} />
       <Footer />
