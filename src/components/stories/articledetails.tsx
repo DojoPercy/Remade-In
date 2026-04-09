@@ -325,7 +325,7 @@ export function ArticleDetail({ story }: { story: StoryArticle }) {
 
           {/* Full rich text body */}
           {Array.isArray(story.body) && story.body.length > 0 && (
-            <PortableText value={story.body} components={ptComponents} />
+            <PortableText value={story.body as any} components={ptComponents} />
           )}
         </div>
         </div>
