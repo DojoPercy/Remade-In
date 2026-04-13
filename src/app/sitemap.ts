@@ -34,12 +34,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let storyRoutes: MetadataRoute.Sitemap = [];
   try {
     const stories = await client.fetch<
-      { slug: string; _updatedAt: string; _type: string }[]
+      { slug: string; _updatedAt: string; _type: string; imageUrl: string | null }[]
     >(
       groq`*[_type in ["article", "video", "event"] && defined(slug.current)] {
         "slug": slug.current,
         _updatedAt,
-        _type
+        _type,
+        "imageUrl": select(
+          _type == "article" => coverImage.asset->url,
+          _type == "video"   => thumbnail.asset->url,
+          _type == "event"   => coverImage.asset->url,
+          null
+        )
       }`,
     );
 
@@ -48,6 +54,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(story._updatedAt),
       changeFrequency: "weekly" as const,
       priority: 0.6,
+      images: story.imageUrl ? [story.imageUrl] : [],
     }));
   } catch (error) {
     console.error("Sitemap: Error fetching stories", error);
@@ -56,10 +63,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // 3. Dynamic Community Voices
   let communityRoutes: MetadataRoute.Sitemap = [];
   try {
-    const voices = await client.fetch<{ slug: string; _updatedAt: string }[]>(
+    const voices = await client.fetch<{ slug: string; _updatedAt: string; imageUrl: string | null }[]>(
       groq`*[_type == "communityVoice" && defined(slug.current)] {
         "slug": slug.current,
-        _updatedAt
+        _updatedAt,
+        "imageUrl": photo.asset->url
       }`,
     );
 
@@ -68,6 +76,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(voice._updatedAt),
       changeFrequency: "weekly" as const,
       priority: 0.6,
+      images: voice.imageUrl ? [voice.imageUrl] : [],
     }));
   } catch (error) {
     console.error("Sitemap: Error fetching community voices", error);
