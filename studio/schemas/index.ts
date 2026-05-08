@@ -15,6 +15,7 @@ import { page }           from './documents/page'
 import { post }           from './documents/post'
 import { project }        from './documents/project'
 import { service }        from './documents/service'
+import { subscriber }     from './documents/subscriber'
 
 // Objects
 import { seo }          from './objects/seo'
@@ -58,4 +59,7 @@ export const schemaTypes = [
   post,
   project,
   service,
+
+  // Newsletter
+  subscriber,
 ]

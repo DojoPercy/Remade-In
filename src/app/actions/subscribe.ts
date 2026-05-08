@@ -13,12 +13,17 @@ export async function subscribeToNewsletter(
   }
 
   try {
-    // Avoid duplicates
-    const existing = await writeClient.fetch<string | null>(
-      `*[_type == "subscriber" && email == $email][0]._id`,
+    const existing = await writeClient.fetch<{ _id: string; unsubscribed?: boolean } | null>(
+      `*[_type == "subscriber" && email == $email][0]{ _id, unsubscribed }`,
       { email },
     )
+
     if (existing) {
+      // Re-subscribe if they previously unsubscribed
+      if (existing.unsubscribed) {
+        await writeClient.patch(existing._id).set({ unsubscribed: false }).commit()
+        return { success: true, message: "Welcome back! You're on the list again." }
+      }
       return { success: true, message: "You're already on our list!" }
     }
 
