@@ -191,9 +191,25 @@ function GroupLabel({ label }: { label: string }) {
 // ── Section ───────────────────────────────────────────────────────────────────
 
 export default function TeamSection({ members }: { members: TeamMember[] }) {
-  const cofounders = members.filter((m) => m.memberType === 'cofounder')
-  const coreTeam   = members.filter((m) => m.memberType === 'team')
-  const advisors   = members.filter((m) => m.memberType === 'advisor')
+  const typeSlug = (m: TeamMember) =>
+    (m.memberTypeSlug ?? (typeof (m as any).memberType === 'string' ? (m as any).memberType : '') ?? '').toLowerCase()
+  const typeTitle = (m: TeamMember) => (m.memberTypeTitle ?? '').toLowerCase()
+
+  const cofounders = members.filter((m) => {
+    const slug = typeSlug(m)
+    const title = typeTitle(m)
+    return slug === 'cofounder' || slug === 'co-founder' || title.includes('found')
+  })
+  const coreTeam = members.filter((m) => {
+    const slug = typeSlug(m)
+    const title = typeTitle(m)
+    return slug === 'team' || slug === 'core-team' || title.includes('team')
+  })
+  const advisors = members.filter((m) => {
+    const slug = typeSlug(m)
+    const title = typeTitle(m)
+    return slug === 'advisor' || slug === 'advisory' || title.includes('advisor')
+  })
 
   let globalIdx = 0
 
