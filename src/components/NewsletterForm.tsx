@@ -48,7 +48,7 @@ export default function NewsletterForm() {
         {pending ? 'Joining…' : 'Join'}
       </button>
       {state?.message && !state.success && (
-        <p className="text-[12px] mt-1 w-full" style={{ color: `${colors.cream}80`, fontFamily: fonts.bricolage }}>
+        <p className="text-[12px] mt-1 w-full" style={{ color: `${colors.green} 80`, fontFamily: fonts.bricolage }}>
           {state.message}
         </p>
       )}
