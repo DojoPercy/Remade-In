@@ -368,14 +368,16 @@ export const partnersQuery = groq`
  */
 export const teamMembersQuery = groq`
   *[_type == "teamMember" && active == true] | order(
-    select(memberType == "cofounder" => 0, memberType == "team" => 1, 2),
+    coalesce(memberType->order, select(memberType == "cofounder" => 0, memberType == "team" => 1, 2), 99) asc,
     order asc
   ) {
     _id,
     name,
     slug,
     role,
-    memberType,
+    "memberTypeSlug": lower(coalesce(memberType->slug.current, memberType)),
+    "memberTypeTitle": coalesce(memberType->title, select(memberType == "cofounder" => "Co-Founders", memberType == "team" => "Core Team", "Advisory Board")),
+    "memberTypeOrder": coalesce(memberType->order, select(memberType == "cofounder" => 0, memberType == "team" => 1, 2), 99),
     photo { ${imageFragment} },
     shortBio,
     connectionToMission,
