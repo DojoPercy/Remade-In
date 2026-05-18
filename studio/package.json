@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "sanity dev",
-    "build": "sanity build",
+    "dev": "node init && sanity dev",
+    "build": "node init && sanity build",
     "deploy": "sanity deploy",
     "deploy-graphql": "sanity graphql deploy",
     "manage": "sanity manage"
