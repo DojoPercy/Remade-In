@@ -244,6 +244,10 @@ export interface TeamMember {
   slug: SanitySlug
   role: string
   memberType: 'cofounder' | 'team' | 'advisor'
+  /** New schema support — resolved from reference in GROQ */
+  memberTypeSlug?: string
+  memberTypeTitle?: string
+  memberTypeOrder?: number
   photo?: SanityImage
   shortBio: string
   connectionToMission?: string
