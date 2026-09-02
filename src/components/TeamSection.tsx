@@ -205,13 +205,67 @@ function prettifyLabel(slug: string) {
 }
 
 /**
- * Build one group per member type actually present in the CMS, in the order the
- * query returned them (member-type order, then member order).
+ * Fallback row order, used only when the Studio's member type documents have no
+ * `order` set — which is currently the case, so every type ties and the rows
+ * would otherwise land in an arbitrary order.
+ *
+ * This is a default, not a whitelist: an unrecognised type still renders, it
+ * just sits after the ranked ones. Setting `order` on the member type documents
+ * in the Studio overrides all of this.
+ */
+const TYPE_RANK_FALLBACK: Record<string, number> = {
+  cofounder: 0,
+  cofounders: 0,
+  'co-founder': 0,
+  'co-founders': 0,
+  founder: 0,
+  advisor: 1,
+  advisors: 1,
+  advisory: 1,
+  'advisory-board': 1,
+  team: 2,
+  'core-team': 2,
+  staff: 2,
+}
+
+/** Where an unranked type sits — after the known rows, before nothing. */
+const UNRANKED = 50
+
+/** No explicit CMS order: the query emits 99 when a member type has none. */
+const NO_CMS_ORDER = 99
+
+/**
+ * Row position for a group: the member type's own `order` from the CMS when it
+ * has one, otherwise the fallback rank above.
+ *
+ * The fallback also matches on the row's visible title, so a type whose slug we
+ * don't recognise ("advisory-board", "board", "the-advisors") still lands in the
+ * right place as long as its title reads the way it does on the page.
+ */
+function groupRank(group: TeamGroup): number {
+  const cmsOrder = Math.min(...group.members.map((m) => m.memberTypeOrder ?? NO_CMS_ORDER))
+  if (cmsOrder < NO_CMS_ORDER) return cmsOrder
+
+  const direct = TYPE_RANK_FALLBACK[group.key]
+  if (direct !== undefined) return direct
+
+  const text = `${group.key} ${group.label}`.toLowerCase()
+  if (text.includes('found')) return 0
+  if (text.includes('advis')) return 1
+  if (text.includes('team') || text.includes('staff')) return 2
+  return UNRANKED
+}
+
+/**
+ * Build one group per member type actually present in the CMS.
  *
  * Nothing here is hardcoded on purpose: any type the client creates in the Studio
  * — interns, volunteers, whatever comes next — renders as its own row without a
  * code change. Members whose type is missing fall back into a generic "Team" row
  * so they are never silently dropped from the page.
+ *
+ * Rows are ordered by `groupRank`, ties broken alphabetically by label so the
+ * page stays stable rather than shifting with whatever the query returned first.
  */
 function groupByType(members: TeamMember[]): TeamGroup[] {
   const groups = new Map<string, TeamGroup>()
@@ -227,7 +281,9 @@ function groupByType(members: TeamMember[]): TeamGroup[] {
     else groups.set(key, { key, label, members: [member] })
   }
 
-  return [...groups.values()]
+  return [...groups.values()].sort(
+    (a, b) => groupRank(a) - groupRank(b) || a.label.localeCompare(b.label),
+  )
 }
 
 // ── Section ───────────────────────────────────────────────────────────────────
