@@ -243,7 +243,11 @@ export interface TeamMember {
   name: string
   slug: SanitySlug
   role: string
-  memberType: 'cofounder' | 'team' | 'advisor'
+  /**
+   * Legacy documents store a plain string; newer ones store a reference to a
+   * `memberType` document, resolved into the three fields below by the query.
+   */
+  memberType?: string | { _ref?: string; _type?: string }
   /** New schema support — resolved from reference in GROQ */
   memberTypeSlug?: string
   memberTypeTitle?: string

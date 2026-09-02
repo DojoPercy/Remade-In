@@ -363,21 +363,37 @@ export const partnersQuery = groq`
 // ── Team Members ─────────────────────────────────────────────────────────────
 
 /**
- * Active team members — co-founders first, then core team, then advisors.
- * Within each type, ordered by the `order` field ascending.
+ * Team members, grouped downstream by member type.
+ *
+ * `active != false` rather than `active == true` on purpose: a member added in the
+ * Studio without touching the toggle has no `active` field at all, and would
+ * otherwise silently never reach the site. Only an explicit un-toggle hides someone.
+ *
+ * Member types are ordered by the type's own `order`, then by the member's `order`.
+ * The `select()` fallbacks cover legacy documents where `memberType` is still a
+ * plain string instead of a reference.
  */
 export const teamMembersQuery = groq`
-  *[_type == "teamMember" && active == true] | order(
-    coalesce(memberType->order, select(memberType == "cofounder" => 0, memberType == "team" => 1, 2), 99) asc,
-    order asc
+  *[_type == "teamMember" && active != false] | order(
+    coalesce(memberType->order, select(memberType == "cofounder" => 0, memberType == "team" => 1, memberType == "advisor" => 2, 98), 99) asc,
+    coalesce(order, 99) asc,
+    name asc
   ) {
     _id,
     name,
     slug,
     role,
-    "memberTypeSlug": lower(coalesce(memberType->slug.current, memberType)),
-    "memberTypeTitle": coalesce(memberType->title, select(memberType == "cofounder" => "Co-Founders", memberType == "team" => "Core Team", "Advisory Board")),
-    "memberTypeOrder": coalesce(memberType->order, select(memberType == "cofounder" => 0, memberType == "team" => 1, 2), 99),
+    "memberTypeSlug": lower(coalesce(memberType->slug.current, memberType, "team")),
+    "memberTypeTitle": coalesce(
+      memberType->title,
+      select(
+        memberType == "cofounder" => "Co-Founders",
+        memberType == "team" => "Core Team",
+        memberType == "advisor" => "Advisory Board",
+        memberType
+      )
+    ),
+    "memberTypeOrder": coalesce(memberType->order, select(memberType == "cofounder" => 0, memberType == "team" => 1, memberType == "advisor" => 2, 98), 99),
     photo { ${imageFragment} },
     shortBio,
     connectionToMission,

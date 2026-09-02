@@ -188,28 +188,52 @@ function GroupLabel({ label }: { label: string }) {
   )
 }
 
+// ── Grouping ──────────────────────────────────────────────────────────────────
+
+interface TeamGroup {
+  key: string
+  label: string
+  members: TeamMember[]
+}
+
+/** "youth-volunteers" → "Youth Volunteers" — fallback when the type has no title */
+function prettifyLabel(slug: string) {
+  return slug
+    .replace(/[-_]+/g, ' ')
+    .trim()
+    .replace(/\b\w/g, (c) => c.toUpperCase())
+}
+
+/**
+ * Build one group per member type actually present in the CMS, in the order the
+ * query returned them (member-type order, then member order).
+ *
+ * Nothing here is hardcoded on purpose: any type the client creates in the Studio
+ * — interns, volunteers, whatever comes next — renders as its own row without a
+ * code change. Members whose type is missing fall back into a generic "Team" row
+ * so they are never silently dropped from the page.
+ */
+function groupByType(members: TeamMember[]): TeamGroup[] {
+  const groups = new Map<string, TeamGroup>()
+
+  for (const member of members) {
+    const rawType =
+      member.memberTypeSlug ?? (typeof member.memberType === 'string' ? member.memberType : '')
+    const key = rawType.trim().toLowerCase() || 'team'
+    const label = member.memberTypeTitle?.trim() || prettifyLabel(key)
+
+    const existing = groups.get(key)
+    if (existing) existing.members.push(member)
+    else groups.set(key, { key, label, members: [member] })
+  }
+
+  return [...groups.values()]
+}
+
 // ── Section ───────────────────────────────────────────────────────────────────
 
 export default function TeamSection({ members }: { members: TeamMember[] }) {
-  const typeSlug = (m: TeamMember) =>
-    (m.memberTypeSlug ?? (typeof (m as any).memberType === 'string' ? (m as any).memberType : '') ?? '').toLowerCase()
-  const typeTitle = (m: TeamMember) => (m.memberTypeTitle ?? '').toLowerCase()
-
-  const cofounders = members.filter((m) => {
-    const slug = typeSlug(m)
-    const title = typeTitle(m)
-    return slug === 'cofounder' || slug === 'co-founder' || title.includes('found')
-  })
-  const coreTeam = members.filter((m) => {
-    const slug = typeSlug(m)
-    const title = typeTitle(m)
-    return slug === 'team' || slug === 'core-team' || title.includes('team')
-  })
-  const advisors = members.filter((m) => {
-    const slug = typeSlug(m)
-    const title = typeTitle(m)
-    return slug === 'advisor' || slug === 'advisory' || title.includes('advisor')
-  })
+  const groups = groupByType(members)
 
   let globalIdx = 0
 
@@ -254,41 +278,17 @@ export default function TeamSection({ members }: { members: TeamMember[] }) {
         </div>
       </motion.div>
 
-      {/* ── Co-founders ── */}
-      {cofounders.length > 0 && (
-        <div className="mb-24">
-          <GroupLabel label="Co-Founders" />
+      {/* ── One row per member type present in the CMS ── */}
+      {groups.map((group) => (
+        <div key={group.key} className="mb-24">
+          <GroupLabel label={group.label} />
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-10 gap-y-16">
-            {cofounders.map((member) => (
+            {group.members.map((member) => (
               <ProfileCard key={member._id} member={member} index={globalIdx++} />
             ))}
           </div>
         </div>
-      )}
-
-      {/* ── Core team ── */}
-      {coreTeam.length > 0 && (
-        <div className="mb-24">
-          <GroupLabel label="Core Team" />
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-10 gap-y-16">
-            {coreTeam.map((member) => (
-              <ProfileCard key={member._id} member={member} index={globalIdx++} />
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* ── Advisory board ── */}
-      {advisors.length > 0 && (
-        <div className="mb-24">
-          <GroupLabel label="Advisory Board" />
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-10 gap-y-16">
-            {advisors.map((member) => (
-              <ProfileCard key={member._id} member={member} index={globalIdx++} />
-            ))}
-          </div>
-        </div>
-      )}
+      ))}
 
       {/* ── We're Hiring ── */}
       <motion.div
